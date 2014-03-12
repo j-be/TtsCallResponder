@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
+import org.duckdns.raven.ttscallresponder.testStuff.ReadCalendar;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
 import android.app.Activity;
@@ -32,6 +33,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		this.txtText = (EditText) this.findViewById(id.editText_textToCompile);
 
 		this.btnSpeak.setOnClickListener(this);
+
+		ReadCalendar.readCalendar(this);
 	}
 
 	@Override
