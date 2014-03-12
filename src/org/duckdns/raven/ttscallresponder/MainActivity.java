@@ -1,9 +1,10 @@
-package org.duckdns.raven.ttscallresoponder;
+package org.duckdns.raven.ttscallresponder;
 
 import java.util.Locale;
 
+import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
-import org.duckdns.raven.ttscallresoponder.ttsStuff.CallTTSEngine;
+import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
 import android.app.Activity;
 import android.app.Fragment;

@@ -1,4 +1,4 @@
-package org.duckdns.raven.ttscallresoponder.ttsStuff;
+package org.duckdns.raven.ttscallresponder.ttsStuff;
 
 import java.util.Locale;
 
