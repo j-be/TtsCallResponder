@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/editText_textToCompile"
+        android:layout_width="match_parent"
+        android:layout_height="401dp"
+        android:layout_weight="0.88"
+        android:ems="10"
+        android:hint="Insert text to speak..." >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/button_compileToTTS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/compile_to_tts" />
+
+</LinearLayout>
