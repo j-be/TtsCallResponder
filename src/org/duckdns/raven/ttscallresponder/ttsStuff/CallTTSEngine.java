@@ -21,6 +21,7 @@ public class CallTTSEngine implements OnInitListener {
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
 			this.ttsEngine.setLanguage(Locale.US);
+			this.ttsEngine.setSpeechRate(0.75f);
 		}
 	}
 }
