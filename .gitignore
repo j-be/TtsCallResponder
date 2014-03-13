@@ -5,3 +5,5 @@ libs/android-support-v4.jar
 *.swp
 *~
 
+*.apk
+
