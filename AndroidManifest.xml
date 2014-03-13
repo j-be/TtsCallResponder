@@ -24,10 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="org.duckdns.raven.ttscallresponder.testStuff.CalendarTest"
-            android:label="@string/title_activity_calendar_test" >
-        </activity>
 
         <receiver android:name="org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver">
         <intent-filter>
