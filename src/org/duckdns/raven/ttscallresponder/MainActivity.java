@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
-import org.duckdns.raven.ttscallresponder.testStuff.ReadCalendar;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
 import android.app.Activity;
@@ -40,7 +39,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		this.swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
 		this.swiAutoRespond.setChecked(MyCallReceiver.isEnabled());
 
-		ReadCalendar.readCalendar(this);
+		// ReadCalendar.readCalendar(this);
 	}
 
 	@Override

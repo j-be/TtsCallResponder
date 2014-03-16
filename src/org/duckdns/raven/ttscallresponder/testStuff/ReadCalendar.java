@@ -21,9 +21,6 @@ public class ReadCalendar {
 		String[] calendarQueryColums = { Calendars._ID, Calendars.NAME };
 		String[] eventQueryColums = { Events._ID, Events.TITLE, Events.DESCRIPTION, Events.EVENT_LOCATION, Events.DTSTART, Events.DTEND };
 
-		// Fetch a list of all calendars synced with the device, their display
-		// names and whether the
-
 		cursor = contentResolver.query(ContentUris.withAppendedId(Calendars.CONTENT_URI, 1), calendarQueryColums, null, null, null);
 
 		HashSet<String> calendarIds = new HashSet<String>();
@@ -44,8 +41,6 @@ public class ReadCalendar {
 		} catch (Exception e) {
 		}
 
-		// For each calendar, display all the events from the previous week to
-		// the end of next week.
 		for (String id : calendarIds) {
 			Cursor eventCursor = contentResolver.query(Events.CONTENT_URI, eventQueryColums, Events.CALENDAR_ID + "=" + id, null, Events.DTSTART + " ASC");
 
