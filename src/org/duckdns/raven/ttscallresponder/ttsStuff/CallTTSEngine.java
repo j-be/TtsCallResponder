@@ -24,4 +24,8 @@ public class CallTTSEngine implements OnInitListener {
 			this.ttsEngine.setSpeechRate(0.75f);
 		}
 	}
+
+	public void stopEngine() {
+		this.ttsEngine.stop();
+	}
 }

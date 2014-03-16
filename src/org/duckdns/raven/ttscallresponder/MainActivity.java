@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
+import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 import org.duckdns.raven.ttscallresponder.testStuff.ReadCalendar;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
@@ -15,12 +16,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	private CallTTSEngine ttsEngine = null;
 	private Button btnSpeak = null;
 	private EditText txtText = null;
+	private Switch swiAutoRespond = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +32,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		this.ttsEngine = new CallTTSEngine(this, Locale.US);
 
-		this.btnSpeak = (Button) this.findViewById(id.button_compileToTTS);
 		this.txtText = (EditText) this.findViewById(id.editText_textToCompile);
 
+		this.btnSpeak = (Button) this.findViewById(id.button_compileToTTS);
 		this.btnSpeak.setOnClickListener(this);
+
+		this.swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
+		this.swiAutoRespond.setChecked(MyCallReceiver.isEnabled());
 
 		ReadCalendar.readCalendar(this);
 	}
@@ -58,8 +64,22 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
+	public void onDestroy() {
+		this.ttsEngine.stopEngine();
+		MyCallReceiver.disable();
+	}
+
+	@Override
 	public void onClick(View v) {
 		this.ttsEngine.speak(this.txtText.getText().toString());
 	}
 
+	public void onSwitchAutorespondClick(View view) {
+		Switch swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
+
+		if (swiAutoRespond.isChecked())
+			MyCallReceiver.enable();
+		else
+			MyCallReceiver.disable();
+	}
 }

@@ -9,8 +9,42 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 public class MyCallReceiver extends BroadcastReceiver {
-	Context context = null;
-	private static final String TAG = "Phone call";
+	private static final String TAG = "MyCallReceiver";
+	private static boolean enabled = true;
+
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		if (!MyCallReceiver.enabled)
+			return;
+
+		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+			answerPhoneHeadsethook(context, intent);
+			muteInCallAudio(context);
+			return;
+		}
+	}
+
+	public static void disable() {
+		MyCallReceiver.enabled = false;
+	}
+
+	public static void enable() {
+		MyCallReceiver.enabled = true;
+	}
+
+	public static boolean isEnabled() {
+		return MyCallReceiver.enabled;
+	}
+
+	private void muteInCallAudio(Context context) {
+		AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		// TODO: Muting caller
+		audioManager.setMode(AudioManager.MODE_NORMAL);
+		audioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, true);
+		audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, -1, AudioManager.FLAG_SHOW_UI);
+		Log.i(TAG, "Voice-call volume: " + audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL));
+	}
 
 	/**
 	 * Dirty Hack
@@ -56,20 +90,4 @@ public class MyCallReceiver extends BroadcastReceiver {
 		Log.d(TAG, "Call Answered using headsethook");
 	}
 
-	private void muteInCallAudio(Context context) {
-		AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		audioManager.setMode(AudioManager.MODE_IN_CALL);
-		audioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, true);
-		Log.i(TAG, "Voice-call muted");
-	}
-
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-			answerPhoneHeadsethook(context, intent);
-			muteInCallAudio(context);
-			return;
-		}
-	}
 }

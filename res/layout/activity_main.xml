@@ -3,22 +3,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editText_textToCompile"
+    <Switch
+        android:id="@+id/switch_answerCalls"
         android:layout_width="match_parent"
-        android:layout_height="401dp"
-        android:layout_weight="0.88"
-        android:ems="10"
-        android:hint="Insert text to speak..." >
-
-        <requestFocus />
-    </EditText>
+        android:layout_height="wrap_content"
+        android:text="@string/switch_auto_respond"
+        android:onClick="onSwitchAutorespondClick"/>
 
     <Button
         android:id="@+id/button_compileToTTS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="@string/compile_to_tts" />
+
+    <EditText
+        android:id="@+id/editText_textToCompile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center_vertical|top"
+        android:hint="Insert text to speak..." >
+
+        <requestFocus />
+    </EditText>
 
 </LinearLayout>
