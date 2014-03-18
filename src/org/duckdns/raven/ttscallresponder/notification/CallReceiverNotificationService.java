@@ -3,8 +3,11 @@ package org.duckdns.raven.ttscallresponder.notification;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.util.Log;
 
 public class CallReceiverNotificationService {
+
+	private static final String TAG = "CallReceiverNotificationService";
 
 	private static NotificationManager mNotificationManager = null;
 

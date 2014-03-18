@@ -11,6 +11,7 @@ import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
+	private final String TAG = "MainActivity";
+
 	private CallTTSEngine ttsEngine = null;
 	private Button btnSpeak = null;
 	private EditText txtText = null;
@@ -31,6 +34,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.i(this.TAG, "Enter on Create");
+
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
