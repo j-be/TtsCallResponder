@@ -1,7 +1,10 @@
 package org.duckdns.raven.ttscallresponder.testStuff;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import org.duckdns.raven.ttscallresponder.domain.AnsweredCall;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
@@ -16,6 +19,8 @@ import android.view.KeyEvent;
 
 public class MyCallReceiver extends BroadcastReceiver {
 	private static final String TAG = "MyCallReceiver";
+
+	private static List<AnsweredCall> answeredCallList = new ArrayList<AnsweredCall>();
 
 	private boolean enabled = true;
 	private String textToSpeak = "This is a test";
@@ -49,6 +54,14 @@ public class MyCallReceiver extends BroadcastReceiver {
 		return this.textToSpeak;
 	}
 
+	public static List<AnsweredCall> getAnsweredCallList() {
+		return MyCallReceiver.answeredCallList;
+	}
+
+	public static void clearAnsweredCallList() {
+		MyCallReceiver.answeredCallList.clear();
+	}
+
 	public void stopTtsEngine() {
 		if (this.ttsEngine != null) {
 			this.ttsEngine.stopEngine();
@@ -66,6 +79,8 @@ public class MyCallReceiver extends BroadcastReceiver {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			this.answerPhoneHeadsethook(context, intent);
+			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent
+					.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			this.muteInCallAudio(context);
 			this.ttsEngine.speak(this.textToSpeak);
 			return;

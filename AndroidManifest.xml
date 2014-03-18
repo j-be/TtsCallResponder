@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="org.duckdns.raven.ttscallresponder.answeredCallList.AnsweredCallList"
+            android:label="@string/title_activity_answered_call_list" >
+        </activity>
     </application>
 
 </manifest>

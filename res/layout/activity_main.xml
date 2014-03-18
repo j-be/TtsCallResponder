@@ -26,6 +26,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_update_textToSpeak"
-        android:onClick="onUpdateTextToSpeakClick" />
+        android:onClick="onUpdateTextToSpeakClick"
+        android:background="@drawable/custom_button" />
+
+    <Button
+        android:id="@+id/button_showAnsweredCallList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show list of answered calls"
+        android:onClick="onShowAnsweredCallListClick"
+        android:background="@drawable/custom_button"/>
 
 </LinearLayout>

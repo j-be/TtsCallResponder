@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.duckdns.raven.ttscallresoponder.AnsweredCallList" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_settings"/>
+    
+    <item
+        android:id="@+id/action_clearList"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="Clear List" />
+
+</menu>

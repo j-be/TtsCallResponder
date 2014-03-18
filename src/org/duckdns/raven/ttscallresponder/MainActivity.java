@@ -2,10 +2,12 @@ package org.duckdns.raven.ttscallresponder;
 
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
+import org.duckdns.raven.ttscallresponder.answeredCallList.AnsweredCallList;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -98,6 +100,11 @@ public class MainActivity extends Activity {
 
 		Toast.makeText(this, "Text-to-speak updated", Toast.LENGTH_SHORT)
 				.show();
+	}
+
+	public void onShowAnsweredCallListClick(View view) {
+		Intent switchToCallList = new Intent(this, AnsweredCallList.class);
+		this.startActivity(switchToCallList);
 	}
 
 	/* ----- Closing the app ----- */
