@@ -26,6 +26,6 @@ public class CallTTSEngine implements OnInitListener {
 	}
 
 	public void stopEngine() {
-		this.ttsEngine.stop();
+		this.ttsEngine.shutdown();
 	}
 }
