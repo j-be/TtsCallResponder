@@ -10,6 +10,7 @@ import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -24,6 +26,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button btnSpeak = null;
 	private EditText txtText = null;
 	private Switch swiAutoRespond = null;
+
+	private final Time lastBackPressed = new Time();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onDestroy();
 	}
 
+	@Override
+	public void finish() {
+
+		super.finish();
 	}
 
 	@Override
@@ -89,5 +97,21 @@ public class MainActivity extends Activity implements OnClickListener {
 			MyCallReceiver.enable();
 		else
 			MyCallReceiver.disable();
+	}
+
+	@Override
+	public void onBackPressed() {
+		Time nowBackPressed = new Time();
+
+		nowBackPressed.setToNow();
+
+		if (nowBackPressed.toMillis(true) - this.lastBackPressed.toMillis(true) < 5000) {
+			this.onDestroy();
+			this.finish();
+		} else {
+			Toast.makeText(this, "Press again to close application",
+					Toast.LENGTH_SHORT).show();
+			this.lastBackPressed.setToNow();
+		}
 	}
 }
