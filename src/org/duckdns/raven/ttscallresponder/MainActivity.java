@@ -9,6 +9,7 @@ import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
 import android.app.Activity;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button btnSpeak = null;
 	private EditText txtText = null;
 	private Switch swiAutoRespond = null;
+	private MyCallReceiver callReceiver = null;
 
 	private final Time lastBackPressed = new Time();
 
@@ -50,6 +52,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		this.swiAutoRespond.setChecked(MyCallReceiver.isEnabled());
 
 		// ReadCalendar.readCalendar(this);
+
+		this.callReceiver = new MyCallReceiver();
+		this.registerReceiver(this.callReceiver, new IntentFilter(
+				"android.intent.action.PHONE_STATE"));
+		Log.i(this.TAG, "Receiver registered");
 
 		CallReceiverNotificationService.init(this);
 		CallReceiverNotificationService
@@ -80,13 +87,14 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onDestroy() {
 		this.ttsEngine.stopEngine();
 		CallReceiverNotificationService.removeNotfication();
-		MyCallReceiver.disable();
 
 		super.onDestroy();
 	}
 
 	@Override
 	public void finish() {
+		this.unregisterReceiver(this.callReceiver);
+		Log.i(this.TAG, "Receiver unregistered");
 
 		super.finish();
 	}
