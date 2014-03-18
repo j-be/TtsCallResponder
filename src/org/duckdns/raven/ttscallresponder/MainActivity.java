@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
+import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
@@ -40,6 +41,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		this.swiAutoRespond.setChecked(MyCallReceiver.isEnabled());
 
 		// ReadCalendar.readCalendar(this);
+
+		CallReceiverNotificationService.init(this);
+		CallReceiverNotificationService
+				.stateChanged(MyCallReceiver.isEnabled());
 	}
 
 	@Override

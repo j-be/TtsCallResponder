@@ -1,5 +1,7 @@
 package org.duckdns.raven.ttscallresponder.testStuff;
 
+import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,18 +21,20 @@ public class MyCallReceiver extends BroadcastReceiver {
 
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-			answerPhoneHeadsethook(context, intent);
-			muteInCallAudio(context);
+			this.answerPhoneHeadsethook(context, intent);
+			this.muteInCallAudio(context);
 			return;
 		}
 	}
 
 	public static void disable() {
 		MyCallReceiver.enabled = false;
+		CallReceiverNotificationService.stateChanged(isEnabled());
 	}
 
 	public static void enable() {
 		MyCallReceiver.enabled = true;
+		CallReceiverNotificationService.stateChanged(isEnabled());
 	}
 
 	public static boolean isEnabled() {
