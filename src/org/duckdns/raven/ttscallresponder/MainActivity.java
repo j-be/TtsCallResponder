@@ -79,6 +79,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onDestroy() {
 		this.ttsEngine.stopEngine();
+		CallReceiverNotificationService.removeNotfication();
 		MyCallReceiver.disable();
 
 		super.onDestroy();

@@ -7,6 +7,7 @@ import android.util.Log;
 
 public class CallReceiverNotificationService {
 
+	private static final int NOTIFICAITON_ID = 129;
 	private static final String TAG = "CallReceiverNotificationService";
 
 	private static NotificationManager mNotificationManager = null;
@@ -22,11 +23,17 @@ public class CallReceiverNotificationService {
 	}
 
 	private static void updateNotification(boolean enabled) {
-		mNotificationManager.notify(1, CallReceiverNotificationFactory
-				.buildCallReceiverNotification(enabled));
+		mNotificationManager.notify(NOTIFICAITON_ID,
+				CallReceiverNotificationFactory
+						.buildCallReceiverNotification(enabled));
 	}
 
 	public static void stateChanged(boolean enabled) {
 		updateNotification(enabled);
+	}
+
+	public static void removeNotfication() {
+		Log.i(TAG, "Canceling notification");
+		mNotificationManager.cancel(NOTIFICAITON_ID);
 	}
 }

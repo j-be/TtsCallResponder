@@ -35,11 +35,15 @@ public class CallReceiverNotificationFactory {
 				activity)
 				.setContentTitle(
 						activity.getResources().getString(R.string.app_name))
-				.setContentText(newText).setSmallIcon(R.drawable.ic_launcher);
+				.setContentText(newText).setSmallIcon(R.drawable.ic_launcher)
+				.setOngoing(true);
 
 		// Create Intent
+		Intent bringMainToFront = new Intent(activity, activity.getClass());
+		bringMainToFront.setAction(Intent.ACTION_MAIN);
+		bringMainToFront.addCategory(Intent.CATEGORY_LAUNCHER);
 		PendingIntent resultPendingIntent = PendingIntent.getActivity(activity,
-				0, new Intent(activity, activity.getClass()), 0);
+				0, bringMainToFront, 0);
 		mBuilder.setContentIntent(resultPendingIntent);
 
 		return mBuilder.build();
