@@ -10,12 +10,6 @@
         android:text="@string/switch_auto_respond"
         android:onClick="onSwitchAutorespondClick"/>
 
-    <Button
-        android:id="@+id/button_compileToTTS"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/compile_to_tts" />
-
     <EditText
         android:id="@+id/editText_textToCompile"
         android:layout_width="match_parent"
@@ -26,5 +20,12 @@
 
         <requestFocus />
     </EditText>
+
+    <Button
+        android:id="@+id/button_updateTextToSpeak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_update_textToSpeak"
+        android:onClick="onUpdateTextToSpeakClick" />
 
 </LinearLayout>

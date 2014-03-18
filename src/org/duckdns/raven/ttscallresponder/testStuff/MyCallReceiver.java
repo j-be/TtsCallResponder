@@ -1,7 +1,11 @@
 package org.duckdns.raven.ttscallresponder.testStuff;
 
-import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
+import java.util.Locale;
 
+import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
+import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
+
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,33 +16,60 @@ import android.view.KeyEvent;
 
 public class MyCallReceiver extends BroadcastReceiver {
 	private static final String TAG = "MyCallReceiver";
-	private static boolean enabled = true;
+
+	private boolean enabled = true;
+	private String textToSpeak = "This is a test";
+	private CallTTSEngine ttsEngine = null;
+
+	public MyCallReceiver(Activity parent) {
+		this.ttsEngine = new CallTTSEngine(parent, Locale.US);
+	}
+
+	/* ----- Getters/Setters ----- */
+
+	public void disable() {
+		this.enabled = false;
+		CallReceiverNotificationService.stateChanged(this.isEnabled());
+	}
+
+	public void enable() {
+		this.enabled = true;
+		CallReceiverNotificationService.stateChanged(this.isEnabled());
+	}
+
+	public boolean isEnabled() {
+		return this.enabled;
+	}
+
+	public void setTextToSpeak(String textToSpeak) {
+		this.textToSpeak = textToSpeak;
+	}
+
+	public String getTextToSpeak() {
+		return this.textToSpeak;
+	}
+
+	public void stopTtsEngine() {
+		if (this.ttsEngine != null) {
+			this.ttsEngine.stopEngine();
+			this.ttsEngine = null;
+		}
+	}
+
+	/* ----- Logic ----- */
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (!MyCallReceiver.enabled)
+		if (!this.enabled)
 			return;
 
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			this.answerPhoneHeadsethook(context, intent);
 			this.muteInCallAudio(context);
+			this.ttsEngine.speak(this.textToSpeak);
 			return;
 		}
-	}
-
-	public static void disable() {
-		MyCallReceiver.enabled = false;
-		CallReceiverNotificationService.stateChanged(isEnabled());
-	}
-
-	public static void enable() {
-		MyCallReceiver.enabled = true;
-		CallReceiverNotificationService.stateChanged(isEnabled());
-	}
-
-	public static boolean isEnabled() {
-		return MyCallReceiver.enabled;
 	}
 
 	private void muteInCallAudio(Context context) {

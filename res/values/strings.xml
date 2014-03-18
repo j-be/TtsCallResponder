@@ -4,8 +4,7 @@
     <string name="app_name">TtsCallResponder</string>
     <string name="compile_to_tts">Compile to TTS</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="switch_auto_respond">Auto-respond calls</string>
-
+    <string name="button_update_textToSpeak">Update Text-to-Speak</string>
 </resources>
