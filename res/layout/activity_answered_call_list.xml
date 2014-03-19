@@ -4,14 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/button_clearAnsweredCallList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Clear list"
-        android:onClick="onClearAnsweredCallListClick" 
-        android:background="@drawable/custom_button"/>
-
     <ListView 
     	android:id="@+id/list_answered_calls"
     	android:layout_width="fill_parent"

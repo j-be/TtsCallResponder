@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 
 public class AnsweredCallList extends Activity {
@@ -19,8 +18,7 @@ public class AnsweredCallList extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_answered_call_list);
 
-		ListView orderListView = (ListView) this
-				.findViewById(R.id.list_answered_calls);
+		ListView orderListView = (ListView) this.findViewById(R.id.list_answered_calls);
 		this.adapter = new CallListAdapter(this.getLayoutInflater());
 		orderListView.setAdapter(this.adapter);
 	}
@@ -46,17 +44,15 @@ public class AnsweredCallList extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch (id) {
-		case R.id.action_settings:
-			return true;
 		case R.id.action_clearList:
-			this.onClearAnsweredCallListClick(null);
+			this.clearAnsweredCallListClick();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
-	public void onClearAnsweredCallListClick(View view) {
+	public void clearAnsweredCallListClick() {
 		MyCallReceiver.clearAnsweredCallList();
 		this.adapter.setModel(MyCallReceiver.getAnsweredCallList());
 	}
