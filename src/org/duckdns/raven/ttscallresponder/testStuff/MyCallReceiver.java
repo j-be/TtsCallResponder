@@ -79,8 +79,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			this.answerPhoneHeadsethook(context, intent);
-			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent
-					.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			this.muteInCallAudio(context);
 			this.ttsEngine.speak(this.textToSpeak);
 			return;

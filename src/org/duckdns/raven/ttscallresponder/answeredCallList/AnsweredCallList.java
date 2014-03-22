@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 public class AnsweredCallList extends Activity {
 
+	private final static String TAG = "AnsweredCallList";
+
 	private CallListAdapter adapter = null;
 
 	@Override
@@ -19,7 +21,7 @@ public class AnsweredCallList extends Activity {
 		this.setContentView(R.layout.activity_answered_call_list);
 
 		ListView orderListView = (ListView) this.findViewById(R.id.list_answered_calls);
-		this.adapter = new CallListAdapter(this.getLayoutInflater());
+		this.adapter = new CallListAdapter(this);
 		orderListView.setAdapter(this.adapter);
 	}
 
@@ -56,4 +58,5 @@ public class AnsweredCallList extends Activity {
 		MyCallReceiver.clearAnsweredCallList();
 		this.adapter.setModel(MyCallReceiver.getAnsweredCallList());
 	}
+
 }
