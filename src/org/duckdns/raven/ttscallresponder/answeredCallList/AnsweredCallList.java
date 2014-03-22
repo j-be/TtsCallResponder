@@ -3,6 +3,7 @@ package org.duckdns.raven.ttscallresponder.answeredCallList;
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +24,9 @@ public class AnsweredCallList extends Activity {
 		ListView orderListView = (ListView) this.findViewById(R.id.list_answered_calls);
 		this.adapter = new CallListAdapter(this);
 		orderListView.setAdapter(this.adapter);
+
+		ActionBar actionBar = this.getActionBar();
+		actionBar.setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -49,6 +53,8 @@ public class AnsweredCallList extends Activity {
 		case R.id.action_clearList:
 			this.clearAnsweredCallListClick();
 			return true;
+		case android.R.id.home:
+			this.onBackPressed();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
