@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CallListAdapter extends BaseAdapter {
@@ -51,11 +52,13 @@ public class CallListAdapter extends BaseAdapter {
 
 			TextView caller = (TextView) convertView.findViewById(R.id.label_caller);
 			TextView callTime = (TextView) convertView.findViewById(R.id.label_callTime);
+			Button callBack = (Button) convertView.findViewById(R.id.button_callBack);
 
 			AnsweredCall call = this.list.get(position);
 			caller.setText(phoneBookAccess.getNameForPhoneNumber(call.getCaller()));
 			callTime.setText(call.getCallTime().format("%b %d %Y, %H:%M"));
 
+			callBack.setOnClickListener(new CallBackListener(this.parent, call.getCaller()));
 		}
 
 		return convertView;
