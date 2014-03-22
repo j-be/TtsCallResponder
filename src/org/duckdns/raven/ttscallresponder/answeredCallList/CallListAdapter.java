@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresponder.domain.AnsweredCall;
+import org.duckdns.raven.ttscallresponder.userDataAccess.PhoneBookAccess;
 
 import android.app.Activity;
 import android.view.View;
@@ -16,9 +17,11 @@ public class CallListAdapter extends BaseAdapter {
 
 	private List<AnsweredCall> list = new ArrayList<AnsweredCall>();
 	private final Activity parent;
+	private final PhoneBookAccess phoneBookAccess;
 
 	public CallListAdapter(Activity parent) {
 		this.parent = parent;
+		phoneBookAccess = new PhoneBookAccess(parent);
 	}
 
 	public void setModel(List<AnsweredCall> list) {
@@ -50,7 +53,7 @@ public class CallListAdapter extends BaseAdapter {
 			TextView callTime = (TextView) convertView.findViewById(R.id.label_callTime);
 
 			AnsweredCall call = this.list.get(position);
-			caller.setText(call.getCaller());
+			caller.setText(phoneBookAccess.getNameForPhoneNumber(call.getCaller()));
 			callTime.setText(call.getCallTime().format("%b %d %Y, %H:%M"));
 
 		}
