@@ -6,7 +6,7 @@
         android:id="@+id/action_clearList"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/trash"
+        android:icon="@drawable/ic_menu_clear_playlist"
         android:title="Clear List" />
 
 </menu>
