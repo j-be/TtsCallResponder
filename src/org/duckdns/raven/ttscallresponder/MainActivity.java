@@ -112,17 +112,14 @@ public class MainActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		CallReceiverNotificationService.removeNotfication();
-
-		super.onDestroy();
-	}
-
-	@Override
-	public void finish() {
-		this.unregisterReceiver(this.callReceiver);
-		this.callReceiver.stopTtsEngine();
+		if (this.callReceiver != null) {
+			this.unregisterReceiver(this.callReceiver);
+			this.callReceiver.stopTtsEngine();
+			this.callReceiver = null;
+		}
 		Log.i(this.TAG, "Receiver unregistered");
 
-		super.finish();
+		super.onDestroy();
 	}
 
 	@Override
