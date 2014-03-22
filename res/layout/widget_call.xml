@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
 
-<TableLayout
-    android:layout_width="wrap_content"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="1">
-    <TableRow>
+    android:columnCount="2"
+    android:rowCount="2" >
         <TextView
             android:id="@+id/label_caller" 
             android:layout_width="wrap_content"
@@ -15,21 +12,17 @@
             android:text="NAME_HERE" 
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginLeft="20dip" />
-	</TableRow>
-	<TableRow>
+        <Button
+		    android:id="@+id/button_callBack"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="right"
+		    android:layout_rowSpan="2"
+		    android:text="+" />
         <TextView
             android:id="@+id/label_callTime" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
             android:text="TIME_HERE" 
             android:layout_marginLeft="20dip" />
-    </TableRow>
-</TableLayout>
-
-<Button
-    android:id="@+id/button_callBack"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="+" />
-
-</LinearLayout>
+</GridLayout>
