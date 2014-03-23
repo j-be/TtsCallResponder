@@ -1,5 +1,6 @@
 package org.duckdns.raven.ttscallresponder.preparedTextList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.duckdns.raven.ttscallresoponder.R;
@@ -9,17 +10,23 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 public class ActivityPreparedResponseList extends Activity {
 
 	private List<PreparedResponse> preparedAnswerList = null;
+	private PreparedResponseListAdapter adapter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_prepared_response_list);
 
+		ListView prepareResponsesListView = (ListView) this.findViewById(R.id.list_prepared_responses);
 		preparedAnswerList = getPreparedAnswerList();
+		adapter = new PreparedResponseListAdapter(this, preparedAnswerList);
+		prepareResponsesListView.setAdapter(adapter);
 	}
 
 	@Override
@@ -45,11 +52,15 @@ public class ActivityPreparedResponseList extends Activity {
 
 	private List<PreparedResponse> getPreparedAnswerList() {
 		// TODO Load list from persistent storage
-		return null;
+		return new ArrayList<PreparedResponse>();
 	}
 
 	private void savePreparedAnswerList(List<PreparedResponse> listToSave) {
 		// TODO Save the list
 	}
 
+	public void onAddClick(View view) {
+		preparedAnswerList.add(new PreparedResponse("Test title", "Test text"));
+		adapter.notifyDataSetChanged();
+	}
 }
