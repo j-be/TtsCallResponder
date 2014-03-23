@@ -2,16 +2,21 @@ package org.duckdns.raven.ttscallresponder.domain;
 
 import java.io.Serializable;
 
-public class PreparedText implements Serializable {
+public class PreparedResponse implements Serializable {
 
 	private static final long serialVersionUID = 2242526560402451991L;
 
+	private final long id = 0;
 	private String text = "";
 	private String title = "";
 
-	public PreparedText(String title, String text) {
+	public PreparedResponse(String title, String text) {
 		this.text = text;
 		this.title = title;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public String getText() {

@@ -31,7 +31,7 @@
             android:label="@string/title_activity_answered_call_list" >
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.preparedTextList.PreparedTextList"
+            android:name="org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList"
             android:label="@string/title_activity_prepared_text_list" >
         </activity>
     </application>

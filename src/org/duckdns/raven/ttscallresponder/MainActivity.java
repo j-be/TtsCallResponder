@@ -4,7 +4,7 @@ import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
 import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
-import org.duckdns.raven.ttscallresponder.preparedTextList.PreparedTextList;
+import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
 import android.app.Activity;
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void onShowPreparedResopnseList(View view) {
-		Intent switchToPreparedResopnseList = new Intent(this, PreparedTextList.class);
+		Intent switchToPreparedResopnseList = new Intent(this, ActivityPreparedResponseList.class);
 		this.startActivity(switchToPreparedResopnseList);
 	}
 
