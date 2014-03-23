@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -24,7 +23,6 @@ public class MainActivity extends Activity {
 
 	private final String TAG = "MainActivity";
 
-	private EditText txtTextToSpeak = null;
 	private Switch swiAutoRespond = null;
 	private MyCallReceiver callReceiver = null;
 
@@ -43,18 +41,15 @@ public class MainActivity extends Activity {
 		this.callReceiver = new MyCallReceiver(this);
 
 		// Get access to UI elements
-		this.txtTextToSpeak = (EditText) this.findViewById(id.editText_textToCompile);
 		this.swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
 
 		// Initialize UI elements
 		this.swiAutoRespond.setChecked(this.callReceiver.isEnabled());
-		this.txtTextToSpeak.setText(this.callReceiver.getTextToSpeak());
+		// this.txtTextToSpeak.setText(this.callReceiver.getTextToSpeak());
 
 		// Register call receiver
 		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
 		Log.i(this.TAG, "Receiver registered");
-
-		// ReadCalendar.readCalendar(this);
 
 		// Initialize notification
 		CallReceiverNotificationService.init(this);
@@ -89,12 +84,6 @@ public class MainActivity extends Activity {
 			this.callReceiver.enable();
 		else
 			this.callReceiver.disable();
-	}
-
-	public void onUpdateTextToSpeakClick(View view) {
-		this.callReceiver.setTextToSpeak(this.txtTextToSpeak.getText().toString());
-
-		Toast.makeText(this, "Text-to-speak updated", Toast.LENGTH_SHORT).show();
 	}
 
 	public void onShowAnsweredCallListClick(View view) {
