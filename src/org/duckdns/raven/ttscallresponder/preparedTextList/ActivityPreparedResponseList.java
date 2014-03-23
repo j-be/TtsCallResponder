@@ -1,5 +1,10 @@
 package org.duckdns.raven.ttscallresponder.preparedTextList;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +14,8 @@ import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +23,10 @@ import android.widget.ListView;
 
 public class ActivityPreparedResponseList extends Activity {
 
+	private final static String TAG = "ActivityPreparedResponseList";
+
 	public static final String INTENT_KEY_EDIT_PREPARED_RESPONSE = "preparedResponseToEdit";
+	private static final String PREPARED_RESPONSE_LIST_FILE = "preparedResponseList";
 
 	private List<PreparedResponse> preparedAnswerList = null;
 	private PreparedResponseListAdapter adapter = null;
@@ -69,12 +79,61 @@ public class ActivityPreparedResponseList extends Activity {
 	}
 
 	private List<PreparedResponse> getPreparedAnswerList() {
-		// TODO Load list from persistent storage
+		List<PreparedResponse> ret = null;
+
+		File preparedResponseListDir = this.getDir("savedLists", MODE_PRIVATE);
+		File preparedResponseListFile = new File(preparedResponseListDir.getAbsoluteFile() + File.separator
+				+ PREPARED_RESPONSE_LIST_FILE);
+
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+
+		try {
+			fis = new FileInputStream(preparedResponseListFile);
+			ois = new ObjectInputStream(fis);
+
+			ret = (List<PreparedResponse>) ois.readObject();
+		} catch (Exception e) {
+			Log.d(TAG, "failed to load list, assuming first run");
+		} finally {
+			try {
+				if (ois != null)
+					ois.close();
+				if (fis != null)
+					fis.close();
+			} catch (Exception e) { /* do nothing */
+			}
+		}
+		if (ret != null)
+			return ret;
+
 		return new ArrayList<PreparedResponse>();
 	}
 
 	private void savePreparedAnswerList(List<PreparedResponse> listToSave) {
-		// TODO Save the list
+		File preparedResponseListDir = this.getDir("savedLists", MODE_PRIVATE);
+		File preparedResponseListFile = new File(preparedResponseListDir.getAbsoluteFile() + File.separator
+				+ PREPARED_RESPONSE_LIST_FILE);
+
+		FileOutputStream fos = null;
+		ObjectOutputStream oos = null;
+
+		try {
+			fos = new FileOutputStream(preparedResponseListFile);
+			oos = new ObjectOutputStream(fos);
+
+			oos.writeObject(this.preparedAnswerList);
+		} catch (Exception e) {
+			Log.e(TAG, "failed to save list", e);
+		} finally {
+			try {
+				if (oos != null)
+					oos.close();
+				if (fos != null)
+					fos.close();
+			} catch (Exception e) { /* do nothing */
+			}
+		}
 	}
 
 	public void onAddClick(View view) {
