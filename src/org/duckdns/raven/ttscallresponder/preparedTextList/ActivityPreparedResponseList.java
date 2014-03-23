@@ -7,6 +7,7 @@ import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.ListView;
 
 public class ActivityPreparedResponseList extends Activity {
+
+	public static final String INTENT_KEY_EDIT_PREPARED_RESPONSE = "preparedResponseToEdit";
 
 	private List<PreparedResponse> preparedAnswerList = null;
 	private PreparedResponseListAdapter adapter = null;
@@ -27,6 +30,21 @@ public class ActivityPreparedResponseList extends Activity {
 		preparedAnswerList = getPreparedAnswerList();
 		adapter = new PreparedResponseListAdapter(this, preparedAnswerList);
 		prepareResponsesListView.setAdapter(adapter);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		PreparedResponse preparedResponse = getIntent().getParcelableExtra(
+				ActivityPreparedResponseEditor.INTENT_KEY_PREPARED_RESPONSE);
+		if (preparedResponse != null)
+			if (preparedResponse.getId() < 0)
+				this.preparedAnswerList.add(preparedResponse);
+			else
+				// TODO update if ID available
+				preparedResponse = preparedResponse;
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -60,7 +78,7 @@ public class ActivityPreparedResponseList extends Activity {
 	}
 
 	public void onAddClick(View view) {
-		preparedAnswerList.add(new PreparedResponse("Test title", "Test text"));
-		adapter.notifyDataSetChanged();
+		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
+		this.startActivity(openPreparedResponseEditor);
 	}
 }
