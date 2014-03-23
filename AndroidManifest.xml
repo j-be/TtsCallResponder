@@ -22,12 +22,17 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="org.duckdns.raven.ttscallresponder.answeredCallList.AnsweredCallList"
             android:label="@string/title_activity_answered_call_list" >
+        </activity>
+        <activity
+            android:name="org.duckdns.raven.ttscallresponder.preparedTextList.PreparedTextList"
+            android:label="@string/title_activity_prepared_text_list" >
         </activity>
     </application>
 

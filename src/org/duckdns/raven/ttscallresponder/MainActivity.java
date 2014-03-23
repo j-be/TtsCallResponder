@@ -4,6 +4,7 @@ import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
 import org.duckdns.raven.ttscallresponder.answeredCallList.AnsweredCallList;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
+import org.duckdns.raven.ttscallresponder.preparedTextList.PreparedTextList;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
 import android.app.Activity;
@@ -42,8 +43,7 @@ public class MainActivity extends Activity {
 		this.callReceiver = new MyCallReceiver(this);
 
 		// Get access to UI elements
-		this.txtTextToSpeak = (EditText) this
-				.findViewById(id.editText_textToCompile);
+		this.txtTextToSpeak = (EditText) this.findViewById(id.editText_textToCompile);
 		this.swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
 
 		// Initialize UI elements
@@ -51,16 +51,14 @@ public class MainActivity extends Activity {
 		this.txtTextToSpeak.setText(this.callReceiver.getTextToSpeak());
 
 		// Register call receiver
-		this.registerReceiver(this.callReceiver, new IntentFilter(
-				"android.intent.action.PHONE_STATE"));
+		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
 		Log.i(this.TAG, "Receiver registered");
 
 		// ReadCalendar.readCalendar(this);
 
 		// Initialize notification
 		CallReceiverNotificationService.init(this);
-		CallReceiverNotificationService.stateChanged(this.callReceiver
-				.isEnabled());
+		CallReceiverNotificationService.stateChanged(this.callReceiver.isEnabled());
 	}
 
 	@Override
@@ -85,8 +83,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void onSwitchAutorespondClick(View view) {
-		Switch swiAutoRespond = (Switch) this
-				.findViewById(id.switch_answerCalls);
+		Switch swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
 
 		if (swiAutoRespond.isChecked())
 			this.callReceiver.enable();
@@ -95,16 +92,19 @@ public class MainActivity extends Activity {
 	}
 
 	public void onUpdateTextToSpeakClick(View view) {
-		this.callReceiver.setTextToSpeak(this.txtTextToSpeak.getText()
-				.toString());
+		this.callReceiver.setTextToSpeak(this.txtTextToSpeak.getText().toString());
 
-		Toast.makeText(this, "Text-to-speak updated", Toast.LENGTH_SHORT)
-				.show();
+		Toast.makeText(this, "Text-to-speak updated", Toast.LENGTH_SHORT).show();
 	}
 
 	public void onShowAnsweredCallListClick(View view) {
 		Intent switchToCallList = new Intent(this, AnsweredCallList.class);
 		this.startActivity(switchToCallList);
+	}
+
+	public void onShowPreparedResopnseList(View view) {
+		Intent switchToPreparedResopnseList = new Intent(this, PreparedTextList.class);
+		this.startActivity(switchToPreparedResopnseList);
 	}
 
 	/* ----- Closing the app ----- */
@@ -132,8 +132,7 @@ public class MainActivity extends Activity {
 			this.onDestroy();
 			this.finish();
 		} else {
-			Toast.makeText(this, "Press again to close application",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Press again to close application", Toast.LENGTH_SHORT).show();
 			this.lastBackPressed.setToNow();
 		}
 	}
