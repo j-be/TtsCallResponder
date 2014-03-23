@@ -18,36 +18,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         style="@android:style/ButtonBar" >
-            <ImageButton
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_weight="1"
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|left"
-                android:src="@android:drawable/ic_menu_add"
-                android:contentDescription="Add"
-                android:onClick="onAddClick" />
-
-            <ImageButton
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_weight="1"
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:src="@android:drawable/ic_menu_delete"
-                android:contentDescription="Delete"
-                android:onClick="onDeleteClick" />
-
-            <ImageButton
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_weight="1"
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_edit"
-                android:contentDescription="Edit"
-                android:onClick="onEditClick" />
+        <ImageButton
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_weight="1"
+            android:id="@+id/button_deletePreparedResponse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="Delete"
+            android:onClick="onDeleteClick" />
+        <ImageButton
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_weight="1"
+            android:id="@+id/button_addPreparedResponse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:src="@android:drawable/ic_menu_add"
+            android:contentDescription="Add"
+            android:onClick="onAddClick" />
     </LinearLayout>
 </LinearLayout>

@@ -25,7 +25,8 @@ public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedRes
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = this.getParent().getLayoutInflater().inflate(R.layout.widget_prepared_response, parent, false);
+			convertView = this.getParent().getLayoutInflater()
+					.inflate(R.layout.widget_prepared_response, parent, false);
 
 			TextView title = (TextView) convertView.findViewById(R.id.label_preparedResponseTitle);
 			TextView text = (TextView) convertView.findViewById(R.id.label_preparedResponseText);
