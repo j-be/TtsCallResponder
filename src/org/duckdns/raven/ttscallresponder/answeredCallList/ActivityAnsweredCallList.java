@@ -21,19 +21,12 @@ public class ActivityAnsweredCallList extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_answered_call_list);
 
-		ListView orderListView = (ListView) this.findViewById(R.id.list_answered_calls);
-		this.adapter = new CallListAdapter(this);
-		orderListView.setAdapter(this.adapter);
+		ListView answeredCallsListView = (ListView) this.findViewById(R.id.list_answered_calls);
+		this.adapter = new CallListAdapter(this, MyCallReceiver.getAnsweredCallList());
+		answeredCallsListView.setAdapter(this.adapter);
 
 		ActionBar actionBar = this.getActionBar();
 		actionBar.setHomeButtonEnabled(true);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		this.adapter.setModel(MyCallReceiver.getAnsweredCallList());
 	}
 
 	@Override
@@ -62,7 +55,6 @@ public class ActivityAnsweredCallList extends Activity {
 
 	public void clearAnsweredCallListClick() {
 		MyCallReceiver.clearAnsweredCallList();
-		this.adapter.setModel(MyCallReceiver.getAnsweredCallList());
+		this.adapter.notifyDataSetChanged();
 	}
-
 }
