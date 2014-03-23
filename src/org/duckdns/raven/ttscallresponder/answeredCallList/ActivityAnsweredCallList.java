@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-public class AnsweredCallList extends Activity {
+public class ActivityAnsweredCallList extends Activity {
 
 	private final static String TAG = "AnsweredCallList";
 

@@ -2,7 +2,7 @@ package org.duckdns.raven.ttscallresponder;
 
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
-import org.duckdns.raven.ttscallresponder.answeredCallList.AnsweredCallList;
+import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.preparedTextList.PreparedTextList;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void onShowAnsweredCallListClick(View view) {
-		Intent switchToCallList = new Intent(this, AnsweredCallList.class);
+		Intent switchToCallList = new Intent(this, ActivityAnsweredCallList.class);
 		this.startActivity(switchToCallList);
 	}
 
