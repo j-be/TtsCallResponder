@@ -12,8 +12,6 @@ import android.widget.ListView;
 
 public class ActivityAnsweredCallList extends Activity {
 
-	private final static String TAG = "AnsweredCallList";
-
 	private CallListAdapter adapter = null;
 
 	@Override
