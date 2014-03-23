@@ -10,7 +10,7 @@
     <string name="button_update_textToSpeak">Update Text-to-Speak</string>
     <string name="title_activity_answered_call_list">Answered Calls</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_prepared_text_list">Prepared Text List</string>
+    <string name="title_activity_prepared_response_list">Prepared Text List</string>
     <string name="title_activity_prepared_response_editor">Prepared Response</string>
 
 </resources>
