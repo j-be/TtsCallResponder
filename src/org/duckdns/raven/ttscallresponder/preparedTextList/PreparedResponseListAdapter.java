@@ -36,6 +36,8 @@ public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedRes
 			title.setText(preparedText.getTitle());
 			text.setText(preparedText.getText());
 			// TODO set as current
+
+			convertView.setTag(preparedText);
 		}
 
 		return convertView;

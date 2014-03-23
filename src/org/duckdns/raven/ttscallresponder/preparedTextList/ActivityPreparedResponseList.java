@@ -81,4 +81,10 @@ public class ActivityPreparedResponseList extends Activity {
 		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
 		this.startActivity(openPreparedResponseEditor);
 	}
+
+	public void onPreparedResponseClick(View view) {
+		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
+		openPreparedResponseEditor.putExtra(INTENT_KEY_EDIT_PREPARED_RESPONSE, (Parcelable) view.getTag());
+		this.startActivity(openPreparedResponseEditor);
+	}
 }
