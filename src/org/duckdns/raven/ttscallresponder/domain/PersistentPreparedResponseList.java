@@ -49,15 +49,39 @@ public class PersistentPreparedResponseList {
 
 	public void removeSelected() {
 		Iterator<PreparedResponse> iter = this.list.iterator();
+		PreparedResponse item = null;
+
 		while (iter.hasNext()) {
-			if (iter.next().isSelected()) {
+			item = iter.next();
+			if (item.isSelected()) {
 				Log.i(PersistentPreparedResponseList.TAG, "Deleting item " + item.getId());
+				if (item.getId() == SettingsManager.getCurrentPreparedResponseId()) {
+					SettingsManager.setCurrentPreparedResponseId(-1);
+					Log.d(PersistentPreparedResponseList.TAG,
+							"Resetting default: " + SettingsManager.getCurrentPreparedResponseId());
+				}
 				iter.remove();
 				this.changed = true;
 			}
 		}
 	}
 
+	public PreparedResponse getItemWithId(long id) {
+		PreparedResponse item = null;
+		if (this.list == null)
+			this.getPreparedAnswerList();
+
+		Iterator<PreparedResponse> iter = this.list.iterator();
+
+		while (iter.hasNext()) {
+			item = iter.next();
+			Log.d(PersistentPreparedResponseList.TAG, "Checking item with id: " + item.getId());
+			if (item.getId() == id)
+				return item;
+		}
+
+		return null;
+	}
 
 	public boolean hasChanged() {
 		return this.changed;

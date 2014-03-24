@@ -5,11 +5,13 @@ import java.util.List;
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresponder.domain.AbstractListAdapter;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
 
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedResponse> {
@@ -33,15 +35,18 @@ public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedRes
 		TextView title = (TextView) convertView.findViewById(R.id.label_preparedResponseTitle);
 		TextView text = (TextView) convertView.findViewById(R.id.label_preparedResponseText);
 		CheckBox selected = (CheckBox) convertView.findViewById(R.id.checkBox_preparedResponseSelected);
-		// Button setAsCurrent = (Button)
-		// convertView.findViewById(R.id.button_preparedResponseSetAsCurrent);
+		ImageButton setAsCurrent = (ImageButton) convertView.findViewById(R.id.button_preparedResponseSetAsCurrent);
 
 		PreparedResponse preparedText = (PreparedResponse) this.getItem(position);
 		title.setText(preparedText.getTitle());
 		text.setText(preparedText.getText());
 		selected.setChecked(preparedText.isSelected());
 		selected.setOnClickListener(new OnSelectedClickListener(preparedText));
-		// TODO set as current
+		if (preparedText.getId() == SettingsManager.getCurrentPreparedResponseId())
+			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
+		else
+			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light);
+		setAsCurrent.setOnClickListener(new OnSetAsCurrentClickListener(this, preparedText, this.getParent()));
 
 		convertView.setTag(preparedText);
 

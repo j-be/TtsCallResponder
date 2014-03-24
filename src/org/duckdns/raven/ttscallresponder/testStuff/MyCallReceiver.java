@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.duckdns.raven.ttscallresponder.MainActivity;
 import org.duckdns.raven.ttscallresponder.domain.AnsweredCall;
+import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
+import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
@@ -21,12 +25,12 @@ public class MyCallReceiver extends BroadcastReceiver {
 	private static final String TAG = "MyCallReceiver";
 
 	private static List<AnsweredCall> answeredCallList = new ArrayList<AnsweredCall>();
-
 	private boolean enabled = true;
-	private String textToSpeak = "This is a test";
+	private final Activity parent;
 	private CallTTSEngine ttsEngine = null;
 
 	public MyCallReceiver(Activity parent) {
+		this.parent = parent;
 		this.ttsEngine = new CallTTSEngine(parent, Locale.US);
 	}
 
@@ -46,14 +50,6 @@ public class MyCallReceiver extends BroadcastReceiver {
 		return this.enabled;
 	}
 
-	public void setTextToSpeak(String textToSpeak) {
-		this.textToSpeak = textToSpeak;
-	}
-
-	public String getTextToSpeak() {
-		return this.textToSpeak;
-	}
-
 	public static List<AnsweredCall> getAnsweredCallList() {
 		return MyCallReceiver.answeredCallList;
 	}
@@ -71,6 +67,21 @@ public class MyCallReceiver extends BroadcastReceiver {
 
 	/* ----- Logic ----- */
 
+	private String getTextToSpeak() {
+		PersistentPreparedResponseList preparedResponseList = new PersistentPreparedResponseList(
+				this.parent.getFilesDir());
+		PreparedResponse currentPreparedResponse = preparedResponseList.getItemWithId(SettingsManager
+				.getCurrentPreparedResponseId());
+
+		Log.d(MyCallReceiver.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
+		if (currentPreparedResponse == null) {
+			Log.d(MyCallReceiver.TAG, "No current response set");
+			return "";
+		}
+
+		return currentPreparedResponse.getText();
+	}
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (!this.enabled)
@@ -82,7 +93,8 @@ public class MyCallReceiver extends BroadcastReceiver {
 			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent
 					.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			this.muteInCallAudio(context);
-			this.ttsEngine.speak(this.textToSpeak);
+			Log.d(MyCallReceiver.TAG, "Speaking: " + this.getTextToSpeak());
+			this.ttsEngine.speak(this.getTextToSpeak());
 			return;
 		}
 	}
