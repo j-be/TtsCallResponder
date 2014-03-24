@@ -3,6 +3,7 @@ package org.duckdns.raven.ttscallresponder;
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
 import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
+import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
@@ -39,6 +40,7 @@ public class MainActivity extends Activity {
 
 		// Instantiate needed stuff
 		this.callReceiver = new MyCallReceiver(this);
+		SettingsManager.setContext(this);
 
 		// Get access to UI elements
 		this.swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
