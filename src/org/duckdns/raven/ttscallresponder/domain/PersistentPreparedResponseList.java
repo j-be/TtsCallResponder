@@ -17,7 +17,7 @@ public class PersistentPreparedResponseList {
 	private static final String PREPARED_RESPONSE_LIST_FILE = "preparedResponseList";
 
 	private final File directory;
-	private List<PreparedResponse> list = new ArrayList<PreparedResponse>();
+	private List<PreparedResponse> list = null;
 	private boolean changed = false;
 
 	public PersistentPreparedResponseList(File directory) {
@@ -28,15 +28,15 @@ public class PersistentPreparedResponseList {
 		boolean found = false;
 		PreparedResponse item = null;
 
-		changed = true;
+		this.changed = true;
 
 		if (preparedResponse.getId() < 0) {
-			Log.d(TAG, "Adding new");
+			Log.d(PersistentPreparedResponseList.TAG, "Adding new");
 			preparedResponse.addId();
 			this.list.add(preparedResponse);
 		} else {
-			Log.d(TAG, "Update existing");
-			Iterator<PreparedResponse> iter = list.iterator();
+			Log.d(PersistentPreparedResponseList.TAG, "Update existing");
+			Iterator<PreparedResponse> iter = this.list.iterator();
 			while (iter.hasNext() && !found) {
 				item = iter.next();
 				if (item.getId() == preparedResponse.getId()) {
@@ -48,28 +48,29 @@ public class PersistentPreparedResponseList {
 	}
 
 	public void removeSelected() {
-		Iterator<PreparedResponse> iter = list.iterator();
+		Iterator<PreparedResponse> iter = this.list.iterator();
 		while (iter.hasNext()) {
 			if (iter.next().isSelected()) {
-				Log.i(TAG, "Deleting item");
+				Log.i(PersistentPreparedResponseList.TAG, "Deleting item " + item.getId());
 				iter.remove();
-				changed = true;
+				this.changed = true;
 			}
 		}
 	}
 
+
 	public boolean hasChanged() {
-		return changed;
+		return this.changed;
 	}
 
 	public List<PreparedResponse> getPreparedAnswerList() {
-		Log.i(TAG, "Loading list");
+		Log.i(PersistentPreparedResponseList.TAG, "Loading list");
 
 		long maxId = -1;
 		Object readObject = null;
 
-		File preparedResponseListFile = new File(directory.getAbsoluteFile() + File.separator
-				+ PREPARED_RESPONSE_LIST_FILE);
+		File preparedResponseListFile = new File(this.directory.getAbsoluteFile() + File.separator
+				+ PersistentPreparedResponseList.PREPARED_RESPONSE_LIST_FILE);
 
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
@@ -80,11 +81,11 @@ public class PersistentPreparedResponseList {
 
 			readObject = ois.readObject();
 			if (readObject instanceof List<?>)
-				list = (List<PreparedResponse>) readObject;
+				this.list = (List<PreparedResponse>) readObject;
 			else
-				list = null;
+				this.list = null;
 		} catch (Exception e) {
-			Log.d(TAG, "failed to load list, assuming first run");
+			Log.d(PersistentPreparedResponseList.TAG, "failed to load list, assuming first run");
 		} finally {
 			try {
 				if (ois != null)
@@ -94,23 +95,23 @@ public class PersistentPreparedResponseList {
 			} catch (Exception e) { /* do nothing */
 			}
 		}
-		if (list == null)
-			list = new ArrayList<PreparedResponse>();
+		if (this.list == null)
+			this.list = new ArrayList<PreparedResponse>();
 
-		Iterator<PreparedResponse> iter = list.iterator();
+		Iterator<PreparedResponse> iter = this.list.iterator();
 		while (iter.hasNext())
 			maxId = Math.max(maxId, iter.next().getId());
 		PreparedResponse.setHighestUsedId(maxId);
 
-		changed = false;
+		this.changed = false;
 
-		return list;
+		return this.list;
 	}
 
 	public void savePreparedAnswerList() {
-		Log.i(TAG, "Saving list");
+		Log.i(PersistentPreparedResponseList.TAG, "Saving list");
 		File preparedResponseListFile = new File(this.directory.getAbsoluteFile() + File.separator
-				+ PREPARED_RESPONSE_LIST_FILE);
+				+ PersistentPreparedResponseList.PREPARED_RESPONSE_LIST_FILE);
 
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
@@ -120,9 +121,9 @@ public class PersistentPreparedResponseList {
 			oos = new ObjectOutputStream(fos);
 
 			oos.writeObject(this.list);
-			changed = false;
+			this.changed = false;
 		} catch (Exception e) {
-			Log.e(TAG, "failed to save list", e);
+			Log.e(PersistentPreparedResponseList.TAG, "failed to save list", e);
 		} finally {
 			try {
 				if (oos != null)

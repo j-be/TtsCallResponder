@@ -30,7 +30,7 @@ public class ActivityAnsweredCallList extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		adapter.notifyDataSetChanged();
+		this.adapter.notifyDataSetChanged();
 	}
 
 	@Override

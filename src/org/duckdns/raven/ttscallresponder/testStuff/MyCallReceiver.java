@@ -79,7 +79,8 @@ public class MyCallReceiver extends BroadcastReceiver {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			this.answerPhoneHeadsethook(context, intent);
-			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent
+					.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			this.muteInCallAudio(context);
 			this.ttsEngine.speak(this.textToSpeak);
 			return;
@@ -106,14 +107,14 @@ public class MyCallReceiver extends BroadcastReceiver {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-			Log.d(TAG, "Incoming call from: " + number);
+			Log.d(MyCallReceiver.TAG, "Incoming call from: " + number);
 			Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
 			buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
 			try {
 				context.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
-				Log.d(TAG, "ACTION_MEDIA_BUTTON broadcasted...");
+				Log.d(MyCallReceiver.TAG, "ACTION_MEDIA_BUTTON broadcasted...");
 			} catch (Exception e) {
-				Log.d(TAG, "Catch block of ACTION_MEDIA_BUTTON broadcast !");
+				Log.d(MyCallReceiver.TAG, "Catch block of ACTION_MEDIA_BUTTON broadcast !");
 			}
 
 			Intent headSetUnPluggedintent = new Intent(Intent.ACTION_HEADSET_PLUG);
@@ -127,16 +128,16 @@ public class MyCallReceiver extends BroadcastReceiver {
 			// TODO: Should we require a permission?
 			try {
 				context.sendOrderedBroadcast(headSetUnPluggedintent, null);
-				Log.d(TAG, "ACTION_HEADSET_PLUG broadcasted ...");
+				Log.d(MyCallReceiver.TAG, "ACTION_HEADSET_PLUG broadcasted ...");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
-				Log.d(TAG, "Catch block of ACTION_HEADSET_PLUG broadcast");
-				Log.d(TAG, "Call Answered From Catch Block !!");
+				Log.d(MyCallReceiver.TAG, "Catch block of ACTION_HEADSET_PLUG broadcast");
+				Log.d(MyCallReceiver.TAG, "Call Answered From Catch Block !!");
 			}
-			Log.d(TAG, "Answered incoming call from: " + number);
+			Log.d(MyCallReceiver.TAG, "Answered incoming call from: " + number);
 		}
-		Log.d(TAG, "Call Answered using headsethook");
+		Log.d(MyCallReceiver.TAG, "Call Answered using headsethook");
 	}
 
 }

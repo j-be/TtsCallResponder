@@ -20,7 +20,7 @@ public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedRes
 
 	@Override
 	public long getItemId(int position) {
-		return ((PreparedResponse) getItem(position)).getId();
+		return ((PreparedResponse) this.getItem(position)).getId();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedRes
 		// Button setAsCurrent = (Button)
 		// convertView.findViewById(R.id.button_preparedResponseSetAsCurrent);
 
-		PreparedResponse preparedText = (PreparedResponse) getItem(position);
+		PreparedResponse preparedText = (PreparedResponse) this.getItem(position);
 		title.setText(preparedText.getTitle());
 		text.setText(preparedText.getText());
 		selected.setChecked(preparedText.isSelected());

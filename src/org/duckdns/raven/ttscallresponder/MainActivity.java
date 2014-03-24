@@ -47,7 +47,6 @@ public class MainActivity extends Activity {
 
 		// Initialize UI elements
 		this.swiAutoRespond.setChecked(this.callReceiver.isEnabled());
-		// this.txtTextToSpeak.setText(this.callReceiver.getTextToSpeak());
 
 		// Register call receiver
 		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
