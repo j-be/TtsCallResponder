@@ -19,12 +19,21 @@ public class ActivityAnsweredCallList extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_answered_call_list);
 
+		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
+
 		ListView answeredCallsListView = (ListView) this.findViewById(R.id.list_answered_calls);
 		this.adapter = new CallListAdapter(this, MyCallReceiver.getAnsweredCallList());
 		answeredCallsListView.setAdapter(this.adapter);
 
 		ActionBar actionBar = this.getActionBar();
 		actionBar.setHomeButtonEnabled(true);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 	}
 
 	@Override
@@ -52,6 +61,7 @@ public class ActivityAnsweredCallList extends Activity {
 			return true;
 		case android.R.id.home:
 			this.onBackPressed();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

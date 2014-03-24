@@ -26,6 +26,8 @@ public class ActivityPreparedResponseEditor extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_prepared_response_editor);
 
+		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
+
 		this.title = (EditText) this.findViewById(R.id.editText_preparedResponseTitle);
 		this.text = (EditText) this.findViewById(R.id.editText_preparedResponseText);
 
@@ -37,6 +39,13 @@ public class ActivityPreparedResponseEditor extends Activity {
 
 		this.title.setText(this.preparedResponse.getTitle());
 		this.text.setText(this.preparedResponse.getText());
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
 	}
 
 	@Override
