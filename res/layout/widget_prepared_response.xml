@@ -6,7 +6,7 @@
     android:onClick="onPreparedResponseClick" >
 
     <CheckBox
-        android:id="@+id/radioButton_preparedResponseSelected"
+        android:id="@+id/checkBox_preparedResponseSelected"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left" />

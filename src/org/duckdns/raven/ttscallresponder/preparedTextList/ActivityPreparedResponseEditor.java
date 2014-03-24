@@ -18,6 +18,7 @@ public class ActivityPreparedResponseEditor extends Activity {
 
 	private EditText title = null;
 	private EditText text = null;
+
 	private PreparedResponse preparedResponse = null;
 
 	@Override
@@ -30,11 +31,12 @@ public class ActivityPreparedResponseEditor extends Activity {
 
 		this.preparedResponse = getIntent().getParcelableExtra(
 				ActivityPreparedResponseList.INTENT_KEY_EDIT_PREPARED_RESPONSE);
-		if (this.preparedResponse != null) {
-			title.setText(preparedResponse.getTitle());
-			text.setText(preparedResponse.getText());
-		} else
+
+		if (this.preparedResponse == null)
 			preparedResponse = new PreparedResponse("", "");
+
+		title.setText(preparedResponse.getTitle());
+		text.setText(preparedResponse.getText());
 	}
 
 	@Override

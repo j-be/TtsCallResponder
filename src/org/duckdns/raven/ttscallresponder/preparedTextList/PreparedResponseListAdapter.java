@@ -9,6 +9,7 @@ import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedResponse> {
@@ -27,19 +28,22 @@ public class PreparedResponseListAdapter extends AbstractListAdapter<PreparedRes
 		if (convertView == null) {
 			convertView = this.getParent().getLayoutInflater()
 					.inflate(R.layout.widget_prepared_response, parent, false);
-
-			TextView title = (TextView) convertView.findViewById(R.id.label_preparedResponseTitle);
-			TextView text = (TextView) convertView.findViewById(R.id.label_preparedResponseText);
-			// Button setAsCurrent = (Button)
-			// convertView.findViewById(R.id.button_preparedResponseSetAsCurrent);
-
-			PreparedResponse preparedText = (PreparedResponse) getItem(position);
-			title.setText(preparedText.getTitle());
-			text.setText(preparedText.getText());
-			// TODO set as current
-
-			convertView.setTag(preparedText);
 		}
+
+		TextView title = (TextView) convertView.findViewById(R.id.label_preparedResponseTitle);
+		TextView text = (TextView) convertView.findViewById(R.id.label_preparedResponseText);
+		CheckBox selected = (CheckBox) convertView.findViewById(R.id.checkBox_preparedResponseSelected);
+		// Button setAsCurrent = (Button)
+		// convertView.findViewById(R.id.button_preparedResponseSetAsCurrent);
+
+		PreparedResponse preparedText = (PreparedResponse) getItem(position);
+		title.setText(preparedText.getTitle());
+		text.setText(preparedText.getText());
+		selected.setChecked(preparedText.isSelected());
+		selected.setOnClickListener(new OnSelectedClickListener(preparedText));
+		// TODO set as current
+
+		convertView.setTag(preparedText);
 
 		return convertView;
 	}

@@ -1,14 +1,7 @@
 package org.duckdns.raven.ttscallresponder.preparedTextList;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.duckdns.raven.ttscallresoponder.R;
+import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 
 import android.app.Activity;
@@ -26,9 +19,8 @@ public class ActivityPreparedResponseList extends Activity {
 	private final static String TAG = "ActivityPreparedResponseList";
 
 	public static final String INTENT_KEY_EDIT_PREPARED_RESPONSE = "preparedResponseToEdit";
-	private static final String PREPARED_RESPONSE_LIST_FILE = "preparedResponseList";
 
-	private List<PreparedResponse> preparedAnswerList = null;
+	private PersistentPreparedResponseList persistentList = null;
 	private PreparedResponseListAdapter adapter = null;
 
 	@Override
@@ -37,8 +29,8 @@ public class ActivityPreparedResponseList extends Activity {
 		this.setContentView(R.layout.activity_prepared_response_list);
 
 		ListView prepareResponsesListView = (ListView) this.findViewById(R.id.list_prepared_responses);
-		preparedAnswerList = getPreparedAnswerList();
-		adapter = new PreparedResponseListAdapter(this, preparedAnswerList);
+		persistentList = new PersistentPreparedResponseList(getFilesDir());
+		adapter = new PreparedResponseListAdapter(this, this.persistentList.getPreparedAnswerList());
 		prepareResponsesListView.setAdapter(adapter);
 	}
 
@@ -48,12 +40,11 @@ public class ActivityPreparedResponseList extends Activity {
 
 		PreparedResponse preparedResponse = getIntent().getParcelableExtra(
 				ActivityPreparedResponseEditor.INTENT_KEY_PREPARED_RESPONSE);
-		if (preparedResponse != null)
-			if (preparedResponse.getId() < 0)
-				this.preparedAnswerList.add(preparedResponse);
-			else
-				// TODO update if ID available
-				preparedResponse = preparedResponse;
+		if (preparedResponse != null) {
+			Log.d(TAG, "Got something");
+			persistentList.add(preparedResponse);
+		}
+		preparedResponse = null;
 		adapter.notifyDataSetChanged();
 	}
 
@@ -71,69 +62,11 @@ public class ActivityPreparedResponseList extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_done) {
-			savePreparedAnswerList(preparedAnswerList);
-			onBackPressed();
+			this.persistentList.savePreparedAnswerList();
+			this.onBackPressed();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private List<PreparedResponse> getPreparedAnswerList() {
-		List<PreparedResponse> ret = null;
-
-		File preparedResponseListDir = this.getDir("savedLists", MODE_PRIVATE);
-		File preparedResponseListFile = new File(preparedResponseListDir.getAbsoluteFile() + File.separator
-				+ PREPARED_RESPONSE_LIST_FILE);
-
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-
-		try {
-			fis = new FileInputStream(preparedResponseListFile);
-			ois = new ObjectInputStream(fis);
-
-			ret = (List<PreparedResponse>) ois.readObject();
-		} catch (Exception e) {
-			Log.d(TAG, "failed to load list, assuming first run");
-		} finally {
-			try {
-				if (ois != null)
-					ois.close();
-				if (fis != null)
-					fis.close();
-			} catch (Exception e) { /* do nothing */
-			}
-		}
-		if (ret != null)
-			return ret;
-
-		return new ArrayList<PreparedResponse>();
-	}
-
-	private void savePreparedAnswerList(List<PreparedResponse> listToSave) {
-		File preparedResponseListDir = this.getDir("savedLists", MODE_PRIVATE);
-		File preparedResponseListFile = new File(preparedResponseListDir.getAbsoluteFile() + File.separator
-				+ PREPARED_RESPONSE_LIST_FILE);
-
-		FileOutputStream fos = null;
-		ObjectOutputStream oos = null;
-
-		try {
-			fos = new FileOutputStream(preparedResponseListFile);
-			oos = new ObjectOutputStream(fos);
-
-			oos.writeObject(this.preparedAnswerList);
-		} catch (Exception e) {
-			Log.e(TAG, "failed to save list", e);
-		} finally {
-			try {
-				if (oos != null)
-					oos.close();
-				if (fos != null)
-					fos.close();
-			} catch (Exception e) { /* do nothing */
-			}
-		}
 	}
 
 	public void onAddClick(View view) {
@@ -141,9 +74,16 @@ public class ActivityPreparedResponseList extends Activity {
 		this.startActivity(openPreparedResponseEditor);
 	}
 
+	public void onDeleteClick(View view) {
+		Log.i(TAG, "Delete called");
+		persistentList.removeSelected();
+		adapter.notifyDataSetChanged();
+	}
+
 	public void onPreparedResponseClick(View view) {
 		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
 		openPreparedResponseEditor.putExtra(INTENT_KEY_EDIT_PREPARED_RESPONSE, (Parcelable) view.getTag());
 		this.startActivity(openPreparedResponseEditor);
 	}
+
 }
