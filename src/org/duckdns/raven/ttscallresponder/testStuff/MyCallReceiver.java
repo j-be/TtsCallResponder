@@ -99,6 +99,10 @@ public class MyCallReceiver extends BroadcastReceiver {
 			this.answerPhoneHeadsethook(context, intent);
 			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent
 					.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+			return;
+		}
+
+		if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 			this.muteInCallAudio(context);
 
 			parameterizer = new Parameterizer(this.calendarAccess);
