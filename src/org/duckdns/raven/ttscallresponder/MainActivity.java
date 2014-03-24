@@ -122,6 +122,7 @@ public class MainActivity extends Activity {
 
 	public void onShowAnsweredCallListClick(View view) {
 		Intent switchToCallList = new Intent(this, ActivityAnsweredCallList.class);
+		switchToCallList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		this.startActivity(switchToCallList);
 	}
 

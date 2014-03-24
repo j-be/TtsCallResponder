@@ -3,19 +3,23 @@ package org.duckdns.raven.ttscallresponder.answeredCallList;
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 public class ActivityAnsweredCallList extends Activity {
 
+	private static final String TAG = "ActivityAnsweredCallList";
+
 	private CallListAdapter adapter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.i(ActivityAnsweredCallList.TAG, "Enter on Create");
+
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_answered_call_list);
 
@@ -24,9 +28,6 @@ public class ActivityAnsweredCallList extends Activity {
 		ListView answeredCallsListView = (ListView) this.findViewById(R.id.list_answered_calls);
 		this.adapter = new CallListAdapter(this, MyCallReceiver.getAnsweredCallList());
 		answeredCallsListView.setAdapter(this.adapter);
-
-		ActionBar actionBar = this.getActionBar();
-		actionBar.setHomeButtonEnabled(true);
 	}
 
 	@Override

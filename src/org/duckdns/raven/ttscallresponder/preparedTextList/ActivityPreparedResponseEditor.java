@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 public class ActivityPreparedResponseEditor extends Activity {
 
+	private static final String TAG = "ActivityPreparedResponseEditor";
 	public static String INTENT_KEY_PREPARED_RESPONSE = "preparedResponseAvailable";
 
 	private EditText title = null;
@@ -23,6 +25,8 @@ public class ActivityPreparedResponseEditor extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.i(ActivityPreparedResponseEditor.TAG, "Enter on Create");
+
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_prepared_response_editor);
 
@@ -62,7 +66,11 @@ public class ActivityPreparedResponseEditor extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_done) {
+		switch (id) {
+		case android.R.id.home:
+			this.onBackPressed();
+			return true;
+		case R.id.action_done:
 			if (this.title.getText().toString().isEmpty()) {
 				Toast.makeText(this, "Please insert a Title", Toast.LENGTH_SHORT).show();
 				this.title.requestFocus();
@@ -77,12 +85,14 @@ public class ActivityPreparedResponseEditor extends Activity {
 			this.preparedResponse.setText(this.text.getText().toString());
 
 			Intent goBackToPreparedResponseList = new Intent(this, ActivityPreparedResponseList.class);
-			goBackToPreparedResponseList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			goBackToPreparedResponseList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
+					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			goBackToPreparedResponseList.putExtra(ActivityPreparedResponseEditor.INTENT_KEY_PREPARED_RESPONSE,
 					(Parcelable) this.preparedResponse);
 			this.startActivity(goBackToPreparedResponseList);
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 }

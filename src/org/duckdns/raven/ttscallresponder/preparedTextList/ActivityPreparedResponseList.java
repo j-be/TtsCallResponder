@@ -27,11 +27,12 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.i(ActivityPreparedResponseList.TAG, "Enter on Create");
+
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_prepared_response_list);
 
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
-		Log.d(ActivityPreparedResponseList.TAG, "OnCreate");
 
 		ListView prepareResponsesListView = (ListView) this.findViewById(R.id.list_prepared_responses);
 		this.persistentList = new PersistentPreparedResponseList(this.getFilesDir());
@@ -73,16 +74,21 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_done) {
+
+		switch (id) {
+		case R.id.action_done:
 			this.persistentList.savePreparedAnswerList();
+		case android.R.id.home:
 			this.onBackPressed();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	public void onAddClick(View view) {
 		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
+		openPreparedResponseEditor.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		this.startActivity(openPreparedResponseEditor);
 	}
 
