@@ -28,26 +28,33 @@
             android:text="TITLE HERE"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/label_preparedResponseText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:lines="3"
-            android:text="Short version of a long bla bla bla bla bla bla bla bla bla bla bla bla" />
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <TextView
+                android:id="@+id/label_preparedResponseText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:lines="3"
+                android:text="Short version of a long bla bla bla bla bla bla bla bla bla bla bla bla"
+                android:layout_weight="1.5"/>
+
+            <ImageButton
+                android:id="@+id/button_preparedResponseSetAsCurrent"
+                android:layout_width="32dip"
+                android:layout_height="32dip"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="@dimen/activity_main_small_spacing"
+                android:layout_marginLeft="@dimen/activity_main_small_spacing"
+                android:src="@drawable/ic_checkmark_holo_light"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:layout_weight="0.1"
+                android:text="Set as default" />
+        </LinearLayout>
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/button_preparedResponseSetAsCurrent"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
-        android:layout_gravity="right|center_vertical"
-        android:layout_marginRight="@dimen/activity_main_small_spacing"
-        android:layout_marginLeft="@dimen/activity_main_small_spacing"
-        android:src="@drawable/ic_checkmark_holo_light"
-        android:scaleType="fitXY"
-        android:background="@android:color/transparent"
-        android:layout_weight="1"
-        android:text="Set as default" />
-
 </LinearLayout>
