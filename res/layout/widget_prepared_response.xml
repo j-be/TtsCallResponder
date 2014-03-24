@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:onClick="onPreparedResponseClick" >
+    android:onClick="onPreparedResponseClick"
+    android:weightSum="2.5" >
 
     <CheckBox
         android:id="@+id/checkBox_preparedResponseSelected"
@@ -15,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
+        android:layout_weight="2.5"
         android:orientation="vertical" >
 
         <TextView
@@ -31,15 +33,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:lines="3"
-            android:maxWidth="236dp"
-            android:text="Short version " />
+            android:text="Short version of a long bla bla bla bla bla bla bla bla bla bla bla bla" />
     </LinearLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/button_preparedResponseSetAsCurrent"
-        android:layout_width="48dip"
-        android:layout_height="48dip"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
         android:layout_gravity="right|center_vertical"
-        android:text="e" />
+        android:layout_marginRight="@dimen/activity_main_small_spacing"
+        android:layout_marginLeft="@dimen/activity_main_small_spacing"
+        android:src="@drawable/ic_checkmark_holo_light"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_weight="1"
+        android:text="Set as default" />
 
-</GridLayout>
+</LinearLayout>
