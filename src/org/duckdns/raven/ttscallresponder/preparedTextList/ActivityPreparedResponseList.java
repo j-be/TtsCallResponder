@@ -5,6 +5,8 @@ import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -14,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-public class ActivityPreparedResponseList extends Activity {
+public class ActivityPreparedResponseList extends Activity implements DialogInterface.OnClickListener {
 
 	private final static String TAG = "ActivityPreparedResponseList";
 
@@ -86,4 +88,28 @@ public class ActivityPreparedResponseList extends Activity {
 		this.startActivity(openPreparedResponseEditor);
 	}
 
+	@Override
+	public void onBackPressed() {
+		if (persistentList.hasChanged()) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			alert.setTitle("Unsaved changes");
+			alert.setMessage("You made changes to the list, which are not yet saved. \n\n What would you like to do?");
+
+			alert.setPositiveButton("Save", this);
+			alert.setNeutralButton("Cancel", this);
+			alert.setNegativeButton("Discard", this);
+			alert.show();
+		} else
+			super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int which) {
+		if (which == DialogInterface.BUTTON_NEUTRAL)
+			return;
+
+		if (which == DialogInterface.BUTTON_POSITIVE)
+			persistentList.savePreparedAnswerList();
+		super.onBackPressed();
+	}
 }

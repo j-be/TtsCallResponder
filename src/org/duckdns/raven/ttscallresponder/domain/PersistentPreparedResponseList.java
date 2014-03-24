@@ -18,6 +18,7 @@ public class PersistentPreparedResponseList {
 
 	private final File directory;
 	private List<PreparedResponse> list = new ArrayList<PreparedResponse>();
+	private boolean changed = false;
 
 	public PersistentPreparedResponseList(File directory) {
 		this.directory = directory;
@@ -26,6 +27,8 @@ public class PersistentPreparedResponseList {
 	public void add(PreparedResponse preparedResponse) {
 		boolean found = false;
 		PreparedResponse item = null;
+
+		changed = true;
 
 		if (preparedResponse.getId() < 0) {
 			Log.d(TAG, "Adding new");
@@ -50,8 +53,13 @@ public class PersistentPreparedResponseList {
 			if (iter.next().isSelected()) {
 				Log.i(TAG, "Deleting item");
 				iter.remove();
+				changed = true;
 			}
 		}
+	}
+
+	public boolean hasChanged() {
+		return changed;
 	}
 
 	public List<PreparedResponse> getPreparedAnswerList() {
@@ -94,6 +102,8 @@ public class PersistentPreparedResponseList {
 			maxId = Math.max(maxId, iter.next().getId());
 		PreparedResponse.setHighestUsedId(maxId);
 
+		changed = false;
+
 		return list;
 	}
 
@@ -110,6 +120,7 @@ public class PersistentPreparedResponseList {
 			oos = new ObjectOutputStream(fos);
 
 			oos.writeObject(this.list);
+			changed = false;
 		} catch (Exception e) {
 			Log.e(TAG, "failed to save list", e);
 		} finally {
