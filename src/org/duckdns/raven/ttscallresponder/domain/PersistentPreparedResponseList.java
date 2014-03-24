@@ -58,6 +58,7 @@ public class PersistentPreparedResponseList {
 		Log.i(TAG, "Loading list");
 
 		long maxId = -1;
+		Object readObject = null;
 
 		File preparedResponseListFile = new File(directory.getAbsoluteFile() + File.separator
 				+ PREPARED_RESPONSE_LIST_FILE);
@@ -69,7 +70,11 @@ public class PersistentPreparedResponseList {
 			fis = new FileInputStream(preparedResponseListFile);
 			ois = new ObjectInputStream(fis);
 
-			list = (List<PreparedResponse>) ois.readObject();
+			readObject = ois.readObject();
+			if (readObject instanceof List<?>)
+				list = (List<PreparedResponse>) readObject;
+			else
+				list = null;
 		} catch (Exception e) {
 			Log.d(TAG, "failed to load list, assuming first run");
 		} finally {
@@ -88,8 +93,8 @@ public class PersistentPreparedResponseList {
 		while (iter.hasNext())
 			maxId = Math.max(maxId, iter.next().getId());
 		PreparedResponse.setHighestUsedId(maxId);
-		return list;
 
+		return list;
 	}
 
 	public void savePreparedAnswerList() {
