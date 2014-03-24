@@ -78,7 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textView_lbl_currentPreparedResponse"
-        android:textAppearance="?android:attr/textAppearanceMedium"    
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:singleLine="true"
         android:text="&quot;TITLE HERE&quot;"
         android:layout_marginLeft="@dimen/activity_main_big_spacing"
         android:layout_marginBottom="@dimen/activity_main_small_spacing" />

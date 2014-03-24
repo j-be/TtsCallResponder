@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter a title here"
+        android:singleLine="true"
         android:ems="10"
         android:layout_marginTop="20dip" >
         <requestFocus />
