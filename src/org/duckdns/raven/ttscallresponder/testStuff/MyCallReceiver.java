@@ -11,6 +11,8 @@ import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
+import org.duckdns.raven.ttscallresponder.ttsStuff.Parameterizer;
+import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -27,11 +29,13 @@ public class MyCallReceiver extends BroadcastReceiver {
 	private static List<AnsweredCall> answeredCallList = new ArrayList<AnsweredCall>();
 	private boolean enabled = true;
 	private final Activity parent;
-	private CallTTSEngine ttsEngine = null;
+	private CallTTSEngine ttsEngine;
+	private final CalendarAccess calendarAccess;
 
 	public MyCallReceiver(Activity parent) {
 		this.parent = parent;
 		this.ttsEngine = new CallTTSEngine(parent, Locale.US);
+		this.calendarAccess = new CalendarAccess(parent);
 	}
 
 	/* ----- Getters/Setters ----- */
@@ -88,13 +92,20 @@ public class MyCallReceiver extends BroadcastReceiver {
 			return;
 
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+		String textToSpeak = null;
+		Parameterizer parameterizer = null;
+
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			this.answerPhoneHeadsethook(context, intent);
 			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent
 					.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			this.muteInCallAudio(context);
-			Log.d(MyCallReceiver.TAG, "Speaking: " + this.getTextToSpeak());
-			this.ttsEngine.speak(this.getTextToSpeak());
+
+			parameterizer = new Parameterizer(this.calendarAccess);
+			textToSpeak = parameterizer.parameterizeFromCalendar(this.getTextToSpeak());
+
+			Log.d(MyCallReceiver.TAG, "Speaking: " + textToSpeak);
+			this.ttsEngine.speak(textToSpeak);
 			if (this.parent instanceof MainActivity)
 				((MainActivity) this.parent).callWasAnswered();
 			return;
