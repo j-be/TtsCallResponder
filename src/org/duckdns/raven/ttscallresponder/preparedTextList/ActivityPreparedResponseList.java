@@ -35,7 +35,7 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
 		ListView prepareResponsesListView = (ListView) this.findViewById(R.id.list_prepared_responses);
-		this.persistentList = new PersistentPreparedResponseList(this.getFilesDir());
+		this.persistentList = PersistentPreparedResponseList.getSingleton(this.getFilesDir());
 		this.adapter = new PreparedResponseListAdapter(this, this.persistentList.getPreparedAnswerList());
 		prepareResponsesListView.setAdapter(this.adapter);
 	}
@@ -122,11 +122,15 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
-		if (which == DialogInterface.BUTTON_NEUTRAL)
+		switch (which) {
+		case DialogInterface.BUTTON_NEUTRAL:
 			return;
-
-		if (which == DialogInterface.BUTTON_POSITIVE)
+		case DialogInterface.BUTTON_POSITIVE:
 			this.persistentList.savePreparedAnswerList();
+			break;
+		default:
+			this.persistentList.discardChanges();
+		}
 		super.onBackPressed();
 	}
 }

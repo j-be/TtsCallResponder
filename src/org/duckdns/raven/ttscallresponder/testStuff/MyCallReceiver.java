@@ -68,8 +68,8 @@ public class MyCallReceiver extends BroadcastReceiver {
 	/* ----- Logic ----- */
 
 	private String getTextToSpeak() {
-		PersistentPreparedResponseList preparedResponseList = new PersistentPreparedResponseList(
-				this.parent.getFilesDir());
+		PersistentPreparedResponseList preparedResponseList = PersistentPreparedResponseList.getSingleton(this.parent
+				.getFilesDir());
 		PreparedResponse currentPreparedResponse = preparedResponseList.getItemWithId(SettingsManager
 				.getCurrentPreparedResponseId());
 

@@ -70,9 +70,8 @@ public class MainActivity extends Activity {
 
 		String currentTitle = null;
 
-		PersistentPreparedResponseList preparedResponseList = new PersistentPreparedResponseList(this.getFilesDir());
-		PreparedResponse currentPreparedResponse = preparedResponseList.getItemWithId(SettingsManager
-				.getCurrentPreparedResponseId());
+		PreparedResponse currentPreparedResponse = PersistentPreparedResponseList.getSingleton(this.getFilesDir())
+				.getItemWithId(SettingsManager.getCurrentPreparedResponseId());
 
 		Log.d(this.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
 		if (currentPreparedResponse == null) {

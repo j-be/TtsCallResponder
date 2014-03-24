@@ -15,12 +15,20 @@ public class PersistentPreparedResponseList {
 
 	private static final String TAG = "PersistentPreparedResponseList";
 	private static final String PREPARED_RESPONSE_LIST_FILE = "preparedResponseList";
+	private static PersistentPreparedResponseList singleton = null;
 
 	private final File directory;
 	private List<PreparedResponse> list = null;
 	private boolean changed = false;
 
-	public PersistentPreparedResponseList(File directory) {
+	public static PersistentPreparedResponseList getSingleton(File directory) {
+		if (PersistentPreparedResponseList.singleton == null)
+			PersistentPreparedResponseList.singleton = new PersistentPreparedResponseList(directory);
+
+		return PersistentPreparedResponseList.singleton;
+	}
+
+	private PersistentPreparedResponseList(File directory) {
 		this.directory = directory;
 	}
 
@@ -66,6 +74,10 @@ public class PersistentPreparedResponseList {
 		}
 	}
 
+	public void discardChanges() {
+		this.list = this.loadPreparedAnswerList();
+	}
+
 	public PreparedResponse getItemWithId(long id) {
 		PreparedResponse item = null;
 		if (this.list == null)
@@ -90,8 +102,17 @@ public class PersistentPreparedResponseList {
 	public List<PreparedResponse> getPreparedAnswerList() {
 		Log.i(PersistentPreparedResponseList.TAG, "Loading list");
 
+		if (this.list == null) {
+			this.list = this.loadPreparedAnswerList();
+		}
+
+		return this.list;
+	}
+
+	private List<PreparedResponse> loadPreparedAnswerList() {
 		long maxId = -1;
 		Object readObject = null;
+		List<PreparedResponse> ret = null;
 
 		File preparedResponseListFile = new File(this.directory.getAbsoluteFile() + File.separator
 				+ PersistentPreparedResponseList.PREPARED_RESPONSE_LIST_FILE);
@@ -105,9 +126,9 @@ public class PersistentPreparedResponseList {
 
 			readObject = ois.readObject();
 			if (readObject instanceof List<?>)
-				this.list = (List<PreparedResponse>) readObject;
+				ret = (List<PreparedResponse>) readObject;
 			else
-				this.list = null;
+				ret = null;
 		} catch (Exception e) {
 			Log.d(PersistentPreparedResponseList.TAG, "failed to load list, assuming first run");
 		} finally {
@@ -119,17 +140,17 @@ public class PersistentPreparedResponseList {
 			} catch (Exception e) { /* do nothing */
 			}
 		}
-		if (this.list == null)
-			this.list = new ArrayList<PreparedResponse>();
+		if (ret == null)
+			ret = new ArrayList<PreparedResponse>();
 
-		Iterator<PreparedResponse> iter = this.list.iterator();
+		Iterator<PreparedResponse> iter = ret.iterator();
 		while (iter.hasNext())
 			maxId = Math.max(maxId, iter.next().getId());
 		PreparedResponse.setHighestUsedId(maxId);
 
 		this.changed = false;
 
-		return this.list;
+		return ret;
 	}
 
 	public void savePreparedAnswerList() {
