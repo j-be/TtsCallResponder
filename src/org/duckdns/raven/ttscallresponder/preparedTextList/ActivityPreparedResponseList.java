@@ -30,24 +30,26 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_prepared_response_list);
 
+		Log.d(ActivityPreparedResponseList.TAG, "OnCreate");
+
 		ListView prepareResponsesListView = (ListView) this.findViewById(R.id.list_prepared_responses);
-		persistentList = new PersistentPreparedResponseList(getFilesDir());
-		adapter = new PreparedResponseListAdapter(this, this.persistentList.getPreparedAnswerList());
-		prepareResponsesListView.setAdapter(adapter);
+		this.persistentList = new PersistentPreparedResponseList(this.getFilesDir());
+		this.adapter = new PreparedResponseListAdapter(this, this.persistentList.getPreparedAnswerList());
+		prepareResponsesListView.setAdapter(this.adapter);
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
 
-		PreparedResponse preparedResponse = getIntent().getParcelableExtra(
-				ActivityPreparedResponseEditor.INTENT_KEY_PREPARED_RESPONSE);
+		PreparedResponse preparedResponse = intent
+				.getParcelableExtra(ActivityPreparedResponseEditor.INTENT_KEY_PREPARED_RESPONSE);
 		if (preparedResponse != null) {
-			Log.d(TAG, "Got something");
-			persistentList.add(preparedResponse);
+			Log.d(ActivityPreparedResponseList.TAG, "Got something");
+			this.persistentList.add(preparedResponse);
 		}
 		preparedResponse = null;
-		adapter.notifyDataSetChanged();
+		this.adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -77,20 +79,21 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 	}
 
 	public void onDeleteClick(View view) {
-		Log.i(TAG, "Delete called");
-		persistentList.removeSelected();
-		adapter.notifyDataSetChanged();
+		Log.i(ActivityPreparedResponseList.TAG, "Delete called");
+		this.persistentList.removeSelected();
+		this.adapter.notifyDataSetChanged();
 	}
 
 	public void onPreparedResponseClick(View view) {
 		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
-		openPreparedResponseEditor.putExtra(INTENT_KEY_EDIT_PREPARED_RESPONSE, (Parcelable) view.getTag());
+		openPreparedResponseEditor.putExtra(ActivityPreparedResponseList.INTENT_KEY_EDIT_PREPARED_RESPONSE,
+				(Parcelable) view.getTag());
 		this.startActivity(openPreparedResponseEditor);
 	}
 
 	@Override
 	public void onBackPressed() {
-		if (persistentList.hasChanged()) {
+		if (this.persistentList.hasChanged()) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 			alert.setTitle("Unsaved changes");
 			alert.setMessage("You made changes to the list, which are not yet saved. \n\n What would you like to do?");
@@ -109,7 +112,7 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 			return;
 
 		if (which == DialogInterface.BUTTON_POSITIVE)
-			persistentList.savePreparedAnswerList();
+			this.persistentList.savePreparedAnswerList();
 		super.onBackPressed();
 	}
 }

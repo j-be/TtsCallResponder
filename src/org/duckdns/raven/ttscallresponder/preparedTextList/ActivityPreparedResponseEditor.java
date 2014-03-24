@@ -24,19 +24,19 @@ public class ActivityPreparedResponseEditor extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_prepared_response_editor);
+		this.setContentView(R.layout.activity_prepared_response_editor);
 
 		this.title = (EditText) this.findViewById(R.id.editText_preparedResponseTitle);
 		this.text = (EditText) this.findViewById(R.id.editText_preparedResponseText);
 
-		this.preparedResponse = getIntent().getParcelableExtra(
+		this.preparedResponse = this.getIntent().getParcelableExtra(
 				ActivityPreparedResponseList.INTENT_KEY_EDIT_PREPARED_RESPONSE);
 
 		if (this.preparedResponse == null)
-			preparedResponse = new PreparedResponse("", "");
+			this.preparedResponse = new PreparedResponse("", "");
 
-		title.setText(preparedResponse.getTitle());
-		text.setText(preparedResponse.getText());
+		this.title.setText(this.preparedResponse.getTitle());
+		this.text.setText(this.preparedResponse.getText());
 	}
 
 	@Override
@@ -54,22 +54,23 @@ public class ActivityPreparedResponseEditor extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_done) {
-			if (title.getText().toString().isEmpty()) {
+			if (this.title.getText().toString().isEmpty()) {
 				Toast.makeText(this, "Please insert a Title", Toast.LENGTH_SHORT).show();
-				title.requestFocus();
+				this.title.requestFocus();
 				return false;
 			}
-			if (text.getText().toString().isEmpty()) {
+			if (this.text.getText().toString().isEmpty()) {
 				Toast.makeText(this, "Please insert a Text", Toast.LENGTH_SHORT).show();
-				text.requestFocus();
+				this.text.requestFocus();
 				return false;
 			}
-			preparedResponse.setTitle(title.getText().toString());
-			preparedResponse.setText(text.getText().toString());
+			this.preparedResponse.setTitle(this.title.getText().toString());
+			this.preparedResponse.setText(this.text.getText().toString());
 
 			Intent goBackToPreparedResponseList = new Intent(this, ActivityPreparedResponseList.class);
-			goBackToPreparedResponseList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			goBackToPreparedResponseList.putExtra(INTENT_KEY_PREPARED_RESPONSE, (Parcelable) this.preparedResponse);
+			goBackToPreparedResponseList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			goBackToPreparedResponseList.putExtra(ActivityPreparedResponseEditor.INTENT_KEY_PREPARED_RESPONSE,
+					(Parcelable) this.preparedResponse);
 			this.startActivity(goBackToPreparedResponseList);
 			return true;
 		}
