@@ -3,6 +3,8 @@ package org.duckdns.raven.ttscallresponder;
 import org.duckdns.raven.ttscallresoponder.R;
 import org.duckdns.raven.ttscallresoponder.R.id;
 import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
+import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
+import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
@@ -18,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -26,6 +29,8 @@ public class MainActivity extends Activity {
 
 	private Switch swiAutoRespond = null;
 	private MyCallReceiver callReceiver = null;
+	private TextView currentPreparedResponseTitle = null;
+	private TextView numberOfAnsweredCalls = null;
 
 	private final Time lastBackPressed = new Time();
 
@@ -44,6 +49,8 @@ public class MainActivity extends Activity {
 
 		// Get access to UI elements
 		this.swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
+		this.currentPreparedResponseTitle = (TextView) this.findViewById(R.id.textView_currentPreparedResponseTitle);
+		this.numberOfAnsweredCalls = (TextView) this.findViewById(R.id.textView_numberOfAnsweredCalls);
 
 		// Initialize UI elements
 		this.swiAutoRespond.setChecked(this.callReceiver.isEnabled());
@@ -55,6 +62,32 @@ public class MainActivity extends Activity {
 		// Initialize notification
 		CallReceiverNotificationService.init(this);
 		CallReceiverNotificationService.stateChanged(this.callReceiver.isEnabled());
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		String currentTitle = null;
+
+		PersistentPreparedResponseList preparedResponseList = new PersistentPreparedResponseList(this.getFilesDir());
+		PreparedResponse currentPreparedResponse = preparedResponseList.getItemWithId(SettingsManager
+				.getCurrentPreparedResponseId());
+
+		Log.d(this.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
+		if (currentPreparedResponse == null) {
+			Log.d(this.TAG, "No current response set");
+			currentTitle = "<None>";
+		} else
+			currentTitle = currentPreparedResponse.getTitle();
+
+		this.currentPreparedResponseTitle.setText(currentTitle);
+
+		this.callWasAnswered();
+	}
+
+	public void callWasAnswered() {
+		this.numberOfAnsweredCalls.setText(String.valueOf(MyCallReceiver.getAnsweredCallList().size()));
 	}
 
 	@Override

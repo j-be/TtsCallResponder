@@ -95,6 +95,8 @@ public class MyCallReceiver extends BroadcastReceiver {
 			this.muteInCallAudio(context);
 			Log.d(MyCallReceiver.TAG, "Speaking: " + this.getTextToSpeak());
 			this.ttsEngine.speak(this.getTextToSpeak());
+			if (this.parent instanceof MainActivity)
+				((MainActivity) this.parent).callWasAnswered();
 			return;
 		}
 	}
