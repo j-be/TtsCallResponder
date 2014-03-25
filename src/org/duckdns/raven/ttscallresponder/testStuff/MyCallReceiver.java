@@ -122,7 +122,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 		audioManager.setMode(AudioManager.MODE_NORMAL);
 		audioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, true);
 		audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, -1, AudioManager.FLAG_SHOW_UI);
-		Log.i(TAG, "Voice-call volume: " + audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL));
+		Log.i(MyCallReceiver.TAG, "Voice-call volume: " + audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL));
 	}
 
 	/**

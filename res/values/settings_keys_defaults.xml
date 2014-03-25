@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings Keys -->
+    <string name="key_settings_tts_engine_speech_rate">ttsSpeechRate</string>
+    <string name="key_settings_tts_engine_pitch">ttsPitch</string>
+    <string name="key_settings_current_prepared_response">currentPreparedResponse</string>
+
+    <!-- Settings defaults -->
+    <item type="fraction" format="float" name="default_settings_tts_engine_speech_rate">0.5</item>
+    <item type="fraction" format="float" name="default_settings_tts_engine_pitch">0.5</item>
+    <item type="integer" format="integer" name="default_settings_current_prepared_response">-1</item>
+</resources>
