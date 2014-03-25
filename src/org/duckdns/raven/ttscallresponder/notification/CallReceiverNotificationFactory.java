@@ -31,19 +31,17 @@ public class CallReceiverNotificationFactory {
 		}
 
 		// Create Notification
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				activity)
-				.setContentTitle(
-						activity.getResources().getString(R.string.app_name))
-				.setContentText(newText).setSmallIcon(R.drawable.ic_launcher)
-				.setOngoing(true);
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(CallReceiverNotificationFactory.activity)
+				.setContentTitle(CallReceiverNotificationFactory.activity.getResources().getString(R.string.app_name))
+				.setContentText(newText).setSmallIcon(R.drawable.ic_launcher).setOngoing(true);
 
 		// Create Intent
-		Intent bringMainToFront = new Intent(activity, activity.getClass());
+		Intent bringMainToFront = new Intent(CallReceiverNotificationFactory.activity,
+				CallReceiverNotificationFactory.activity.getClass());
 		bringMainToFront.setAction(Intent.ACTION_MAIN);
 		bringMainToFront.addCategory(Intent.CATEGORY_LAUNCHER);
-		PendingIntent resultPendingIntent = PendingIntent.getActivity(activity,
-				0, bringMainToFront, 0);
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(CallReceiverNotificationFactory.activity, 0,
+				bringMainToFront, 0);
 		mBuilder.setContentIntent(resultPendingIntent);
 
 		return mBuilder.build();

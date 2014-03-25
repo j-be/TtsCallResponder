@@ -19,28 +19,28 @@ public class CallListAdapter extends AbstractListAdapter<AnsweredCall> {
 
 	public CallListAdapter(Activity parent, List<AnsweredCall> list) {
 		super(parent, list);
-		phoneBookAccess = new PhoneBookAccess(parent);
+		this.phoneBookAccess = new PhoneBookAccess(parent);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return ((AnsweredCall) getItem(position)).getId();
+		return ((AnsweredCall) this.getItem(position)).getId();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = getParent().getLayoutInflater().inflate(R.layout.widget_call, parent, false);
+			convertView = this.getParent().getLayoutInflater().inflate(R.layout.widget_call, parent, false);
 
 			TextView caller = (TextView) convertView.findViewById(R.id.label_caller);
 			TextView callTime = (TextView) convertView.findViewById(R.id.label_callTime);
 			Button callBack = (Button) convertView.findViewById(R.id.button_callBack);
 
-			AnsweredCall call = (AnsweredCall) getItem(position);
-			caller.setText(phoneBookAccess.getNameForPhoneNumber(call.getCaller()));
+			AnsweredCall call = (AnsweredCall) this.getItem(position);
+			caller.setText(this.phoneBookAccess.getNameForPhoneNumber(call.getCaller()));
 			callTime.setText(call.getCallTime().format("%b %d %Y, %H:%M"));
 
-			callBack.setOnClickListener(new CallBackListener(getParent(), call.getCaller()));
+			callBack.setOnClickListener(new CallBackListener(this.getParent(), call.getCaller()));
 		}
 
 		return convertView;
