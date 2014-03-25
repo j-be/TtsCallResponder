@@ -6,6 +6,7 @@ import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
+import org.duckdns.raven.ttscallresponder.settings.ActivitySettings;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
 import android.app.Activity;
@@ -103,6 +104,8 @@ public class MainActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			Intent switchToSettings = new Intent(this, ActivitySettings.class);
+			this.startActivity(switchToSettings);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

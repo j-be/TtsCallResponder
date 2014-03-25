@@ -50,6 +50,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList" />
         </activity>
+        <activity
+            android:name="org.duckdns.raven.ttscallresponder.settings.ActivitySettings"
+            android:label="@string/title_activity_activity_settings"
+            android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

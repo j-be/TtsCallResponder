@@ -12,5 +12,25 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_prepared_response_list">Prepared Text List</string>
     <string name="title_activity_prepared_response_editor">Prepared Response</string>
+    <string name="title_activity_activity_settings">Settings</string>
 
+    <string-array name="slider_speech_rate_summaries">
+        <!-- You can define as many summaries as you'd like -->
+        <!-- The active summary will reflect the preference's current value -->
+        <item>Very slow</item>
+        <item>Slow</item>
+        <item>Medium</item>
+        <item>Fast</item>
+        <item>Very fast</item>
+    </string-array>
+
+    <string-array name="slider_pitch_summaries">
+        <!-- You can define as many summaries as you'd like -->
+        <!-- The active summary will reflect the preference's current value -->
+        <item>Very low</item>
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+        <item>Very high</item>
+    </string-array>
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Text-to-speech engine">
+        <net.jayschwa.android.preference.SliderPreference
+            android:key="ttsSpeechRate"
+            android:persistent="true"
+            android:title="Speech rate"
+            android:summary="@array/slider_speech_rate_summaries"
+            android:defaultValue="0.5"
+            android:dialogMessage="The speed of the TTs engine's speak" />
+        <net.jayschwa.android.preference.SliderPreference
+            android:key="ttsPitch"
+            android:persistent="true"
+            android:title="Pitch"
+            android:summary="@array/slider_pitch_summaries"
+            android:defaultValue="0.5"
+            android:dialogMessage="The pitch of the TTS voice" />
+        
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Calendar">
+
+        <EditTextPreference
+                android:key="edittext_preference"
+                android:title="title_edittext_preference"
+                android:summary="summary_edittext_preference"
+                android:dialogTitle="dialog_title_edittext_preference" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>   
