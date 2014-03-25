@@ -15,6 +15,9 @@ public class Parameterizer {
 	public String parameterizeFromCalendar(String stringToParameterize) {
 		TtsParameterCalendarEvent event = this.calendarAccess.getCurrentEvent();
 
+		if (event == null)
+			return stringToParameterize;
+
 		String ret = stringToParameterize.replaceAll("#event_title#", event.getTitle());
 		ret = ret.replaceAll("#event_end#", event.getEndTime().format(this.timeFormat));
 
