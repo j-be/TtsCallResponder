@@ -13,7 +13,7 @@ public class CallTTSEngine implements OnInitListener {
 	private TextToSpeech ttsEngine = null;
 	private boolean isTtsEnginUp = false;
 
-	public CallTTSEngine(Activity parent, Locale locale) {
+	public CallTTSEngine(Activity parent) {
 		this.ttsEngine = new TextToSpeech(parent, this);
 	}
 

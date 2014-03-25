@@ -2,7 +2,6 @@ package org.duckdns.raven.ttscallresponder.testStuff;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.duckdns.raven.ttscallresponder.MainActivity;
 import org.duckdns.raven.ttscallresponder.domain.AnsweredCall;
@@ -34,7 +33,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 
 	public MyCallReceiver(Activity parent) {
 		this.parent = parent;
-		this.ttsEngine = new CallTTSEngine(parent, Locale.US);
+		this.ttsEngine = new CallTTSEngine(parent);
 		this.calendarAccess = new CalendarAccess(parent);
 	}
 
