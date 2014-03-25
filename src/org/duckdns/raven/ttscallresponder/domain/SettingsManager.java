@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 public class SettingsManager {
 
-	private static final String KEY_SETTINGS_CURRENT_PREPARED_RESPONSE = "currstatic aredResponse";
+	private static final String KEY_SETTINGS_CURRENT_PREPARED_RESPONSE = "currentPreparedResponse";
 
 	private static SharedPreferences settings = null;
 
