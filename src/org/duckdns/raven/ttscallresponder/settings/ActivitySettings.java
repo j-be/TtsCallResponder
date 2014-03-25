@@ -17,6 +17,15 @@ public class ActivitySettings extends Activity {
 		if (savedInstanceState == null) {
 			this.getFragmentManager().beginTransaction().add(R.id.container, new SettingsFragment()).commit();
 		}
+
+		this.overridePendingTransition(R.animator.anim_slide_in_from_top, R.animator.anim_slide_out_to_bottom);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		this.overridePendingTransition(R.animator.anim_slide_in_from_bottom, R.animator.anim_slide_out_to_top);
 	}
 
 	@Override
