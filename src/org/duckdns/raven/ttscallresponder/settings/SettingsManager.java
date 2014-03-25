@@ -1,4 +1,4 @@
-package org.duckdns.raven.ttscallresponder.domain;
+package org.duckdns.raven.ttscallresponder.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;

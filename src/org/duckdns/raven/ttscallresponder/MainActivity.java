@@ -3,10 +3,10 @@ package org.duckdns.raven.ttscallresponder;
 import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
-import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.settings.ActivitySettings;
+import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
 import android.app.Activity;

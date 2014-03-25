@@ -5,7 +5,7 @@ import java.util.List;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.AbstractListAdapter;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
-import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
+import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
 
 import android.app.Activity;
 import android.view.View;

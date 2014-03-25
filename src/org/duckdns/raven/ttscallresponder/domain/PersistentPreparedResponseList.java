@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
+
 import android.util.Log;
 
 public class PersistentPreparedResponseList {

@@ -1,7 +1,7 @@
 package org.duckdns.raven.ttscallresponder.preparedTextList;
 
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
-import org.duckdns.raven.ttscallresponder.domain.SettingsManager;
+import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
 
 import android.content.Context;
 import android.view.View;
