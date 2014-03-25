@@ -2,7 +2,7 @@ package org.duckdns.raven.ttscallresponder.answeredCallList;
 
 import java.util.List;
 
-import org.duckdns.raven.ttscallresoponder.R;
+import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.AbstractListAdapter;
 import org.duckdns.raven.ttscallresponder.domain.AnsweredCall;
 import org.duckdns.raven.ttscallresponder.userDataAccess.PhoneBookAccess;

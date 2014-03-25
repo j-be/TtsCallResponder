@@ -2,7 +2,7 @@ package org.duckdns.raven.ttscallresponder.preparedTextList;
 
 import java.util.List;
 
-import org.duckdns.raven.ttscallresoponder.R;
+import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.AbstractListAdapter;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import org.duckdns.raven.ttscallresponder.domain.SettingsManager;

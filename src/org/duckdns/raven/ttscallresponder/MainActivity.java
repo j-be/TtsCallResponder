@@ -1,7 +1,5 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresoponder.R;
-import org.duckdns.raven.ttscallresoponder.R.id;
 import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
@@ -48,7 +46,7 @@ public class MainActivity extends Activity {
 		SettingsManager.setContext(this);
 
 		// Get access to UI elements
-		this.swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
+		this.swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
 		this.currentPreparedResponseTitle = (TextView) this.findViewById(R.id.textView_currentPreparedResponseTitle);
 		this.numberOfAnsweredCalls = (TextView) this.findViewById(R.id.textView_numberOfAnsweredCalls);
 
@@ -111,7 +109,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void onSwitchAutorespondClick(View view) {
-		Switch swiAutoRespond = (Switch) this.findViewById(id.switch_answerCalls);
+		Switch swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
 
 		if (swiAutoRespond.isChecked())
 			this.callReceiver.enable();

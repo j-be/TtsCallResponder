@@ -1,6 +1,6 @@
 package org.duckdns.raven.ttscallresponder.notification;
 
-import org.duckdns.raven.ttscallresoponder.R;
+import org.duckdns.raven.ttscallresponder.R;
 
 import android.app.Activity;
 import android.app.Notification;

@@ -1,6 +1,6 @@
 package org.duckdns.raven.ttscallresponder.preparedTextList;
 
-import org.duckdns.raven.ttscallresoponder.R;
+import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 

@@ -1,6 +1,6 @@
 package org.duckdns.raven.ttscallresponder.answeredCallList;
 
-import org.duckdns.raven.ttscallresoponder.R;
+import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
 import android.app.Activity;
