@@ -5,6 +5,7 @@ import org.duckdns.raven.ttscallresponder.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 
 public class SettingsManager {
 
@@ -13,12 +14,23 @@ public class SettingsManager {
 	private static final float TTS_ENGINE_PITCH_STEEP = 2.0f;
 	private static final float TTS_ENGINE_PITCH_XCROSSING = 0.5f;
 
+	private static float defaultSpeechRate = 0f;
+	private static float defaultPitch = 0f;
+
 	private static SharedPreferences settings = null;
 	private static Context context = null;
 
 	public static void setContext(Context context) {
 		SettingsManager.context = context;
 		SettingsManager.settings = PreferenceManager.getDefaultSharedPreferences(context);
+
+		TypedValue tmp = new TypedValue();
+
+		context.getResources().getValue(R.fraction.default_settings_tts_engine_speech_rate, tmp, true);
+		SettingsManager.defaultSpeechRate = tmp.getFloat();
+
+		context.getResources().getValue(R.fraction.default_settings_tts_engine_pitch, tmp, true);
+		SettingsManager.defaultPitch = tmp.getFloat();
 	}
 
 	private SettingsManager() {
@@ -41,16 +53,14 @@ public class SettingsManager {
 
 	public static float getTtsEngineSpeechRate() {
 		return SettingsManager.settings.getFloat(
-		// TODO Try to get rid of hardcoded 0.5
-				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_speech_rate), 0.5f)
-				+ SettingsManager.TTS_ENGINE_SPEECH_RATE_SHIFT;
+				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_speech_rate),
+				SettingsManager.defaultSpeechRate) + SettingsManager.TTS_ENGINE_SPEECH_RATE_SHIFT;
 	}
 
 	public static float getTtsEnginePitch() {
 		return SettingsManager.TTS_ENGINE_PITCH_STEEP
-				// TODO Try to get rid of hardcoded 0.5
 				* SettingsManager.settings.getFloat(
-						SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_pitch), 0.5f)
-				+ SettingsManager.TTS_ENGINE_PITCH_XCROSSING;
+						SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_pitch),
+						SettingsManager.defaultPitch) + SettingsManager.TTS_ENGINE_PITCH_XCROSSING;
 	}
 }
