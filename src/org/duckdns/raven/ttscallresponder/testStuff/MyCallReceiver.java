@@ -104,6 +104,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 			this.muteInCallAudio(context);
+			this.ttsEngine.parameterizeTtsEngine();
 
 			parameterizer = new Parameterizer(this.calendarAccess);
 			textToSpeak = parameterizer.parameterizeFromCalendar(this.getTextToSpeak());
