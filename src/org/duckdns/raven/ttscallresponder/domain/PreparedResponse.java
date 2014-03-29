@@ -25,7 +25,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 	}
 
 	public static long getHighestUsedId() {
-		return highestUsedId;
+		return PreparedResponse.highestUsedId;
 	}
 
 	static void setHighestUsedId(long highestUsedId) {
@@ -33,7 +33,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 	}
 
 	public long getId() {
-		return id;
+		return this.id;
 	}
 
 	void addId() {
@@ -58,7 +58,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 	}
 
 	public boolean isSelected() {
-		return selected;
+		return this.selected;
 	}
 
 	public void setSelected(boolean selected) {
@@ -66,7 +66,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 	}
 
 	public boolean update(PreparedResponse newValue) {
-		Log.i(TAG, "Updating " + this.id);
+		Log.i(PreparedResponse.TAG, "Updating " + this.id);
 
 		if (this.id != newValue.id)
 			return false;
@@ -74,7 +74,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 		this.text = newValue.text;
 		this.title = newValue.title;
 
-		Log.i(TAG, "Updated");
+		Log.i(PreparedResponse.TAG, "Updated");
 		return true;
 	}
 
@@ -98,13 +98,13 @@ public class PreparedResponse implements Serializable, Parcelable {
 
 	@Override
 	public int describeContents() {
-		return (int) id;
+		return (int) this.id;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(title);
-		dest.writeString(text);
-		dest.writeLong(id);
+		dest.writeString(this.title);
+		dest.writeString(this.text);
+		dest.writeLong(this.id);
 	}
 }

@@ -12,7 +12,7 @@ public abstract class AbstractListAdapter<ModelType> extends BaseAdapter {
 
 	public AbstractListAdapter(Activity parent, List<ModelType> list) {
 		this.parent = parent;
-		setModel(list);
+		this.setModel(list);
 	}
 
 	protected Activity getParent() {

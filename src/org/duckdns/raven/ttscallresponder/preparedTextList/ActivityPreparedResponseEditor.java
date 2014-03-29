@@ -28,8 +28,8 @@ public class ActivityPreparedResponseEditor extends Activity {
 		Log.i(ActivityPreparedResponseEditor.TAG, "Enter on Create");
 
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.activity_prepared_response_editor);
 
+		this.setContentView(R.layout.activity_prepared_response_editor);
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
 		this.title = (EditText) this.findViewById(R.id.editText_preparedResponseTitle);
@@ -54,7 +54,6 @@ public class ActivityPreparedResponseEditor extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		this.getMenuInflater().inflate(R.menu.activity_prepared_response_editor, menu);
 		return true;
