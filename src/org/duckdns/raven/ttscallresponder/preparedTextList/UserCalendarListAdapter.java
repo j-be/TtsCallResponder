@@ -3,6 +3,7 @@ package org.duckdns.raven.ttscallresponder.preparedTextList;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.AbstractListAdapter;
 import org.duckdns.raven.ttscallresponder.domain.TtsParameterCalendar;
+import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
 import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
 import android.app.Activity;
@@ -15,7 +16,8 @@ public class UserCalendarListAdapter extends AbstractListAdapter<TtsParameterCal
 	public UserCalendarListAdapter(Activity parent) {
 		super(parent, new CalendarAccess(parent).getCalendarList());
 
-		this.list.add(0, new TtsParameterCalendar(-1, "<No calendar>", "Parameterization won't work!", 0));
+		this.list.add(0, new TtsParameterCalendar(-1, "<No calendar>", "Parameterization won't work!",
+				SettingsManager.COLOR_NO_ITEM_CHOSEN));
 	}
 
 	@Override

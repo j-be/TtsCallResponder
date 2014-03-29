@@ -20,6 +20,8 @@ public class SettingsManager {
 	private static SharedPreferences settings = null;
 	private static Context context = null;
 
+	public static final int COLOR_NO_ITEM_CHOSEN = 0xffcccccc;
+
 	public static void setContext(Context context) {
 		SettingsManager.context = context;
 		SettingsManager.settings = PreferenceManager.getDefaultSharedPreferences(context);
