@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 
 public abstract class AbstractListAdapter<ModelType> extends BaseAdapter {
 
-	private List<ModelType> list;
+	protected List<ModelType> list;
 	private final Activity parent;
 
 	public AbstractListAdapter(Activity parent, List<ModelType> list) {

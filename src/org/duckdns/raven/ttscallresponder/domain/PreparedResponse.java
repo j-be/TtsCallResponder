@@ -17,11 +17,13 @@ public class PreparedResponse implements Serializable, Parcelable {
 	private long id = -1;
 	private String title = "";
 	private String text = "";
+	private long calendarId = -1;
 	private boolean selected = false;
 
-	public PreparedResponse(String title, String text) {
+	public PreparedResponse(String title, String text, long calendarId) {
 		this.title = title;
 		this.text = text;
+		this.calendarId = calendarId;
 	}
 
 	public static long getHighestUsedId() {
@@ -57,6 +59,14 @@ public class PreparedResponse implements Serializable, Parcelable {
 		this.title = title;
 	}
 
+	public long getCalendarId() {
+		return this.calendarId;
+	}
+
+	public void setCalendarId(long calendarId) {
+		this.calendarId = calendarId;
+	}
+
 	public boolean isSelected() {
 		return this.selected;
 	}
@@ -73,6 +83,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 
 		this.text = newValue.text;
 		this.title = newValue.title;
+		this.calendarId = newValue.calendarId;
 
 		Log.i(PreparedResponse.TAG, "Updated");
 		return true;
@@ -84,7 +95,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 
 		@Override
 		public PreparedResponse createFromParcel(Parcel source) {
-			PreparedResponse ret = new PreparedResponse(source.readString(), source.readString());
+			PreparedResponse ret = new PreparedResponse(source.readString(), source.readString(), source.readLong());
 			ret.id = source.readLong();
 			return ret;
 		}
@@ -105,6 +116,7 @@ public class PreparedResponse implements Serializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(this.title);
 		dest.writeString(this.text);
+		dest.writeLong(this.calendarId);
 		dest.writeLong(this.id);
 	}
 }

@@ -21,7 +21,14 @@
         android:layout_height="wrap_content"
         android:gravity="top|left"
         android:hint="Type your response text here"
-        android:maxLines="5" 
+        android:lines="5"
         android:layout_marginTop="20dip" />
+
+    <Button
+        android:id="@+id/button_chooseCalendar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose calendar"
+        android:onClick="onChooseCalendarClick" />
 
 </LinearLayout>

@@ -2,14 +2,21 @@ package org.duckdns.raven.ttscallresponder.preparedTextList;
 
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.TtsParameterCalendar;
+import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,8 +25,14 @@ public class ActivityPreparedResponseEditor extends Activity {
 	private static final String TAG = "ActivityPreparedResponseEditor";
 	public static String INTENT_KEY_PREPARED_RESPONSE = "preparedResponseAvailable";
 
+	CalendarAccess calendarAccess = null;
+	UserCalendarListAdapter userCalendarListAdapter = null;
+
 	private EditText title = null;
 	private EditText text = null;
+	private Button calendarChooser = null;
+
+	private Drawable defaultButtonBackground = null;
 
 	private PreparedResponse preparedResponse = null;
 
@@ -32,17 +45,37 @@ public class ActivityPreparedResponseEditor extends Activity {
 		this.setContentView(R.layout.activity_prepared_response_editor);
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
+		this.calendarAccess = new CalendarAccess(this);
+
 		this.title = (EditText) this.findViewById(R.id.editText_preparedResponseTitle);
 		this.text = (EditText) this.findViewById(R.id.editText_preparedResponseText);
+		this.calendarChooser = (Button) this.findViewById(R.id.button_chooseCalendar);
 
 		this.preparedResponse = this.getIntent().getParcelableExtra(
 				ActivityPreparedResponseList.INTENT_KEY_EDIT_PREPARED_RESPONSE);
 
 		if (this.preparedResponse == null)
-			this.preparedResponse = new PreparedResponse("", "");
+			this.preparedResponse = new PreparedResponse("", "", -1);
 
 		this.title.setText(this.preparedResponse.getTitle());
 		this.text.setText(this.preparedResponse.getText());
+		this.labelCalendarChooser();
+
+		this.userCalendarListAdapter = new UserCalendarListAdapter(this);
+	}
+
+	private void labelCalendarChooser() {
+		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(this.preparedResponse.getCalendarId());
+		if (calendar == null) {
+			this.calendarChooser.setText("Choose calendar");
+			if (this.defaultButtonBackground != null)
+				this.calendarChooser.setBackgroundDrawable(this.defaultButtonBackground);
+		} else {
+			if (this.defaultButtonBackground == null)
+				this.defaultButtonBackground = this.calendarChooser.getBackground();
+			this.calendarChooser.setText(calendar.getName());
+			this.calendarChooser.setBackgroundColor(calendar.getColor());
+		}
 	}
 
 	@Override
@@ -93,5 +126,23 @@ public class ActivityPreparedResponseEditor extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	public void onChooseCalendarClick(View view) {
+		new AlertDialog.Builder(this)
+				.setSingleChoiceItems(this.userCalendarListAdapter, 0, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						long calendarId = ActivityPreparedResponseEditor.this.userCalendarListAdapter.getItemId(which);
+						ActivityPreparedResponseEditor.this.preparedResponse.setCalendarId(calendarId);
+						Log.d(ActivityPreparedResponseEditor.TAG, "Setting calendarId to: " + calendarId);
+						ActivityPreparedResponseEditor.this.labelCalendarChooser();
+						dialog.cancel();
+					}
+				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				}).show();
 	}
 }
