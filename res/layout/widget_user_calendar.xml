@@ -28,9 +28,9 @@
     <View
         android:id="@+id/view_calendarColor"
         android:layout_width="fill_parent"
-        android:layout_height="10dip"
+        android:layout_height="5dip"
         android:layout_marginLeft="@dimen/activity_small_margin"
         android:layout_marginRight="@dimen/activity_small_margin"
         android:layout_marginBottom="@dimen/activity_small_margin"
-        android:background="#888" />
+        android:background="#cccccc" />
 </LinearLayout>

@@ -4,16 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/textView_lbl_preparedResponseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:text="Title:" />
+
     <EditText
         android:id="@+id/editText_preparedResponseTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter a title here"
         android:singleLine="true"
-        android:ems="10"
-        android:layout_marginTop="20dip" >
+        android:ems="10" >
         <requestFocus />
     </EditText>
+
+    <TextView
+        android:id="@+id/textView_lbl_preparedResponseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:text="Text:"
+        android:layout_marginTop="@dimen/activity_main_small_spacing" />
 
     <EditText
         android:id="@+id/editText_preparedResponseText"
@@ -21,14 +35,23 @@
         android:layout_height="wrap_content"
         android:gravity="top|left"
         android:hint="Type your response text here"
-        android:lines="5"
-        android:layout_marginTop="20dip" />
+        android:lines="5" />
+
+    <TextView
+        android:id="@+id/textView_lbl_preparedResponseCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:text="Calendar:"
+        android:layout_marginTop="@dimen/activity_main_small_spacing" />
 
     <Button
         android:id="@+id/button_chooseCalendar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Choose calendar"
-        android:onClick="onChooseCalendarClick" />
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_marginRight="@dimen/activity_small_margin"
+        android:layout_marginBottom="@dimen/activity_small_margin" />
 
 </LinearLayout>
