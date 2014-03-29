@@ -3,24 +3,33 @@ package org.duckdns.raven.ttscallresponder.preparedTextList;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.TtsParameterCalendar;
+import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
+import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ActivityPreparedResponseList extends Activity {
 
 	private final static String TAG = "ActivityPreparedResponseList";
 
 	public static final String INTENT_KEY_EDIT_PREPARED_RESPONSE = "preparedResponseToEdit";
+
+	CalendarAccess calendarAccess = null;
+	private UserCalendarListAdapter userCalendarListAdapter = null;
 
 	private PersistentPreparedResponseList persistentList = null;
 	private PreparedResponseListAdapter adapter = null;
@@ -38,6 +47,9 @@ public class ActivityPreparedResponseList extends Activity {
 		this.persistentList = PersistentPreparedResponseList.getSingleton(this.getFilesDir());
 		this.adapter = new PreparedResponseListAdapter(this, this.persistentList.getPreparedAnswerList());
 		prepareResponsesListView.setAdapter(this.adapter);
+
+		this.calendarAccess = new CalendarAccess(this);
+		this.userCalendarListAdapter = new UserCalendarListAdapter(this);
 	}
 
 	@Override
@@ -45,20 +57,6 @@ public class ActivityPreparedResponseList extends Activity {
 		super.onPause();
 
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
-	}
-
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-
-		PreparedResponse preparedResponse = intent
-				.getParcelableExtra(ActivityPreparedResponseEditor.INTENT_KEY_PREPARED_RESPONSE);
-		if (preparedResponse != null) {
-			Log.d(ActivityPreparedResponseList.TAG, "Got something");
-			this.persistentList.add(preparedResponse);
-		}
-		preparedResponse = null;
-		this.adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -87,9 +85,8 @@ public class ActivityPreparedResponseList extends Activity {
 	}
 
 	public void onAddClick(View view) {
-		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
-		openPreparedResponseEditor.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		this.startActivity(openPreparedResponseEditor);
+		PreparedResponse newPreparedResponse = new PreparedResponse();
+		this.showEditorDialog(newPreparedResponse);
 	}
 
 	public void onDeleteClick(View view) {
@@ -99,10 +96,102 @@ public class ActivityPreparedResponseList extends Activity {
 	}
 
 	public void onPreparedResponseClick(View view) {
-		Intent openPreparedResponseEditor = new Intent(this, ActivityPreparedResponseEditor.class);
-		openPreparedResponseEditor.putExtra(ActivityPreparedResponseList.INTENT_KEY_EDIT_PREPARED_RESPONSE,
-				(Parcelable) view.getTag());
-		this.startActivity(openPreparedResponseEditor);
+		PreparedResponse preparedResponse = null;
+		if (view.getTag() instanceof PreparedResponse)
+			preparedResponse = (PreparedResponse) view.getTag();
+
+		this.showEditorDialog(preparedResponse);
+
+	}
+
+	private void showEditorDialog(final PreparedResponse preparedResponse) {
+		if (preparedResponse == null)
+			return;
+
+		// Preparing views
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.activity_prepared_response_editor, null);
+
+		final EditText title = (EditText) layout.findViewById(R.id.editText_preparedResponseTitle);
+		final EditText text = (EditText) layout.findViewById(R.id.editText_preparedResponseText);
+		final Button chooseCalendar = (Button) layout.findViewById(R.id.button_chooseCalendar);
+
+		title.setText(preparedResponse.getTitle());
+		text.setText(preparedResponse.getText());
+		this.labelCalendarChooser(chooseCalendar, preparedResponse);
+
+		chooseCalendar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new AlertDialog.Builder(ActivityPreparedResponseList.this)
+						.setSingleChoiceItems(ActivityPreparedResponseList.this.userCalendarListAdapter, 0,
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										long calendarId = ActivityPreparedResponseList.this.userCalendarListAdapter
+												.getItemId(which);
+										preparedResponse.setCalendarId(calendarId);
+										Log.d(ActivityPreparedResponseList.TAG, "Setting calendarId to: " + calendarId);
+										ActivityPreparedResponseList.this.labelCalendarChooser(chooseCalendar,
+												preparedResponse);
+										dialog.dismiss();
+									}
+								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int whichButton) {
+								dialog.dismiss();
+							}
+						}).show();
+
+			}
+		});
+
+		// Building dialog
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setView(layout);
+		// Will be overridden onShow()
+		builder.setPositiveButton("Ok", null);
+
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		final AlertDialog dialog = builder.create();
+
+		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialogInterface) {
+				Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+				b.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						preparedResponse.setText(text.getText().toString());
+						preparedResponse.setTitle(title.getText().toString());
+						if (preparedResponse.isValid()) {
+							dialog.dismiss();
+							ActivityPreparedResponseList.this.persistentList.add(preparedResponse);
+							ActivityPreparedResponseList.this.adapter.notifyDataSetChanged();
+						} else
+							Toast.makeText(builder.getContext(), "Please enter at least Title and Text!",
+									Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
+		});
+		dialog.show();
+	}
+
+	private void labelCalendarChooser(Button calendarChooser, PreparedResponse preparedResponse) {
+		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(preparedResponse.getCalendarId());
+		if (calendar == null) {
+			calendarChooser.setText("Choose calendar");
+			calendarChooser.setBackgroundColor(SettingsManager.COLOR_NO_ITEM_CHOSEN);
+		} else {
+			calendarChooser.setText(calendar.getName());
+			calendarChooser.setBackgroundColor(calendar.getColor());
+		}
 	}
 
 	@Override
@@ -113,7 +202,6 @@ public class ActivityPreparedResponseList extends Activity {
 			alert.setMessage("You made changes to the list, which are not yet saved. \n\n What would you like to do?");
 
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					switch (which) {
@@ -127,8 +215,8 @@ public class ActivityPreparedResponseList extends Activity {
 					}
 					ActivityPreparedResponseList.this.onBackPressed();
 				}
-
 			};
+
 			alert.setPositiveButton("Save", listener);
 			alert.setNeutralButton("Cancel", listener);
 			alert.setNegativeButton("Discard", listener);
