@@ -26,6 +26,10 @@ public class PreparedResponse implements Serializable, Parcelable {
 		this.calendarId = calendarId;
 	}
 
+	public PreparedResponse() {
+		this("", "", -1);
+	}
+
 	public static long getHighestUsedId() {
 		return PreparedResponse.highestUsedId;
 	}
@@ -78,6 +82,8 @@ public class PreparedResponse implements Serializable, Parcelable {
 	public boolean update(PreparedResponse newValue) {
 		Log.i(PreparedResponse.TAG, "Updating " + this.id);
 
+		if (!newValue.isValid())
+			return false;
 		if (this.id != newValue.id)
 			return false;
 
@@ -86,6 +92,15 @@ public class PreparedResponse implements Serializable, Parcelable {
 		this.calendarId = newValue.calendarId;
 
 		Log.i(PreparedResponse.TAG, "Updated");
+		return true;
+	}
+
+	public boolean isValid() {
+		if (this.title == null || this.title.isEmpty())
+			return false;
+		if (this.text == null || this.text.isEmpty())
+			return false;
+
 		return true;
 	}
 
