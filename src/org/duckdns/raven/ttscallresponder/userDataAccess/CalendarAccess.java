@@ -24,7 +24,7 @@ public class CalendarAccess {
 	private final ContentResolver contentResolver;
 
 	private final String[] calendarQueryColums = { BaseColumns._ID, Calendars.CALENDAR_DISPLAY_NAME,
-			Calendars.CALENDAR_COLOR };
+			Calendars.CALENDAR_COLOR, Calendars.OWNER_ACCOUNT };
 	String[] eventQueryColums = { BaseColumns._ID, Events.TITLE, Events.DTEND };
 
 	public CalendarAccess(Context context) {
@@ -42,10 +42,11 @@ public class CalendarAccess {
 				while (cursor.moveToNext()) {
 					long _id = cursor.getLong(0);
 					String displayName = cursor.getString(1);
+					String type = cursor.getString(3);
 					int color = cursor.getInt(2);
 
 					Log.i(CalendarAccess.TAG, "Id: " + _id + " Display Name: " + displayName + " Color: " + color);
-					ret.add(new TtsParameterCalendar(_id, displayName, color));
+					ret.add(new TtsParameterCalendar(_id, displayName, type, color));
 				}
 			}
 		} catch (AssertionError ex) {
@@ -69,7 +70,8 @@ public class CalendarAccess {
 		Log.i(CalendarAccess.TAG, "Calendar: " + calendarId + " Count=" + cursor.getCount());
 		if (cursor.getCount() > 0)
 			if (cursor.moveToFirst())
-				return new TtsParameterCalendar(cursor.getLong(0), cursor.getString(1), cursor.getInt(2));
+				return new TtsParameterCalendar(cursor.getLong(0), cursor.getString(1), cursor.getString(3),
+						cursor.getInt(2));
 			else
 				Log.d(CalendarAccess.TAG, "Weird");
 		else

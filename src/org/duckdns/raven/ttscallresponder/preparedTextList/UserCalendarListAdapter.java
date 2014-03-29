@@ -15,7 +15,7 @@ public class UserCalendarListAdapter extends AbstractListAdapter<TtsParameterCal
 	public UserCalendarListAdapter(Activity parent) {
 		super(parent, new CalendarAccess(parent).getCalendarList());
 
-		this.list.add(0, new TtsParameterCalendar(-1, "<No calendar>", 0));
+		this.list.add(0, new TtsParameterCalendar(-1, "<No calendar>", "", 0));
 	}
 
 	@Override
@@ -30,10 +30,12 @@ public class UserCalendarListAdapter extends AbstractListAdapter<TtsParameterCal
 		}
 
 		TextView calendarName = (TextView) convertView.findViewById(R.id.textView_calendarName);
+		TextView calendarType = (TextView) convertView.findViewById(R.id.textView_calendarType);
 		View calendarColor = convertView.findViewById(R.id.view_calendarColor);
 
 		TtsParameterCalendar userCalendar = (TtsParameterCalendar) this.getItem(position);
 		calendarName.setText(userCalendar.getName());
+		calendarType.setText(userCalendar.getType());
 		calendarColor.setBackgroundColor(userCalendar.getColor());
 
 		return convertView;
