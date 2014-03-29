@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-public class ActivityPreparedResponseList extends Activity implements DialogInterface.OnClickListener {
+public class ActivityPreparedResponseList extends Activity {
 
 	private final static String TAG = "ActivityPreparedResponseList";
 
@@ -112,25 +112,28 @@ public class ActivityPreparedResponseList extends Activity implements DialogInte
 			alert.setTitle("Unsaved changes");
 			alert.setMessage("You made changes to the list, which are not yet saved. \n\n What would you like to do?");
 
-			alert.setPositiveButton("Save", this);
-			alert.setNeutralButton("Cancel", this);
-			alert.setNegativeButton("Discard", this);
+			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case DialogInterface.BUTTON_NEUTRAL:
+						return;
+					case DialogInterface.BUTTON_POSITIVE:
+						ActivityPreparedResponseList.this.persistentList.savePreparedAnswerList();
+						break;
+					default:
+						ActivityPreparedResponseList.this.persistentList.discardChanges();
+					}
+					ActivityPreparedResponseList.this.onBackPressed();
+				}
+
+			};
+			alert.setPositiveButton("Save", listener);
+			alert.setNeutralButton("Cancel", listener);
+			alert.setNegativeButton("Discard", listener);
 			alert.show();
 		} else
 			super.onBackPressed();
-	}
-
-	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		switch (which) {
-		case DialogInterface.BUTTON_NEUTRAL:
-			return;
-		case DialogInterface.BUTTON_POSITIVE:
-			this.persistentList.savePreparedAnswerList();
-			break;
-		default:
-			this.persistentList.discardChanges();
-		}
-		super.onBackPressed();
 	}
 }
