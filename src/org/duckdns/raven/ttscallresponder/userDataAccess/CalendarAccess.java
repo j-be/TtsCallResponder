@@ -31,22 +31,27 @@ public class CalendarAccess {
 		this.contentResolver = context.getContentResolver();
 	}
 
+	private TtsParameterCalendar parseCalendarFromCursor(Cursor cursor) {
+		return new TtsParameterCalendar(cursor.getLong(0), cursor.getString(1), cursor.getString(3), cursor.getInt(2));
+	}
+
+	private TtsParameterCalendarEvent parseEventFromCursor(Cursor cursor) {
+		Time eventEnd = new Time();
+		eventEnd.set(cursor.getLong(2));
+		return new TtsParameterCalendarEvent(cursor.getString(1), eventEnd);
+	}
+
 	public List<TtsParameterCalendar> getCalendarList() {
 		List<TtsParameterCalendar> ret = new ArrayList<TtsParameterCalendar>();
 
-		Cursor cursor = this.contentResolver.query(Calendars.CONTENT_URI, this.calendarQueryColums, null, null, null);
+		Cursor calendarCursor = this.contentResolver.query(Calendars.CONTENT_URI, this.calendarQueryColums, null, null,
+				null);
 
 		try {
-			Log.i(CalendarAccess.TAG, "Count=" + cursor.getCount());
-			if (cursor.getCount() > 0) {
-				while (cursor.moveToNext()) {
-					long _id = cursor.getLong(0);
-					String displayName = cursor.getString(1);
-					String type = cursor.getString(3);
-					int color = cursor.getInt(2);
-
-					Log.i(CalendarAccess.TAG, "Id: " + _id + " Display Name: " + displayName + " Color: " + color);
-					ret.add(new TtsParameterCalendar(_id, displayName, type, color));
+			Log.i(CalendarAccess.TAG, "Count=" + calendarCursor.getCount());
+			if (calendarCursor.getCount() > 0) {
+				while (calendarCursor.moveToNext()) {
+					ret.add(this.parseCalendarFromCursor(calendarCursor));
 				}
 			}
 		} catch (AssertionError ex) {
@@ -58,20 +63,19 @@ public class CalendarAccess {
 	}
 
 	public TtsParameterCalendar getCalendarById(long calendarId) {
-		Cursor cursor = null;
+		Cursor calendarCursor = null;
 
 		try {
-			cursor = this.contentResolver.query(ContentUris.withAppendedId(Calendars.CONTENT_URI, calendarId),
+			calendarCursor = this.contentResolver.query(ContentUris.withAppendedId(Calendars.CONTENT_URI, calendarId),
 					this.calendarQueryColums, null, null, null);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
 
-		Log.i(CalendarAccess.TAG, "Calendar: " + calendarId + " Count=" + cursor.getCount());
-		if (cursor.getCount() > 0)
-			if (cursor.moveToFirst())
-				return new TtsParameterCalendar(cursor.getLong(0), cursor.getString(1), cursor.getString(3),
-						cursor.getInt(2));
+		Log.i(CalendarAccess.TAG, "Calendar: " + calendarId + " Count=" + calendarCursor.getCount());
+		if (calendarCursor.getCount() > 0)
+			if (calendarCursor.moveToFirst())
+				return this.parseCalendarFromCursor(calendarCursor);
 			else
 				Log.d(CalendarAccess.TAG, "Weird");
 		else
@@ -80,21 +84,19 @@ public class CalendarAccess {
 		return null;
 	}
 
-	private TtsParameterCalendarEvent getCurrentEventFromCalendar(String calendarId) {
+	private TtsParameterCalendarEvent getCurrentEventFromCalendar(long calendarId) {
 		long now = new Date().getTime();
 
 		Cursor eventCursor = this.contentResolver.query(CalendarContract.Events.CONTENT_URI, this.eventQueryColums,
-				CalendarContract.Events.CALENDAR_ID + " = " + CalendarContract.Events.DTSTART + " < " + now + " AND "
-						+ CalendarContract.Events.DTEND + " > " + now, null, CalendarContract.Events.DTSTART);
+				CalendarContract.Events.CALENDAR_ID + " = " + calendarId + " AND " + CalendarContract.Events.DTSTART
+						+ " < " + now + " AND " + CalendarContract.Events.DTEND + " > " + now, null,
+				CalendarContract.Events.DTSTART);
 
 		System.out.println("eventCursor count=" + eventCursor.getCount());
-		if (eventCursor.getCount() > 0) {
-			if (eventCursor.moveToFirst()) {
-				Time eventEnd = new Time();
-				eventEnd.set(eventCursor.getLong(2));
-				return new TtsParameterCalendarEvent(eventCursor.getString(1), eventEnd);
-			}
-		}
+		if (eventCursor.getCount() > 0)
+			if (eventCursor.moveToFirst())
+				return this.parseEventFromCursor(eventCursor);
+
 		return null;
 	}
 
@@ -103,7 +105,7 @@ public class CalendarAccess {
 		TtsParameterCalendarEvent event = null;
 
 		for (TtsParameterCalendar calendarId : calendarIds) {
-			event = this.getCurrentEventFromCalendar("" + calendarId.getId());
+			event = this.getCurrentEventFromCalendar(calendarId.getId());
 			if (event != null)
 				return event;
 		}
