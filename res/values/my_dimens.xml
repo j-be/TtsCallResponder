@@ -2,4 +2,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <dimen name="activity_main_big_spacing">20dip</dimen>
     <dimen name="activity_main_small_spacing">20dip</dimen>
+    <dimen name="activity_small_margin">3dip</dimen>
 </resources>

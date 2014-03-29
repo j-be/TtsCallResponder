@@ -15,7 +15,7 @@ public class UserCalendarListAdapter extends AbstractListAdapter<TtsParameterCal
 	public UserCalendarListAdapter(Activity parent) {
 		super(parent, new CalendarAccess(parent).getCalendarList());
 
-		this.list.add(0, new TtsParameterCalendar(-1, "<No calendar>", "", 0));
+		this.list.add(0, new TtsParameterCalendar(-1, "<No calendar>", "Parameterization won't work!", 0));
 	}
 
 	@Override
