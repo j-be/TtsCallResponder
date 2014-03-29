@@ -84,7 +84,7 @@ public class CalendarAccess {
 		return null;
 	}
 
-	private TtsParameterCalendarEvent getCurrentEventFromCalendar(long calendarId) {
+	public TtsParameterCalendarEvent getCurrentEventFromCalendar(long calendarId) {
 		long now = new Date().getTime();
 
 		Cursor eventCursor = this.contentResolver.query(CalendarContract.Events.CONTENT_URI, this.eventQueryColums,

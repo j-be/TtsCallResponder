@@ -1,5 +1,6 @@
 package org.duckdns.raven.ttscallresponder.ttsStuff;
 
+import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import org.duckdns.raven.ttscallresponder.domain.TtsParameterCalendarEvent;
 import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
@@ -12,15 +13,23 @@ public class Parameterizer {
 		this.calendarAccess = calendarAccess;
 	}
 
-	public String parameterizeFromCalendar(String stringToParameterize) {
-		TtsParameterCalendarEvent event = this.calendarAccess.getCurrentEvent();
+	public String parameterizeText(PreparedResponse preparedResponse) {
+		if (preparedResponse == null)
+			return "";
+
+		return this.parameterizeFromCalendar(preparedResponse).getText();
+	}
+
+	public PreparedResponse parameterizeFromCalendar(PreparedResponse preparedResponse) {
+		TtsParameterCalendarEvent event = this.calendarAccess.getCurrentEventFromCalendar(preparedResponse
+				.getCalendarId());
 
 		if (event == null)
-			return stringToParameterize;
+			return preparedResponse;
 
-		String ret = stringToParameterize.replaceAll("#event_title#", event.getTitle());
-		ret = ret.replaceAll("#event_end#", event.getEndTime().format(this.timeFormat));
+		String newText = preparedResponse.getText().replaceAll("#event_title#", event.getTitle());
+		newText = newText.replaceAll("#event_end#", event.getEndTime().format(this.timeFormat));
 
-		return ret;
+		return new PreparedResponse(preparedResponse.getTitle(), newText, preparedResponse.getCalendarId());
 	}
 }

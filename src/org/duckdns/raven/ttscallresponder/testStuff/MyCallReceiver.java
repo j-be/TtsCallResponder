@@ -70,7 +70,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 
 	/* ----- Logic ----- */
 
-	private String getTextToSpeak() {
+	private PreparedResponse getCurrentPreparedResponse() {
 		PersistentPreparedResponseList preparedResponseList = PersistentPreparedResponseList.getSingleton(this.parent
 				.getFilesDir());
 		PreparedResponse currentPreparedResponse = preparedResponseList.getItemWithId(SettingsManager
@@ -79,10 +79,10 @@ public class MyCallReceiver extends BroadcastReceiver {
 		Log.d(MyCallReceiver.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
 		if (currentPreparedResponse == null) {
 			Log.d(MyCallReceiver.TAG, "No current response set");
-			return "";
+			return null;
 		}
 
-		return currentPreparedResponse.getText();
+		return currentPreparedResponse;
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 			this.ttsEngine.parameterizeTtsEngine();
 
 			parameterizer = new Parameterizer(this.calendarAccess);
-			textToSpeak = parameterizer.parameterizeFromCalendar(this.getTextToSpeak());
+			textToSpeak = parameterizer.parameterizeText(this.getCurrentPreparedResponse());
 
 			Log.d(MyCallReceiver.TAG, "Speaking: " + textToSpeak);
 			this.ttsEngine.speak(textToSpeak);
