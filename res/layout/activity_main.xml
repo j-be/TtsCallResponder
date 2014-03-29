@@ -50,7 +50,10 @@
         android:layout_below="@id/textView_lbl_numberOfAnsweredCalls"
         android:onClick="onShowAnsweredCallListClick"
         android:text="Show list of answered calls"
-        android:layout_marginBottom="@dimen/activity_main_big_spacing" />
+        android:layout_marginBottom="@dimen/activity_main_big_spacing"
+        android:background="#cccccc"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_marginRight="@dimen/activity_small_margin" />
 
     <TextView
         android:id="@+id/textView_headerPreparedResponses"
@@ -91,31 +94,9 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textView_currentPreparedResponseTitle"
         android:onClick="onShowPreparedResopnseList"
-        android:text="Show list of prepared responses" />
-
-    <!--     <TextView
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:id="@+id/textView2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Test stuff"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="50dip" />
-
-    <EditText
-        android:id="@+id/editText_textToCompile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="center_vertical|top"
-        android:hint="Insert text to speak..." />
-
-    <Button
-        android:id="@+id/button_updateTextToSpeak"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onUpdateTextToSpeakClick"
-        android:text="@string/button_update_textToSpeak" />
- -->
+        android:text="Show list of prepared responses"
+        android:background="#cccccc"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_marginRight="@dimen/activity_small_margin" />
 
 </RelativeLayout>
