@@ -2,11 +2,9 @@ package org.duckdns.raven.ttscallresponder.domain;
 
 import java.io.Serializable;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
-public class PreparedResponse implements Serializable, Parcelable {
+public class PreparedResponse implements Serializable {
 
 	private final static String TAG = "PreparedResponse";
 
@@ -104,34 +102,4 @@ public class PreparedResponse implements Serializable, Parcelable {
 		return true;
 	}
 
-	/* ----- Parcelable interface ----- */
-
-	public static Parcelable.Creator<PreparedResponse> CREATOR = new Parcelable.Creator<PreparedResponse>() {
-
-		@Override
-		public PreparedResponse createFromParcel(Parcel source) {
-			PreparedResponse ret = new PreparedResponse(source.readString(), source.readString(), source.readLong());
-			ret.id = source.readLong();
-			return ret;
-		}
-
-		@Override
-		public PreparedResponse[] newArray(int size) {
-			return new PreparedResponse[size];
-		}
-
-	};
-
-	@Override
-	public int describeContents() {
-		return (int) this.id;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(this.title);
-		dest.writeString(this.text);
-		dest.writeLong(this.calendarId);
-		dest.writeLong(this.id);
-	}
 }

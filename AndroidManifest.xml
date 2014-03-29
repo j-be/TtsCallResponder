@@ -43,14 +43,6 @@
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseEditor"
-            android:label="@string/title_activity_prepared_response_editor"
-            android:parentActivityName="org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList" />
-        </activity>
-        <activity
             android:name="org.duckdns.raven.ttscallresponder.settings.ActivitySettings"
             android:label="@string/title_activity_activity_settings"
             android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
