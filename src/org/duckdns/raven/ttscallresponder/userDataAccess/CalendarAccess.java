@@ -1,8 +1,10 @@
 package org.duckdns.raven.ttscallresponder.userDataAccess;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
 
+import org.duckdns.raven.ttscallresponder.domain.TtsParameterCalendar;
 import org.duckdns.raven.ttscallresponder.domain.TtsParameterCalendarEvent;
 
 import android.content.ContentResolver;
@@ -19,32 +21,31 @@ import android.util.Log;
 public class CalendarAccess {
 	private static final String TAG = "CalendarAccess";
 
-	private final Context context;
+	private final ContentResolver contentResolver;
+
+	private final String[] calendarQueryColums = { BaseColumns._ID, Calendars.CALENDAR_DISPLAY_NAME,
+			Calendars.CALENDAR_COLOR };
+	String[] eventQueryColums = { BaseColumns._ID, Events.TITLE, Events.DTEND };
 
 	public CalendarAccess(Context context) {
-		this.context = context;
+		this.contentResolver = context.getContentResolver();
 	}
 
-	public TtsParameterCalendarEvent getCurrentEvent() {
-		ContentResolver contentResolver = this.context.getContentResolver();
-		String[] calendarQueryColums = { BaseColumns._ID, Calendars.NAME };
+	public List<TtsParameterCalendar> getCalendarList() {
+		List<TtsParameterCalendar> ret = new ArrayList<TtsParameterCalendar>();
 
-		Cursor cursor = contentResolver.query(ContentUris.withAppendedId(Calendars.CONTENT_URI, 1),
-				calendarQueryColums, null, null, null);
-
-		HashSet<String> calendarIds = new HashSet<String>();
-
-		TtsParameterCalendarEvent event = null;
+		Cursor cursor = this.contentResolver.query(Calendars.CONTENT_URI, this.calendarQueryColums, null, null, null);
 
 		try {
 			Log.i(CalendarAccess.TAG, "Count=" + cursor.getCount());
 			if (cursor.getCount() > 0) {
 				while (cursor.moveToNext()) {
-					String _id = cursor.getString(0);
+					long _id = cursor.getLong(0);
 					String displayName = cursor.getString(1);
+					int color = cursor.getInt(2);
 
-					Log.i(CalendarAccess.TAG, "Id: " + _id + " Display Name: " + displayName);
-					calendarIds.add(_id);
+					Log.i(CalendarAccess.TAG, "Id: " + _id + " Display Name: " + displayName + " Color: " + color);
+					ret.add(new TtsParameterCalendar(_id, displayName, color));
 				}
 			}
 		} catch (AssertionError ex) {
@@ -52,22 +53,35 @@ public class CalendarAccess {
 		} catch (Exception e) {
 		}
 
-		for (String calendarId : calendarIds) {
-			event = this.getCurrentEventFromCalendar(calendarId);
-			if (event != null)
-				return event;
+		return ret;
+	}
+
+	public TtsParameterCalendar getCalendarById(long calendarId) {
+		Cursor cursor = null;
+
+		try {
+			cursor = this.contentResolver.query(ContentUris.withAppendedId(Calendars.CONTENT_URI, calendarId),
+					this.calendarQueryColums, null, null, null);
+		} catch (IllegalArgumentException e) {
+			return null;
 		}
+
+		Log.i(CalendarAccess.TAG, "Calendar: " + calendarId + " Count=" + cursor.getCount());
+		if (cursor.getCount() > 0)
+			if (cursor.moveToFirst())
+				return new TtsParameterCalendar(cursor.getLong(0), cursor.getString(1), cursor.getInt(2));
+			else
+				Log.d(CalendarAccess.TAG, "Weird");
+		else
+			Log.d(CalendarAccess.TAG, "Calendar not found");
 
 		return null;
 	}
 
 	private TtsParameterCalendarEvent getCurrentEventFromCalendar(String calendarId) {
-		ContentResolver contentResolver = this.context.getContentResolver();
 		long now = new Date().getTime();
 
-		String[] eventQueryColums = { BaseColumns._ID, Events.TITLE, Events.DTEND };
-
-		Cursor eventCursor = contentResolver.query(CalendarContract.Events.CONTENT_URI, eventQueryColums,
+		Cursor eventCursor = this.contentResolver.query(CalendarContract.Events.CONTENT_URI, this.eventQueryColums,
 				CalendarContract.Events.CALENDAR_ID + " = " + CalendarContract.Events.DTSTART + " < " + now + " AND "
 						+ CalendarContract.Events.DTEND + " > " + now, null, CalendarContract.Events.DTSTART);
 
@@ -81,4 +95,18 @@ public class CalendarAccess {
 		}
 		return null;
 	}
+
+	public TtsParameterCalendarEvent getCurrentEvent() {
+		List<TtsParameterCalendar> calendarIds = this.getCalendarList();
+		TtsParameterCalendarEvent event = null;
+
+		for (TtsParameterCalendar calendarId : calendarIds) {
+			event = this.getCurrentEventFromCalendar("" + calendarId.getId());
+			if (event != null)
+				return event;
+		}
+
+		return null;
+	}
+
 }
