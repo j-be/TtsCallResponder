@@ -10,7 +10,7 @@ import org.duckdns.raven.ttscallresponder.userDataAccess.PhoneBookAccess;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class CallListAdapter extends AbstractListAdapter<AnsweredCall> {
@@ -34,7 +34,7 @@ public class CallListAdapter extends AbstractListAdapter<AnsweredCall> {
 
 			TextView caller = (TextView) convertView.findViewById(R.id.label_caller);
 			TextView callTime = (TextView) convertView.findViewById(R.id.label_callTime);
-			Button callBack = (Button) convertView.findViewById(R.id.button_callBack);
+			ImageButton callBack = (ImageButton) convertView.findViewById(R.id.button_callBack);
 
 			AnsweredCall call = (AnsweredCall) this.getItem(position);
 			caller.setText(this.phoneBookAccess.getNameForPhoneNumber(call.getCaller()));

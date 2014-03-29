@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:onClick="onPreparedResponseClick"
@@ -41,15 +41,25 @@
                 android:layout_gravity="left"
                 android:lines="3"
                 android:text="Short version of a long bla bla bla bla bla bla bla bla bla bla bla bla"
-                android:layout_weight="1.5"/>
+                android:layout_weight="1.9"/>
+
+            <View
+                android:id="@+id/ViewColorPickerHelper"
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:gravity="right"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="4dip"
+                android:layout_marginTop="4dip"
+                android:background="?android:attr/dividerVertical"
+                android:layout_centerHorizontal="true"/>
 
             <ImageButton
                 android:id="@+id/button_preparedResponseSetAsCurrent"
-                android:layout_width="32dip"
-                android:layout_height="32dip"
+                android:layout_width="48dip"
+                android:layout_height="48dip"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="@dimen/activity_main_small_spacing"
-                android:layout_marginLeft="@dimen/activity_main_small_spacing"
                 android:src="@drawable/ic_checkmark_holo_light"
                 android:scaleType="fitXY"
                 android:background="@android:color/transparent"
