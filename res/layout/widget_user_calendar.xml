@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayout_calendarWidget"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
     <TextView
@@ -13,11 +13,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium" >
     </TextView>
 
+    <TextView
+        android:id="@+id/textView_calendarType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TYPE HERE"
+        android:textColor="#555" />
+
     <View
         android:id="@+id/view_calendarColor"
         android:layout_width="fill_parent"
         android:layout_height="10dip"
         android:background="#f0f"
-        android:layout_marginBottom="@dimen/activity_main_small_spacing" />
+        android:layout_marginBottom="3dip" />
 
 </LinearLayout>
