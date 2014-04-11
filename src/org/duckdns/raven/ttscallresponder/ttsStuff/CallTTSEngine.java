@@ -11,7 +11,7 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 public class CallTTSEngine implements OnInitListener {
 
 	private TextToSpeech ttsEngine = null;
-	private boolean isTtsEnginUp = false;
+	private boolean isTtsEngineUp = false;
 
 	public CallTTSEngine(Activity parent) {
 		this.ttsEngine = new TextToSpeech(parent, this);
@@ -24,13 +24,13 @@ public class CallTTSEngine implements OnInitListener {
 	@Override
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
-			this.isTtsEnginUp = true;
+			this.isTtsEngineUp = true;
 			this.parameterizeTtsEngine();
 		}
 	}
 
 	public void parameterizeTtsEngine() {
-		if (!this.isTtsEnginUp)
+		if (!this.isTtsEngineUp)
 			return;
 
 		this.ttsEngine.setLanguage(Locale.US);
@@ -39,7 +39,7 @@ public class CallTTSEngine implements OnInitListener {
 	}
 
 	public void stopEngine() {
-		this.isTtsEnginUp = false;
+		this.isTtsEngineUp = false;
 		this.ttsEngine.shutdown();
 	}
 }
