@@ -3,6 +3,7 @@ package org.duckdns.raven.ttscallresponder.settings;
 import java.util.ArrayList;
 
 import org.duckdns.raven.ttscallresponder.R;
+import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +17,7 @@ public class ActivitySettings extends Activity {
 
 	private final static int TTS_CHECK_DATA = 123;
 	private SettingsFragment settingsFragment = null;
+	private CallTTSEngine testEngine = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class ActivitySettings extends Activity {
 
 		this.overridePendingTransition(R.animator.anim_slide_in_from_top, R.animator.anim_slide_out_to_bottom);
 
+		this.testEngine = new CallTTSEngine(this);
 		// Check available languages
 		Intent in = new Intent(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
 		// if you want specific, non-default TTS Engine also set package, else
@@ -84,6 +87,13 @@ public class ActivitySettings extends Activity {
 	}
 
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		this.testEngine.stopEngine();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -97,7 +107,9 @@ public class ActivitySettings extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_test_tts_settings) {
+			this.testEngine.parameterizeTtsEngine();
+			this.testEngine.speak("Test T T S");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
