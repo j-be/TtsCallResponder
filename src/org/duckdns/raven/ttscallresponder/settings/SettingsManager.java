@@ -54,16 +54,17 @@ public class SettingsManager {
 	}
 
 	public static float getTtsEngineSpeechRate() {
-		return SettingsManager.settings.getFloat(
+		float valueFromSettings = SettingsManager.settings.getFloat(
 				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_speech_rate),
-				SettingsManager.defaultSpeechRate) + SettingsManager.TTS_ENGINE_SPEECH_RATE_SHIFT;
+				SettingsManager.defaultSpeechRate);
+		return (float) Math.pow(valueFromSettings, 2) + SettingsManager.TTS_ENGINE_SPEECH_RATE_SHIFT;
 	}
 
 	public static float getTtsEnginePitch() {
-		return SettingsManager.TTS_ENGINE_PITCH_STEEP
-				* SettingsManager.settings.getFloat(
-						SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_pitch),
-						SettingsManager.defaultPitch) + SettingsManager.TTS_ENGINE_PITCH_XCROSSING;
+		float valueFromSettings = SettingsManager.settings.getFloat(
+				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_pitch),
+				SettingsManager.defaultPitch);
+		return SettingsManager.TTS_ENGINE_PITCH_STEEP * (float)Math.pow(valueFromSettings, 2) + SettingsManager.TTS_ENGINE_PITCH_XCROSSING;
 	}
 
 	public static String getTtsLanguage() {
