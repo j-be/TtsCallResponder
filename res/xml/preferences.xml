@@ -21,6 +21,12 @@
             android:defaultValue="@fraction/default_settings_tts_engine_pitch"
             android:dialogMessage="The pitch of the TTS voice" />
 
+        <ListPreference
+            android:key="@string/key_settings_tts_engine_voice"
+            android:persistent="true"
+            android:title="Language"
+            android:summary="Choose the right language for a better pronunciation" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
