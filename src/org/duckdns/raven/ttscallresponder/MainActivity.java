@@ -159,7 +159,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void finish() {
 		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
-		this.stopService(stopCallReceiverService);
+		this.mCallResponderService.stopService(stopCallReceiverService);
 		CallReceiverNotificationService.removeNotfication();
 		super.finish();
 	}
