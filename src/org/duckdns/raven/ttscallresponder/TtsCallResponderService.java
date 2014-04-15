@@ -29,10 +29,6 @@ public class TtsCallResponderService extends Service {
 		// Register call receiver
 		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
 		Log.i(TAG, "Receiver registered");
-
-		Intent notifyMainActivity = new Intent(this, MainActivity.class);
-		notifyMainActivity.putExtra(EXTRA_KEY_RECEIVER_ENABLED, this.callReceiver.isEnabled());
-		this.sendBroadcast(notifyMainActivity);
 	}
 
 	@Override
