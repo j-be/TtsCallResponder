@@ -1,6 +1,7 @@
 package org.duckdns.raven.ttscallresponder;
 
 import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
+import org.duckdns.raven.ttscallresponder.domain.PersistentAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
@@ -106,8 +107,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void callWasAnswered() {
-		this.numberOfAnsweredCalls.setText(String.valueOf(this.mCallResponderService.getCallReceiver()
-				.getAnsweredCallList().size()));
+		// TODO Number of answered calls
+		this.numberOfAnsweredCalls.setText("" + PersistentAnsweredCallList.getSingleton(this.getFilesDir()).getCount());
 	}
 
 	@Override

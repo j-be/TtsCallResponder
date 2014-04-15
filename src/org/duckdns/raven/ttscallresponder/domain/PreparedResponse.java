@@ -1,10 +1,8 @@
 package org.duckdns.raven.ttscallresponder.domain;
 
-import java.io.Serializable;
-
 import android.util.Log;
 
-public class PreparedResponse implements Serializable {
+public class PreparedResponse extends Listable {
 
 	private final static String TAG = "PreparedResponse";
 
@@ -12,7 +10,6 @@ public class PreparedResponse implements Serializable {
 
 	private static long highestUsedId = 0;
 
-	private long id = -1;
 	private String title = "";
 	private String text = "";
 	private long calendarId = -1;
@@ -36,13 +33,11 @@ public class PreparedResponse implements Serializable {
 		PreparedResponse.highestUsedId = highestUsedId;
 	}
 
-	public long getId() {
-		return this.id;
-	}
-
+	// TODO Move to Listable
+	@Override
 	void addId() {
 		PreparedResponse.highestUsedId++;
-		this.id = PreparedResponse.highestUsedId;
+		this.setId(PreparedResponse.highestUsedId);
 	}
 
 	public String getText() {
@@ -77,12 +72,17 @@ public class PreparedResponse implements Serializable {
 		this.selected = selected;
 	}
 
-	public boolean update(PreparedResponse newValue) {
-		Log.i(PreparedResponse.TAG, "Updating " + this.id);
+	@Override
+	public boolean update(Listable newListable) {
+		Log.i(PreparedResponse.TAG, "Updating " + this.getId());
+		PreparedResponse newValue = null;
+
+		if (newListable instanceof PreparedResponse)
+			newValue = (PreparedResponse) newListable;
 
 		if (!newValue.isValid())
 			return false;
-		if (this.id != newValue.id)
+		if (this.getId() != newValue.getId())
 			return false;
 
 		this.text = newValue.text;
@@ -101,5 +101,4 @@ public class PreparedResponse implements Serializable {
 
 		return true;
 	}
-
 }

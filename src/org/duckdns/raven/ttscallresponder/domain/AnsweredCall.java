@@ -2,16 +2,16 @@ package org.duckdns.raven.ttscallresponder.domain;
 
 import android.text.format.Time;
 
-public class AnsweredCall {
-	private static long maxId = 0;
+public class AnsweredCall extends Listable {
+	private static final long serialVersionUID = -724628669974903213L;
+
+	private static long maxId = -1;
 
 	private String caller = null;
 	private Time callTime = null;
-	private long id = -1;
 
 	public AnsweredCall(String caller) {
-		this.id = AnsweredCall.maxId;
-		AnsweredCall.maxId++;
+		this.addId();
 
 		this.caller = caller;
 		this.callTime = new Time();
@@ -20,10 +20,6 @@ public class AnsweredCall {
 	}
 
 	/* ----- Getters/Setters ----- */
-
-	public long getId() {
-		return this.id;
-	}
 
 	public String getCaller() {
 		return this.caller;
@@ -39,6 +35,21 @@ public class AnsweredCall {
 
 	public void setCallTime(Time callTime) {
 		this.callTime = callTime;
+	}
+
+	@Override
+	public boolean update(Listable newItem) {
+		return false;
+	}
+
+	@Override
+	void addId() {
+		AnsweredCall.maxId++;
+		this.setId(AnsweredCall.maxId);
+	}
+
+	public static void setHighestUsedId(long maxId) {
+		AnsweredCall.maxId = maxId;
 	}
 
 }

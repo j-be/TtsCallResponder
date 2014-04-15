@@ -45,7 +45,7 @@ public class ActivityPreparedResponseList extends Activity {
 
 		ListView prepareResponsesListView = (ListView) this.findViewById(R.id.list_prepared_responses);
 		this.persistentList = PersistentPreparedResponseList.getSingleton(this.getFilesDir());
-		this.adapter = new PreparedResponseListAdapter(this, this.persistentList.getPreparedAnswerList());
+		this.adapter = new PreparedResponseListAdapter(this, this.persistentList.getPersistentList());
 		prepareResponsesListView.setAdapter(this.adapter);
 
 		this.calendarAccess = new CalendarAccess(this);
@@ -75,7 +75,7 @@ public class ActivityPreparedResponseList extends Activity {
 
 		switch (id) {
 		case R.id.action_done:
-			this.persistentList.savePreparedAnswerList();
+			this.persistentList.savePersistentList();
 		case android.R.id.home:
 			this.onBackPressed();
 			return true;
@@ -208,7 +208,7 @@ public class ActivityPreparedResponseList extends Activity {
 					case DialogInterface.BUTTON_NEUTRAL:
 						return;
 					case DialogInterface.BUTTON_POSITIVE:
-						ActivityPreparedResponseList.this.persistentList.savePreparedAnswerList();
+						ActivityPreparedResponseList.this.persistentList.savePersistentList();
 						break;
 					default:
 						ActivityPreparedResponseList.this.persistentList.discardChanges();
