@@ -1,10 +1,13 @@
 package org.duckdns.raven.ttscallresponder.answeredCallList;
 
 import org.duckdns.raven.ttscallresponder.R;
-import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
+import org.duckdns.raven.ttscallresponder.TtsCallResponderService;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +19,27 @@ public class ActivityAnsweredCallList extends Activity {
 
 	private CallListAdapter adapter = null;
 
+	/* ----- Service connection ----- */
+	private TtsCallResponderService mCallResponderService = null;
+	private final ServiceConnection mConnection = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			ActivityAnsweredCallList.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service)
+					.getService();
+			ListView answeredCallsListView = (ListView) ActivityAnsweredCallList.this
+					.findViewById(R.id.list_answered_calls);
+			ActivityAnsweredCallList.this.adapter = new CallListAdapter(ActivityAnsweredCallList.this,
+					ActivityAnsweredCallList.this.mCallResponderService.getCallReceiver().getAnsweredCallList());
+			answeredCallsListView.setAdapter(ActivityAnsweredCallList.this.adapter);
+			ActivityAnsweredCallList.this.adapter.notifyDataSetChanged();
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName className) {
+			ActivityAnsweredCallList.this.mCallResponderService = null;
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.i(ActivityAnsweredCallList.TAG, "Enter on Create");
@@ -24,23 +48,19 @@ public class ActivityAnsweredCallList extends Activity {
 		this.setContentView(R.layout.activity_answered_call_list);
 
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
-
-		ListView answeredCallsListView = (ListView) this.findViewById(R.id.list_answered_calls);
-		this.adapter = new CallListAdapter(this, MyCallReceiver.getAnsweredCallList());
-		answeredCallsListView.setAdapter(this.adapter);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		this.adapter.notifyDataSetChanged();
+		if (this.adapter != null)
+			this.adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -69,7 +89,7 @@ public class ActivityAnsweredCallList extends Activity {
 	}
 
 	public void clearAnsweredCallListClick() {
-		MyCallReceiver.clearAnsweredCallList();
+		this.mCallResponderService.getCallReceiver().clearAnsweredCallList();
 		this.adapter.notifyDataSetChanged();
 	}
 }

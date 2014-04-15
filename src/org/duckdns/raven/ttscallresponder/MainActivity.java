@@ -7,12 +7,13 @@ import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationS
 import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.settings.ActivitySettings;
 import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
-import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -26,12 +27,29 @@ public class MainActivity extends Activity {
 
 	private final String TAG = "MainActivity";
 
+	/* ----- UI elements ----- */
 	private Switch swiAutoRespond = null;
-	private MyCallReceiver callReceiver = null;
 	private TextView currentPreparedResponseTitle = null;
 	private TextView numberOfAnsweredCalls = null;
 
+	/* ----- Helper for closing with twice back-press ----- */
 	private final Time lastBackPressed = new Time();
+
+	/* ----- Service connection ----- */
+	private TtsCallResponderService mCallResponderService = null;
+	private final ServiceConnection mConnection = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
+			MainActivity.this.applyCallReceiverState();
+			MainActivity.this.callWasAnswered();
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName className) {
+			MainActivity.this.mCallResponderService = null;
+		}
+	};
 
 	/* ----- Creating the app ----- */
 
@@ -43,24 +61,17 @@ public class MainActivity extends Activity {
 		this.setContentView(R.layout.activity_main);
 
 		// Instantiate needed stuff
-		this.callReceiver = new MyCallReceiver(this);
 		SettingsManager.setContext(this);
+		CallReceiverNotificationService.init(this);
+
+		// Start responder service
+		Intent startCallReceiverService = new Intent(this, TtsCallResponderService.class);
+		this.bindService(startCallReceiverService, this.mConnection, BIND_AUTO_CREATE);
 
 		// Get access to UI elements
 		this.swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
 		this.currentPreparedResponseTitle = (TextView) this.findViewById(R.id.textView_currentPreparedResponseTitle);
 		this.numberOfAnsweredCalls = (TextView) this.findViewById(R.id.textView_numberOfAnsweredCalls);
-
-		// Initialize UI elements
-		this.swiAutoRespond.setChecked(this.callReceiver.isEnabled());
-
-		// Register call receiver
-		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
-		Log.i(this.TAG, "Receiver registered");
-
-		// Initialize notification
-		CallReceiverNotificationService.init(this);
-		CallReceiverNotificationService.stateChanged(this.callReceiver.isEnabled());
 	}
 
 	@Override
@@ -81,11 +92,22 @@ public class MainActivity extends Activity {
 
 		this.currentPreparedResponseTitle.setText(currentTitle);
 
-		this.callWasAnswered();
+		// Initialize UI elements
+		if (this.mCallResponderService != null)
+			this.applyCallReceiverState();
+	}
+
+	private void applyCallReceiverState() {
+		if (this.mCallResponderService != null) {
+			boolean callReceiverEnabled = this.mCallResponderService.getCallReceiver().isEnabled();
+			this.swiAutoRespond.setChecked(callReceiverEnabled);
+			CallReceiverNotificationService.stateChanged(callReceiverEnabled);
+		}
 	}
 
 	public void callWasAnswered() {
-		this.numberOfAnsweredCalls.setText(String.valueOf(MyCallReceiver.getAnsweredCallList().size()));
+		this.numberOfAnsweredCalls.setText(String.valueOf(this.mCallResponderService.getCallReceiver()
+				.getAnsweredCallList().size()));
 	}
 
 	@Override
@@ -115,9 +137,9 @@ public class MainActivity extends Activity {
 		Switch swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
 
 		if (swiAutoRespond.isChecked())
-			this.callReceiver.enable();
+			this.mCallResponderService.getCallReceiver().enable();
 		else
-			this.callReceiver.disable();
+			this.mCallResponderService.getCallReceiver().disable();
 	}
 
 	public void onShowAnsweredCallListClick(View view) {
@@ -134,16 +156,11 @@ public class MainActivity extends Activity {
 	/* ----- Closing the app ----- */
 
 	@Override
-	public void onDestroy() {
+	public void finish() {
+		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
+		this.stopService(stopCallReceiverService);
 		CallReceiverNotificationService.removeNotfication();
-		if (this.callReceiver != null) {
-			this.unregisterReceiver(this.callReceiver);
-			this.callReceiver.stopTtsEngine();
-			this.callReceiver = null;
-		}
-		Log.i(this.TAG, "Receiver unregistered");
-
-		super.onDestroy();
+		super.finish();
 	}
 
 	@Override
@@ -160,4 +177,5 @@ public class MainActivity extends Activity {
 			this.lastBackPressed.setToNow();
 		}
 	}
+
 }

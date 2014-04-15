@@ -13,7 +13,6 @@ import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
 import org.duckdns.raven.ttscallresponder.ttsStuff.Parameterizer;
 import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,13 +24,13 @@ import android.view.KeyEvent;
 public class MyCallReceiver extends BroadcastReceiver {
 	private static final String TAG = "MyCallReceiver";
 
-	private static List<AnsweredCall> answeredCallList = new ArrayList<AnsweredCall>();
+	private final List<AnsweredCall> answeredCallList = new ArrayList<AnsweredCall>();
 	private boolean enabled = true;
-	private final Activity parent;
+	private final Context parent;
 	private CallTTSEngine ttsEngine;
 	private final CalendarAccess calendarAccess;
 
-	public MyCallReceiver(Activity parent) {
+	public MyCallReceiver(Context parent) {
 		this.parent = parent;
 		this.ttsEngine = new CallTTSEngine(parent);
 		this.calendarAccess = new CalendarAccess(parent);
@@ -53,12 +52,12 @@ public class MyCallReceiver extends BroadcastReceiver {
 		return this.enabled;
 	}
 
-	public static List<AnsweredCall> getAnsweredCallList() {
-		return MyCallReceiver.answeredCallList;
+	public List<AnsweredCall> getAnsweredCallList() {
+		return this.answeredCallList;
 	}
 
-	public static void clearAnsweredCallList() {
-		MyCallReceiver.answeredCallList.clear();
+	public void clearAnsweredCallList() {
+		this.answeredCallList.clear();
 	}
 
 	public void stopTtsEngine() {
@@ -96,8 +95,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			this.answerPhoneHeadsethook(context, intent);
-			MyCallReceiver.answeredCallList.add(new AnsweredCall(intent
-					.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+			this.answeredCallList.add(new AnsweredCall(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			return;
 		}
 

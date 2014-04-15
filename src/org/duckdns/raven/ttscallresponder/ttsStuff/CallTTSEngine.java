@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
 
-import android.app.Activity;
+import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 
@@ -13,7 +13,7 @@ public class CallTTSEngine implements OnInitListener {
 	private TextToSpeech ttsEngine = null;
 	private boolean isTtsEngineUp = false;
 
-	public CallTTSEngine(Activity parent) {
+	public CallTTSEngine(Context parent) {
 		this.ttsEngine = new TextToSpeech(parent, this);
 	}
 

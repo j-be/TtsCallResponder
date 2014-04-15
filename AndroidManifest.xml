@@ -50,6 +50,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
         </activity>
+
+        <service android:name="org.duckdns.raven.ttscallresponder.TtsCallResponderService"/>
+
     </application>
 
 </manifest>
