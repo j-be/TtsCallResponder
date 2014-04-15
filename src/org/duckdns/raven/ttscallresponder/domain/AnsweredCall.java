@@ -11,8 +11,6 @@ public class AnsweredCall extends Listable {
 	private Time callTime = null;
 
 	public AnsweredCall(String caller) {
-		this.addId();
-
 		this.caller = caller;
 		this.callTime = new Time();
 
