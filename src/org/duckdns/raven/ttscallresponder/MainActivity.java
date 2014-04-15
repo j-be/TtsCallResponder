@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
 			MainActivity.this.applyCallReceiverState();
-			MainActivity.this.callWasAnswered();
+			MainActivity.this.updateNumberOfAnsweredCalls();
 		}
 
 		@Override
@@ -96,6 +96,8 @@ public class MainActivity extends Activity {
 		// Initialize UI elements
 		if (this.mCallResponderService != null)
 			this.applyCallReceiverState();
+
+		this.updateNumberOfAnsweredCalls();
 	}
 
 	private void applyCallReceiverState() {
@@ -106,8 +108,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	public void callWasAnswered() {
-		// TODO Number of answered calls
+	public void updateNumberOfAnsweredCalls() {
 		this.numberOfAnsweredCalls.setText("" + PersistentAnsweredCallList.getSingleton(this.getFilesDir()).getCount());
 	}
 
@@ -157,6 +158,12 @@ public class MainActivity extends Activity {
 	/* ----- Closing the app ----- */
 
 	@Override
+	protected void onDestroy() {
+		this.unbindService(this.mConnection);
+		super.onDestroy();
+	}
+
+	@Override
 	public void finish() {
 		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
 		this.mCallResponderService.stopService(stopCallReceiverService);
@@ -178,5 +185,4 @@ public class MainActivity extends Activity {
 			this.lastBackPressed.setToNow();
 		}
 	}
-
 }

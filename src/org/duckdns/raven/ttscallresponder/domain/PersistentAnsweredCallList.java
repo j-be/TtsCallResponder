@@ -4,7 +4,11 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import android.util.Log;
+
 public class PersistentAnsweredCallList extends AbstractPersistentList<AnsweredCall> {
+
+	private static final String TAG = "PersistentAnsweredCallList";
 
 	private static PersistentAnsweredCallList singleton = null;
 
@@ -17,6 +21,8 @@ public class PersistentAnsweredCallList extends AbstractPersistentList<AnsweredC
 
 	protected PersistentAnsweredCallList(File directory) {
 		super(directory);
+
+		Log.i(TAG, "Number of items: " + this.getCount());
 	}
 
 	@Override
@@ -41,5 +47,7 @@ public class PersistentAnsweredCallList extends AbstractPersistentList<AnsweredC
 	public void add(AnsweredCall listItem) {
 		super.add(listItem);
 		this.savePersistentList();
+
+		Log.i(TAG, "Nubmer of items: " + this.getCount());
 	}
 }

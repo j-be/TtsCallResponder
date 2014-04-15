@@ -27,11 +27,15 @@ public abstract class AbstractPersistentList<T extends Listable> {
 
 	abstract protected String getFileName();
 
+	protected void dataHasChanged() {
+		this.changed = true;
+	}
+
 	public void add(T listItem) {
 		boolean found = false;
 		T iterItem = null;
 
-		this.changed = true;
+		this.dataHasChanged();
 
 		if (listItem.getId() < 0) {
 			Log.d(TAG, "Adding new");
@@ -52,7 +56,7 @@ public abstract class AbstractPersistentList<T extends Listable> {
 
 	public void clear() {
 		this.list.clear();
-		this.changed = true;
+		this.dataHasChanged();
 	}
 
 	public void discardChanges() {
