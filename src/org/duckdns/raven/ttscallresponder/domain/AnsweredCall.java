@@ -8,13 +8,14 @@ public class AnsweredCall extends Listable {
 	private static long maxId = -1;
 
 	private String caller = null;
-	private Time callTime = null;
+	private long callTime = -1;
 
 	public AnsweredCall(String caller) {
+		Time now = new Time();
 		this.caller = caller;
-		this.callTime = new Time();
 
-		this.callTime.setToNow();
+		now.setToNow();
+		this.callTime = now.toMillis(false);
 	}
 
 	/* ----- Getters/Setters ----- */
@@ -28,11 +29,15 @@ public class AnsweredCall extends Listable {
 	}
 
 	public Time getCallTime() {
-		return this.callTime;
+		Time ret = new Time();
+
+		ret.set(this.callTime);
+
+		return ret;
 	}
 
 	public void setCallTime(Time callTime) {
-		this.callTime = callTime;
+		this.callTime = callTime.toMillis(false);
 	}
 
 	@Override
