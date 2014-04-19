@@ -1,4 +1,4 @@
-package org.duckdns.raven.ttscallresponder.testStuff;
+package org.duckdns.raven.ttscallresponder.ttsStuff;
 
 import org.duckdns.raven.ttscallresponder.domain.AnsweredCall;
 import org.duckdns.raven.ttscallresponder.domain.PersistentAnsweredCallList;
@@ -6,8 +6,6 @@ import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
 import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
-import org.duckdns.raven.ttscallresponder.ttsStuff.CallTTSEngine;
-import org.duckdns.raven.ttscallresponder.ttsStuff.Parameterizer;
 import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
 import android.content.BroadcastReceiver;
@@ -18,7 +16,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
-public class MyCallReceiver extends BroadcastReceiver {
+public class TtsCallReceiver extends BroadcastReceiver {
 	private static final String TAG = "MyCallReceiver";
 
 	private boolean enabled = true;
@@ -26,7 +24,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 	private CallTTSEngine ttsEngine;
 	private final CalendarAccess calendarAccess;
 
-	public MyCallReceiver(Context parent) {
+	public TtsCallReceiver(Context parent) {
 		this.parent = parent;
 		this.ttsEngine = new CallTTSEngine(parent);
 		this.calendarAccess = new CalendarAccess(parent);
@@ -63,9 +61,9 @@ public class MyCallReceiver extends BroadcastReceiver {
 		PreparedResponse currentPreparedResponse = preparedResponseList.getItemWithId(SettingsManager
 				.getCurrentPreparedResponseId());
 
-		Log.d(MyCallReceiver.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
+		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
 		if (currentPreparedResponse == null) {
-			Log.d(MyCallReceiver.TAG, "No current response set");
+			Log.d(TtsCallReceiver.TAG, "No current response set");
 			return null;
 		}
 
@@ -85,6 +83,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 			this.answerPhoneHeadsethook(context, intent);
 			PersistentAnsweredCallList.getSingleton(null).add(
 					new AnsweredCall(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+
 			return;
 		}
 
@@ -94,7 +93,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 			parameterizer = new Parameterizer(this.calendarAccess);
 			textToSpeak = parameterizer.parameterizeText(this.getCurrentPreparedResponse());
 
-			Log.d(MyCallReceiver.TAG, "Speaking: " + textToSpeak);
+			Log.d(TtsCallReceiver.TAG, "Speaking: " + textToSpeak);
 			this.ttsEngine.speak(textToSpeak);
 
 			return;
@@ -107,7 +106,7 @@ public class MyCallReceiver extends BroadcastReceiver {
 		audioManager.setMode(AudioManager.MODE_NORMAL);
 		audioManager.setStreamMute(AudioManager.STREAM_VOICE_CALL, true);
 		audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, -1, AudioManager.FLAG_SHOW_UI);
-		Log.i(MyCallReceiver.TAG, "Voice-call volume: " + audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL));
+		Log.i(TtsCallReceiver.TAG, "Voice-call volume: " + audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL));
 	}
 
 	/**
@@ -121,14 +120,14 @@ public class MyCallReceiver extends BroadcastReceiver {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-			Log.d(MyCallReceiver.TAG, "Incoming call from: " + number);
+			Log.d(TtsCallReceiver.TAG, "Incoming call from: " + number);
 			Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
 			buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
 			try {
 				context.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
-				Log.d(MyCallReceiver.TAG, "ACTION_MEDIA_BUTTON broadcasted...");
+				Log.d(TtsCallReceiver.TAG, "ACTION_MEDIA_BUTTON broadcasted...");
 			} catch (Exception e) {
-				Log.d(MyCallReceiver.TAG, "Catch block of ACTION_MEDIA_BUTTON broadcast !");
+				Log.d(TtsCallReceiver.TAG, "Catch block of ACTION_MEDIA_BUTTON broadcast !");
 			}
 
 			Intent headSetUnPluggedintent = new Intent(Intent.ACTION_HEADSET_PLUG);
@@ -142,16 +141,16 @@ public class MyCallReceiver extends BroadcastReceiver {
 			// TODO: Should we require a permission?
 			try {
 				context.sendOrderedBroadcast(headSetUnPluggedintent, null);
-				Log.d(MyCallReceiver.TAG, "ACTION_HEADSET_PLUG broadcasted ...");
+				Log.d(TtsCallReceiver.TAG, "ACTION_HEADSET_PLUG broadcasted ...");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
-				Log.d(MyCallReceiver.TAG, "Catch block of ACTION_HEADSET_PLUG broadcast");
-				Log.d(MyCallReceiver.TAG, "Call Answered From Catch Block !!");
+				Log.d(TtsCallReceiver.TAG, "Catch block of ACTION_HEADSET_PLUG broadcast");
+				Log.d(TtsCallReceiver.TAG, "Call Answered From Catch Block !!");
 			}
-			Log.d(MyCallReceiver.TAG, "Answered incoming call from: " + number);
+			Log.d(TtsCallReceiver.TAG, "Answered incoming call from: " + number);
 		}
-		Log.d(MyCallReceiver.TAG, "Call Answered using headsethook");
+		Log.d(TtsCallReceiver.TAG, "Call Answered using headsethook");
 	}
 
 }

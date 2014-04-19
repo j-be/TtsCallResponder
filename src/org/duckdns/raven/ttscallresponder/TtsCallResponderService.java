@@ -1,6 +1,6 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresponder.testStuff.MyCallReceiver;
+import org.duckdns.raven.ttscallresponder.ttsStuff.TtsCallReceiver;
 
 import android.app.Service;
 import android.content.Intent;
@@ -13,9 +13,9 @@ public class TtsCallResponderService extends Service {
 	private final static String TAG = "TtsCallResponderService";
 	public static final String EXTRA_KEY_RECEIVER_ENABLED = "receiverEnabled";
 
-	private MyCallReceiver callReceiver = null;
+	private TtsCallReceiver callReceiver = null;
 
-	public MyCallReceiver getCallReceiver() {
+	public TtsCallReceiver getCallReceiver() {
 		return this.callReceiver;
 	}
 
@@ -24,7 +24,7 @@ public class TtsCallResponderService extends Service {
 		Log.i(TtsCallResponderService.TAG, "Enter on Create");
 		super.onCreate();
 
-		this.callReceiver = new MyCallReceiver(this);
+		this.callReceiver = new TtsCallReceiver(this);
 
 		// Register call receiver
 		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
