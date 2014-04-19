@@ -4,7 +4,6 @@ import org.duckdns.raven.ttscallresponder.domain.AnsweredCall;
 import org.duckdns.raven.ttscallresponder.domain.PersistentAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
-import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
 import org.duckdns.raven.ttscallresponder.userDataAccess.CalendarAccess;
 
@@ -34,12 +33,10 @@ public class TtsCallReceiver extends BroadcastReceiver {
 
 	public void disable() {
 		this.enabled = false;
-		CallReceiverNotificationService.stateChanged(this.isEnabled());
 	}
 
 	public void enable() {
 		this.enabled = true;
-		CallReceiverNotificationService.stateChanged(this.isEnabled());
 	}
 
 	public boolean isEnabled() {

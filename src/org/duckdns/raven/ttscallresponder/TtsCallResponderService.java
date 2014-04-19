@@ -1,8 +1,11 @@
 package org.duckdns.raven.ttscallresponder;
 
+import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationFactory;
 import org.duckdns.raven.ttscallresponder.ttsStuff.TtsCallReceiver;
 
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
@@ -15,6 +18,9 @@ public class TtsCallResponderService extends Service {
 
 	private TtsCallReceiver callReceiver = null;
 
+	private NotificationManager notificationManager = null;
+	private static final int NOTIFICAITON_ID = 129;
+
 	public TtsCallReceiver getCallReceiver() {
 		return this.callReceiver;
 	}
@@ -24,6 +30,8 @@ public class TtsCallResponderService extends Service {
 		Log.i(TtsCallResponderService.TAG, "Enter on Create");
 		super.onCreate();
 
+		this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+		CallReceiverNotificationFactory.setContext(this);
 		this.callReceiver = new TtsCallReceiver(this);
 
 		// Register call receiver
@@ -35,12 +43,22 @@ public class TtsCallResponderService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i(TAG, "Service started");
 
+		this.notificationManager.notify(NOTIFICAITON_ID,
+				CallReceiverNotificationFactory.buildCallReceiverNotification(true));
 		return START_STICKY;
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		return new LocalBinder();
+	}
+
+	@Override
+	public boolean onUnbind(Intent intent) {
+		Log.i(TAG, "Service unbound");
+
+		this.notificationManager.cancel(NOTIFICAITON_ID);
+		return super.onUnbind(intent);
 	}
 
 	@Override
@@ -51,6 +69,9 @@ public class TtsCallResponderService extends Service {
 			this.callReceiver = null;
 		}
 		Log.i(TtsCallResponderService.TAG, "Receiver unregistered");
+
+		this.notificationManager.notify(NOTIFICAITON_ID,
+				CallReceiverNotificationFactory.buildCallReceiverNotification(false));
 
 		return super.stopService(name);
 	}

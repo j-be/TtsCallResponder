@@ -4,7 +4,6 @@ import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallL
 import org.duckdns.raven.ttscallresponder.domain.PersistentAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
-import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationService;
 import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
 import org.duckdns.raven.ttscallresponder.settings.ActivitySettings;
 import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
@@ -63,7 +62,6 @@ public class MainActivity extends Activity {
 
 		// Instantiate needed stuff
 		SettingsManager.setContext(this);
-		CallReceiverNotificationService.init(this);
 
 		// Start responder service
 		Intent startCallReceiverService = new Intent(this, TtsCallResponderService.class);
@@ -104,7 +102,6 @@ public class MainActivity extends Activity {
 		if (this.mCallResponderService != null) {
 			boolean callReceiverEnabled = this.mCallResponderService.getCallReceiver().isEnabled();
 			this.swiAutoRespond.setChecked(callReceiverEnabled);
-			CallReceiverNotificationService.stateChanged(callReceiverEnabled);
 		}
 	}
 
@@ -167,7 +164,6 @@ public class MainActivity extends Activity {
 	public void finish() {
 		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
 		this.mCallResponderService.stopService(stopCallReceiverService);
-		CallReceiverNotificationService.removeNotfication();
 		super.finish();
 	}
 
