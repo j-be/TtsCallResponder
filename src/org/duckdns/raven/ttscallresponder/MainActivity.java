@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private final String TAG = "MainActivity";
+	private final static String TAG = "MainActivity";
 
 	/* ----- UI elements ----- */
 	private Switch swiAutoRespond = null;
@@ -42,12 +42,12 @@ public class MainActivity extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
 			MainActivity.this.applyCallReceiverState();
-			MainActivity.this.updateNumberOfAnsweredCalls();
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName className) {
 			MainActivity.this.mCallResponderService = null;
+			MainActivity.this.applyCallReceiverState();
 		}
 	};
 
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i(this.TAG, "Enter on Create");
+		Log.i(MainActivity.TAG, "Enter on Create");
 
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
@@ -63,9 +63,9 @@ public class MainActivity extends Activity {
 		// Instantiate needed stuff
 		SettingsManager.setContext(this);
 
-		// Start responder service
-		Intent startCallReceiverService = new Intent(this, TtsCallResponderService.class);
-		this.bindService(startCallReceiverService, this.mConnection, BIND_AUTO_CREATE);
+		// Bind responder service
+		Intent bindCallReceiverService = new Intent(this, TtsCallResponderService.class);
+		this.bindService(bindCallReceiverService, this.mConnection, BIND_AUTO_CREATE);
 
 		// Get access to UI elements
 		this.swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
@@ -74,28 +74,34 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		this.getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
 	public void onResume() {
 		super.onResume();
 
 		String currentTitle = null;
 
+		// Retrieve data
 		PreparedResponse currentPreparedResponse = PersistentPreparedResponseList.getSingleton(this.getFilesDir())
 				.getItemWithId(SettingsManager.getCurrentPreparedResponseId());
-
-		Log.d(this.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
 		if (currentPreparedResponse == null) {
-			Log.d(this.TAG, "No current response set");
+			Log.d(MainActivity.TAG, "No current response set");
 			currentTitle = "<None>";
 		} else
 			currentTitle = currentPreparedResponse.getTitle();
 
-		this.currentPreparedResponseTitle.setText(currentTitle);
-
 		// Initialize UI elements
+		this.currentPreparedResponseTitle.setText(currentTitle);
 		this.applyCallReceiverState();
-
 		this.updateNumberOfAnsweredCalls();
 	}
+
+	/* ----- Update UI ----- */
 
 	private void applyCallReceiverState() {
 		boolean running = false;
@@ -110,13 +116,6 @@ public class MainActivity extends Activity {
 		this.numberOfAnsweredCalls.setText("" + PersistentAnsweredCallList.getSingleton(this.getFilesDir()).getCount());
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		this.getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
 	/* ----- Service control ----- */
 
 	private void startCallReceiverService() {
@@ -129,13 +128,11 @@ public class MainActivity extends Activity {
 		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
 		this.mCallResponderService.stopService(stopCallReceiverService);
 	}
+
 	/* ----- User interactions ----- */
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			Intent switchToSettings = new Intent(this, ActivitySettings.class);
@@ -169,14 +166,14 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
+		Log.i(MainActivity.TAG, "Enter onDestroy");
 		this.unbindService(this.mConnection);
 		super.onDestroy();
 	}
 
 	@Override
 	public void finish() {
-		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
-		this.mCallResponderService.stopService(stopCallReceiverService);
+		this.stopCallReceiverService();
 		super.finish();
 	}
 

@@ -16,9 +16,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 public class TtsCallReceiver extends BroadcastReceiver {
-	private static final String TAG = "MyCallReceiver";
+	private static final String TAG = "TtsCallReceiver";
 
-	private boolean enabled = true;
 	private final Context parent;
 	private CallTTSEngine ttsEngine;
 	private final CalendarAccess calendarAccess;
@@ -30,18 +29,6 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	}
 
 	/* ----- Getters/Setters ----- */
-
-	public void disable() {
-		this.enabled = false;
-	}
-
-	public void enable() {
-		this.enabled = true;
-	}
-
-	public boolean isEnabled() {
-		return this.enabled;
-	}
 
 	public void stopTtsEngine() {
 		if (this.ttsEngine != null) {
@@ -69,12 +56,14 @@ public class TtsCallReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (!this.enabled)
-			return;
-
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		String textToSpeak = null;
 		Parameterizer parameterizer = null;
+
+		if (this.ttsEngine == null) {
+			Log.d(TAG, "TTS engine is not running - doing nothing!");
+			return;
+		}
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
 			this.answerPhoneHeadsethook(context, intent);

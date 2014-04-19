@@ -13,26 +13,23 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class TtsCallResponderService extends Service {
-	private final static String TAG = "TtsCallResponderService";
-	public static final String EXTRA_KEY_RECEIVER_ENABLED = "receiverEnabled";
-
-	private TtsCallReceiver callReceiver = null;
-
-	private NotificationManager notificationManager = null;
+	private static final String TAG = "TtsCallResponderService";
 	private static final int NOTIFICAITON_ID = 129;
 
-	public TtsCallReceiver getCallReceiver() {
-		return this.callReceiver;
-	}
+	private TtsCallReceiver callReceiver = null;
+	private NotificationManager notificationManager = null;
 
 	@Override
 	public void onCreate() {
 		Log.i(TtsCallResponderService.TAG, "Enter on Create");
 		super.onCreate();
 
+		// Instantiate notification stuff
 		this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		CallReceiverNotificationFactory.setContext(this);
 	}
+
+	/* ----- Lifecycle control ----- */
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -45,24 +42,25 @@ public class TtsCallResponderService extends Service {
 
 		this.notificationManager.notify(NOTIFICAITON_ID,
 				CallReceiverNotificationFactory.buildCallReceiverNotification(true));
+
 		return START_STICKY;
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
+		Log.i(TAG, "Service bound");
 		return new LocalBinder();
 	}
 
 	@Override
 	public boolean onUnbind(Intent intent) {
 		Log.i(TAG, "Service unbound");
-
-		this.notificationManager.cancel(NOTIFICAITON_ID);
 		return super.onUnbind(intent);
 	}
 
 	@Override
 	public boolean stopService(Intent name) {
+		Log.i(TAG, "Service stopped");
 		if (this.callReceiver != null) {
 			this.unregisterReceiver(this.callReceiver);
 			this.callReceiver.stopTtsEngine();
@@ -70,11 +68,12 @@ public class TtsCallResponderService extends Service {
 		}
 		Log.i(TtsCallResponderService.TAG, "Receiver unregistered");
 
-		this.notificationManager.notify(NOTIFICAITON_ID,
-				CallReceiverNotificationFactory.buildCallReceiverNotification(false));
+		this.notificationManager.cancel(NOTIFICAITON_ID);
 
 		return super.stopService(name);
 	}
+
+	/* ----- Helpers ----- */
 
 	public boolean isRunning() {
 		return this.callReceiver != null;
