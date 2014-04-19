@@ -1,6 +1,5 @@
 package org.duckdns.raven.ttscallresponder.notification;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
@@ -15,17 +14,15 @@ public class CallReceiverNotificationService {
 	private CallReceiverNotificationService() {
 	}
 
-	public static void init(Activity activity) {
-		CallReceiverNotificationFactory.setActivity(activity);
+	public static void init(Context context) {
+		CallReceiverNotificationFactory.setContext(context);
 
-		mNotificationManager = (NotificationManager) activity
-				.getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	private static void updateNotification(boolean enabled) {
 		mNotificationManager.notify(NOTIFICAITON_ID,
-				CallReceiverNotificationFactory
-						.buildCallReceiverNotification(enabled));
+				CallReceiverNotificationFactory.buildCallReceiverNotification(enabled));
 	}
 
 	public static void stateChanged(boolean enabled) {
