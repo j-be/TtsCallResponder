@@ -32,16 +32,16 @@ public class TtsCallResponderService extends Service {
 
 		this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		CallReceiverNotificationFactory.setContext(this);
-		this.callReceiver = new TtsCallReceiver(this);
-
-		// Register call receiver
-		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
-		Log.i(TAG, "Receiver registered");
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i(TAG, "Service started");
+
+		// Register call receiver
+		this.callReceiver = new TtsCallReceiver(this);
+		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
+		Log.i(TAG, "Receiver registered");
 
 		this.notificationManager.notify(NOTIFICAITON_ID,
 				CallReceiverNotificationFactory.buildCallReceiverNotification(true));
@@ -74,6 +74,10 @@ public class TtsCallResponderService extends Service {
 				CallReceiverNotificationFactory.buildCallReceiverNotification(false));
 
 		return super.stopService(name);
+	}
+
+	public boolean isRunning() {
+		return this.callReceiver != null;
 	}
 
 	public class LocalBinder extends Binder {

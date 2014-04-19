@@ -92,17 +92,18 @@ public class MainActivity extends Activity {
 		this.currentPreparedResponseTitle.setText(currentTitle);
 
 		// Initialize UI elements
-		if (this.mCallResponderService != null)
-			this.applyCallReceiverState();
+		this.applyCallReceiverState();
 
 		this.updateNumberOfAnsweredCalls();
 	}
 
 	private void applyCallReceiverState() {
-		if (this.mCallResponderService != null) {
-			boolean callReceiverEnabled = this.mCallResponderService.getCallReceiver().isEnabled();
-			this.swiAutoRespond.setChecked(callReceiverEnabled);
-		}
+		boolean running = false;
+
+		if (this.mCallResponderService != null)
+			running = this.mCallResponderService.isRunning();
+
+		this.swiAutoRespond.setChecked(running);
 	}
 
 	public void updateNumberOfAnsweredCalls() {
@@ -116,6 +117,18 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	/* ----- Service control ----- */
+
+	private void startCallReceiverService() {
+		Intent startCallReceiverService = new Intent(this, TtsCallResponderService.class);
+		this.startService(startCallReceiverService);
+
+	}
+
+	private void stopCallReceiverService() {
+		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
+		this.mCallResponderService.stopService(stopCallReceiverService);
+	}
 	/* ----- User interactions ----- */
 
 	@Override
@@ -136,9 +149,9 @@ public class MainActivity extends Activity {
 		Switch swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
 
 		if (swiAutoRespond.isChecked())
-			this.mCallResponderService.getCallReceiver().enable();
+			this.startCallReceiverService();
 		else
-			this.mCallResponderService.getCallReceiver().disable();
+			this.stopCallReceiverService();
 	}
 
 	public void onShowAnsweredCallListClick(View view) {
