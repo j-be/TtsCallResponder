@@ -183,11 +183,17 @@ public class MainActivity extends Activity {
 
 		nowBackPressed.setToNow();
 
-		if (nowBackPressed.toMillis(true) - this.lastBackPressed.toMillis(true) < 5000) {
-			this.onDestroy();
+		if (this.mCallResponderService == null || !this.mCallResponderService.isRunning()) {
+			this.finish();
+			return;
+		}
+
+		if (nowBackPressed.toMillis(true) - this.lastBackPressed.toMillis(true) < 3000) {
 			this.finish();
 		} else {
-			Toast.makeText(this, "Press again to close application", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,
+					"Press \'Back\' again to stop receiving calls.\nTo keep the receiver running, use \'Home\'.",
+					Toast.LENGTH_LONG).show();
 			this.lastBackPressed.setToNow();
 		}
 	}
