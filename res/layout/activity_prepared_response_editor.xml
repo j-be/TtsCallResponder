@@ -45,13 +45,32 @@
         android:text="Calendar:"
         android:layout_marginTop="@dimen/activity_main_small_spacing" />
 
-    <Button
+    <LinearLayout
         android:id="@+id/button_chooseCalendar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Choose calendar"
+        android:orientation="vertical"
         android:layout_marginLeft="@dimen/activity_small_margin"
         android:layout_marginRight="@dimen/activity_small_margin"
-        android:layout_marginBottom="@dimen/activity_small_margin" />
+        android:layout_marginBottom="@dimen/activity_small_margin" >
+
+        <TextView
+            android:id="@+id/label_chooseCalendar"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose calendar"
+            android:gravity="center_horizontal" />
+
+        <View
+            android:id="@+id/view_calendarColor"
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:layout_marginRight="@dimen/activity_small_margin"
+            android:layout_marginBottom="@dimen/activity_small_margin"
+            android:background="#cccccc" />
+
+   </LinearLayout>
 
 </LinearLayout>

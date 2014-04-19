@@ -19,7 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ActivityPreparedResponseList extends Activity {
@@ -114,7 +116,7 @@ public class ActivityPreparedResponseList extends Activity {
 
 		final EditText title = (EditText) layout.findViewById(R.id.editText_preparedResponseTitle);
 		final EditText text = (EditText) layout.findViewById(R.id.editText_preparedResponseText);
-		final Button chooseCalendar = (Button) layout.findViewById(R.id.button_chooseCalendar);
+		final LinearLayout chooseCalendar = (LinearLayout) layout.findViewById(R.id.button_chooseCalendar);
 
 		title.setText(preparedResponse.getTitle());
 		text.setText(preparedResponse.getText());
@@ -183,14 +185,17 @@ public class ActivityPreparedResponseList extends Activity {
 		dialog.show();
 	}
 
-	private void labelCalendarChooser(Button calendarChooser, PreparedResponse preparedResponse) {
+	private void labelCalendarChooser(LinearLayout calendarChooser, PreparedResponse preparedResponse) {
 		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(preparedResponse.getCalendarId());
+
+		TextView calendarName = (TextView) calendarChooser.findViewById(R.id.label_chooseCalendar);
+		View calendartColor = calendarChooser.findViewById(R.id.view_calendarColor);
 		if (calendar == null) {
-			calendarChooser.setText("Choose calendar");
-			calendarChooser.setBackgroundColor(SettingsManager.COLOR_NO_ITEM_CHOSEN);
+			calendarName.setText("No calendar");
+			calendartColor.setBackgroundColor(SettingsManager.COLOR_NO_ITEM_CHOSEN);
 		} else {
-			calendarChooser.setText(calendar.getName());
-			calendarChooser.setBackgroundColor(calendar.getColor());
+			calendarName.setText(calendar.getName());
+			calendartColor.setBackgroundColor(calendar.getColor());
 		}
 	}
 
