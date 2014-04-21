@@ -4,6 +4,8 @@ import org.duckdns.raven.ttscallresponder.domain.common.ObjectWithId;
 
 public class TtsParameterCalendar extends ObjectWithId {
 
+	private static final long serialVersionUID = 6251650732604685857L;
+
 	private final String name;
 	private final String type;
 	private final int color;

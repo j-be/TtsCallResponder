@@ -1,15 +1,16 @@
 package org.duckdns.raven.ttscallresponder.domain.common;
 
-public abstract class ObjectWithId {
+import java.io.Serializable;
 
+public abstract class ObjectWithId implements Serializable {
 	private long id = -1;
 	private static long highestUsedId = -1;
 
+	private static final long serialVersionUID = 4348935637831361397L;
 	public ObjectWithId(long id) {
 		this.id = id;
 	}
 
-	public static final long getHighestUsedId() {
 		return ObjectWithId.highestUsedId;
 	}
 
