@@ -6,5 +6,5 @@
         android:id="@+id/action_test_tts_settings"
         android:orderInCategory="999"
         android:showAsAction="always"
-        android:title="Test" />
+        android:title="@string/menu_item_test_settings" />
 </menu>

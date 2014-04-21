@@ -8,7 +8,7 @@
         android:id="@+id/textView_headerAutoResponder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Auto Responder"
+        android:text="@string/header_main_autoresponder"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="@dimen/activity_main_big_spacing"
         android:layout_marginTop="@dimen/activity_main_small_spacing" />
@@ -30,7 +30,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/switch_answerCalls"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Number of answered calls:"
+        android:text="@string/label_number_of_answered_calls"
         android:layout_marginBottom="@dimen/activity_main_small_spacing" />
     <TextView
         android:id="@+id/textView_numberOfAnsweredCalls"
@@ -39,7 +39,7 @@
         android:layout_alignBaseline="@+id/textView_lbl_numberOfAnsweredCalls"
         android:layout_toRightOf="@+id/textView_lbl_numberOfAnsweredCalls"
         android:layout_marginLeft="@dimen/activity_main_small_spacing"
-        android:text="X"
+        android:text="@string/label_placeholder_number"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
@@ -49,7 +49,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textView_lbl_numberOfAnsweredCalls"
         android:onClick="onShowAnsweredCallListClick"
-        android:text="Show list of answered calls"
+        android:text="@string/title_activity_answered_call_list"
         android:layout_marginBottom="@dimen/activity_main_big_spacing"
         android:background="#cccccc"
         android:layout_marginLeft="@dimen/activity_small_margin"
@@ -63,7 +63,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/button_showAnsweredCallList"
         android:layout_marginTop="48dip"
-        android:text="Prepared Responses"
+        android:text="@string/header_main_response_templates"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="@dimen/activity_main_big_spacing"  />
 
@@ -74,7 +74,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textView_headerResponseTemplates"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Currently using response:"/>
+        android:text="@string/label_current_response_template"/>
     <TextView
         android:id="@+id/textView_currentResponseTemplateTitle"
         android:layout_width="wrap_content"
@@ -83,18 +83,18 @@
         android:layout_below="@id/textView_lbl_currentResponseTemplate"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:singleLine="true"
-        android:text="&quot;TITLE HERE&quot;"
+        android:text="@string/label_placeholder_text"
         android:layout_marginLeft="@dimen/activity_main_big_spacing"
         android:layout_marginBottom="@dimen/activity_main_small_spacing" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_show_response_template_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textView_currentResponseTemplateTitle"
         android:onClick="onShowResopnseTemplateList"
-        android:text="Show list of prepared responses"
+        android:text="@string/title_activity_response_template_list"
         android:background="#cccccc"
         android:layout_marginLeft="@dimen/activity_small_margin"
         android:layout_marginRight="@dimen/activity_small_margin" />

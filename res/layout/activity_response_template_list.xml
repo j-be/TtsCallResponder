@@ -28,17 +28,19 @@
             android:layout_height="fill_parent"
             android:layout_gravity="bottom|center_horizontal"
             android:src="@android:drawable/ic_menu_delete"
-            android:contentDescription="Delete"
+            android:contentDescription="@string/button_delete"
             android:onClick="onDeleteClick" />
+
         <ImageButton
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_weight="1"
             android:id="@+id/button_addResponseTemplate"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom|left"
-            android:src="@android:drawable/ic_menu_add"
-            android:contentDescription="Add"
-            android:onClick="onAddClick" />
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/button_add"
+            android:onClick="onAddClick"
+            android:src="@android:drawable/ic_menu_add" />
+
     </LinearLayout>
 </LinearLayout>
