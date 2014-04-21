@@ -9,6 +9,7 @@ public class Call extends SerializeableListItem {
 
 	private String callingNumber = null;
 	private long callTime = -1;
+	private static long highestUsedId = -1;
 
 	public Call(String callingNumber) {
 		super(-1);
@@ -44,6 +45,20 @@ public class Call extends SerializeableListItem {
 	@Override
 	public boolean update(SerializeableListItem newItem) {
 		return false;
+	}
+
+	@Override
+	public void addId() {
+		Call.highestUsedId++;
+		this.setId(Call.highestUsedId);
+	}
+
+	public static final long getHighestUsedId() {
+		return Call.highestUsedId;
+	}
+
+	public static final void setHighestUsedId(long highestUsedId) {
+		Call.highestUsedId = highestUsedId;
 	}
 
 }

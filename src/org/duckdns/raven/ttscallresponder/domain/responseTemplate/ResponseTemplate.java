@@ -10,6 +10,8 @@ public class ResponseTemplate extends SerializeableListItem {
 
 	private static final long serialVersionUID = 2242526560402451991L;
 
+	private static long highestUsedId = -1;
+
 	private String title = "";
 	private String text = "";
 	private long calendarId = -1;
@@ -86,5 +88,19 @@ public class ResponseTemplate extends SerializeableListItem {
 			return false;
 
 		return true;
+	}
+
+	@Override
+	public void addId() {
+		ResponseTemplate.highestUsedId++;
+		this.setId(ResponseTemplate.highestUsedId);
+	}
+
+	public static final long getHighestUsedId() {
+		return ResponseTemplate.highestUsedId;
+	}
+
+	public static final void setHighestUsedId(long highestUsedId) {
+		ResponseTemplate.highestUsedId = highestUsedId;
 	}
 }

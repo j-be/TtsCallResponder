@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
-import org.duckdns.raven.ttscallresponder.domain.common.ObjectWithId;
 
 import android.util.Log;
 
@@ -58,7 +57,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		Iterator<ResponseTemplate> iter = ret.iterator();
 		while (iter.hasNext())
 			maxId = Math.max(maxId, iter.next().getId());
-		ObjectWithId.setHighestUsedId(maxId);
+		ResponseTemplate.setHighestUsedId(maxId);
 
 		return ret;
 	}
