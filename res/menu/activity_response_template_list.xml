@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.duckdns.raven.ttscallresoponder.PreparedTextList" >
+    tools:context="org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList" >
 
     <item
         android:id="@+id/action_done"

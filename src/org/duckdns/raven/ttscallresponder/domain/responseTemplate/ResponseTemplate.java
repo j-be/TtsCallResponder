@@ -4,9 +4,9 @@ import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
 
 import android.util.Log;
 
-public class PreparedResponse extends SerializeableListItem {
+public class ResponseTemplate extends SerializeableListItem {
 
-	private final static String TAG = "PreparedResponse";
+	private final static String TAG = "ResponseTemplate";
 
 	private static final long serialVersionUID = 2242526560402451991L;
 
@@ -15,14 +15,14 @@ public class PreparedResponse extends SerializeableListItem {
 	private long calendarId = -1;
 	private boolean selected = false;
 
-	public PreparedResponse(String title, String text, long calendarId) {
+	public ResponseTemplate(String title, String text, long calendarId) {
 		super(-1);
 		this.title = title;
 		this.text = text;
 		this.calendarId = calendarId;
 	}
 
-	public PreparedResponse() {
+	public ResponseTemplate() {
 		this("", "", -1);
 	}
 
@@ -60,11 +60,11 @@ public class PreparedResponse extends SerializeableListItem {
 
 	@Override
 	public boolean update(SerializeableListItem newListable) {
-		Log.i(PreparedResponse.TAG, "Updating " + this.getId());
-		PreparedResponse newValue = null;
+		Log.i(ResponseTemplate.TAG, "Updating " + this.getId());
+		ResponseTemplate newValue = null;
 
-		if (newListable instanceof PreparedResponse)
-			newValue = (PreparedResponse) newListable;
+		if (newListable instanceof ResponseTemplate)
+			newValue = (ResponseTemplate) newListable;
 
 		if (!newValue.isValid())
 			return false;
@@ -75,7 +75,7 @@ public class PreparedResponse extends SerializeableListItem {
 		this.title = newValue.title;
 		this.calendarId = newValue.calendarId;
 
-		Log.i(PreparedResponse.TAG, "Updated");
+		Log.i(ResponseTemplate.TAG, "Updated");
 		return true;
 	}
 

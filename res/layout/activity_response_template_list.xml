@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <ListView
-        android:id="@+id/list_prepared_responses"
+        android:id="@+id/list_responseTemplates"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -23,7 +23,7 @@
         <ImageButton
             android:background="?android:attr/selectableItemBackground"
             android:layout_weight="1"
-            android:id="@+id/button_deletePreparedResponse"
+            android:id="@+id/button_deleteResponseTemplate"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom|center_horizontal"
@@ -33,7 +33,7 @@
         <ImageButton
             android:background="?android:attr/selectableItemBackground"
             android:layout_weight="1"
-            android:id="@+id/button_addPreparedResponse"
+            android:id="@+id/button_addResponseTemplate"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom|left"

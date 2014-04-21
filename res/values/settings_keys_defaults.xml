@@ -4,11 +4,11 @@
     <string name="key_settings_tts_engine_speech_rate">ttsSpeechRate</string>
     <string name="key_settings_tts_engine_pitch">ttsPitch</string>
     <string name="key_settings_tts_engine_voice">ttsVoice</string>
-    <string name="key_settings_current_prepared_response">currentPreparedResponse</string>
+    <string name="key_settings_current_response_template">currentResponseTemplate</string>
 
     <!-- Settings defaults -->
     <item type="fraction" format="float" name="default_settings_tts_engine_speech_rate">0.5</item>
     <item type="fraction" format="float" name="default_settings_tts_engine_pitch">0.5</item>
-    <item type="integer" format="integer" name="default_settings_current_prepared_response">-1</item>
+    <item type="integer" format="integer" name="default_settings_current_response_template">-1</item>
     <string name="default_settings_tts_engine_voice">eng-USA</string>
 </resources>

@@ -1,6 +1,6 @@
 package org.duckdns.raven.ttscallresponder.ui.responseTemplates;
 
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.util.Log;
 import android.view.View;
@@ -11,16 +11,16 @@ public class OnSelectedClickListener implements OnClickListener {
 
 	private final static String TAG = "OnSelectedClickListener";
 
-	private PreparedResponse preparedResponse = null;
+	private ResponseTemplate responseTemplate = null;
 
-	public OnSelectedClickListener(PreparedResponse preparedResponse) {
-		this.preparedResponse = preparedResponse;
+	public OnSelectedClickListener(ResponseTemplate responseTemplate) {
+		this.responseTemplate = responseTemplate;
 	}
 
 	@Override
 	public void onClick(View view) {
 		CheckBox selected = (CheckBox) view;
-		this.preparedResponse.setSelected(selected.isChecked());
-		Log.i(TAG, "Selected " + preparedResponse.getId());
+		this.responseTemplate.setSelected(selected.isChecked());
+		Log.i(TAG, "Selected " + this.responseTemplate.getId());
 	}
 }

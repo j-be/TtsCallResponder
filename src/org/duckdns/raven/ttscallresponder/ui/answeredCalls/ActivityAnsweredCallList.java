@@ -50,7 +50,7 @@ public class ActivityAnsweredCallList extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		this.getMenuInflater().inflate(R.menu.answered_call_list, menu);
+		this.getMenuInflater().inflate(R.menu.activity_answered_call_list, menu);
 		return true;
 	}
 

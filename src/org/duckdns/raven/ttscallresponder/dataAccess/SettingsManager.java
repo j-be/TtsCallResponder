@@ -38,18 +38,18 @@ public class SettingsManager {
 	private SettingsManager() {
 	}
 
-	public static long getCurrentPreparedResponseId() {
+	public static long getCurrentResponseTemplateId() {
 		return SettingsManager.settings
 				.getLong(
 						SettingsManager.context.getResources().getString(
-								R.string.key_settings_current_prepared_response), SettingsManager.context
-								.getResources().getInteger(R.integer.default_settings_current_prepared_response));
+								R.string.key_settings_current_response_template), SettingsManager.context
+								.getResources().getInteger(R.integer.default_settings_current_response_template));
 	}
 
-	public static void setCurrentPreparedResponseId(long id) {
+	public static void setCurrentResponseTemplateId(long id) {
 		SharedPreferences.Editor editor = SettingsManager.settings.edit();
 		editor.putLong(SettingsManager.context.getResources()
-				.getString(R.string.key_settings_current_prepared_response), id);
+				.getString(R.string.key_settings_current_response_template), id);
 		editor.commit();
 	}
 

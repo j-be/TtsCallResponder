@@ -3,8 +3,8 @@ package org.duckdns.raven.ttscallresponder.ui.responseTemplates;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentPreparedResponseList;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendar;
 
 import android.app.Activity;
@@ -26,14 +26,12 @@ import android.widget.Toast;
 
 public class ActivityResponseTemplateList extends Activity {
 
-	private final static String TAG = "ActivityPreparedResponseList";
-
-	public static final String INTENT_KEY_EDIT_PREPARED_RESPONSE = "preparedResponseToEdit";
+	private final static String TAG = "ActivityResponseTemplateList";
 
 	CalendarAccess calendarAccess = null;
 	private UserCalendarListAdapter userCalendarListAdapter = null;
 
-	private PersistentPreparedResponseList persistentList = null;
+	private PersistentResponseTemplateList persistentList = null;
 	private ResponseTemplateListAdapter adapter = null;
 
 	@Override
@@ -41,14 +39,14 @@ public class ActivityResponseTemplateList extends Activity {
 		Log.i(ActivityResponseTemplateList.TAG, "Enter on Create");
 
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.activity_prepared_response_list);
+		this.setContentView(R.layout.activity_response_template_list);
 
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
-		ListView prepareResponsesListView = (ListView) this.findViewById(R.id.list_prepared_responses);
-		this.persistentList = PersistentPreparedResponseList.getSingleton(this.getFilesDir());
+		ListView responseTemplatesListView = (ListView) this.findViewById(R.id.list_responseTemplates);
+		this.persistentList = PersistentResponseTemplateList.getSingleton(this.getFilesDir());
 		this.adapter = new ResponseTemplateListAdapter(this, this.persistentList.getPersistentList());
-		prepareResponsesListView.setAdapter(this.adapter);
+		responseTemplatesListView.setAdapter(this.adapter);
 
 		this.calendarAccess = new CalendarAccess(this);
 		this.userCalendarListAdapter = new UserCalendarListAdapter(this);
@@ -64,7 +62,7 @@ public class ActivityResponseTemplateList extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		this.getMenuInflater().inflate(R.menu.prepared_response_list, menu);
+		this.getMenuInflater().inflate(R.menu.activity_response_template_list, menu);
 		return true;
 	}
 
@@ -87,8 +85,8 @@ public class ActivityResponseTemplateList extends Activity {
 	}
 
 	public void onAddClick(View view) {
-		PreparedResponse newPreparedResponse = new PreparedResponse();
-		this.showEditorDialog(newPreparedResponse);
+		ResponseTemplate newResponseTemplate = new ResponseTemplate();
+		this.showEditorDialog(newResponseTemplate);
 	}
 
 	public void onDeleteClick(View view) {
@@ -97,30 +95,30 @@ public class ActivityResponseTemplateList extends Activity {
 		this.adapter.notifyDataSetChanged();
 	}
 
-	public void onPreparedResponseClick(View view) {
-		PreparedResponse preparedResponse = null;
-		if (view.getTag() instanceof PreparedResponse)
-			preparedResponse = (PreparedResponse) view.getTag();
+	public void onResponseTemplateClick(View view) {
+		ResponseTemplate responseTemplate = null;
+		if (view.getTag() instanceof ResponseTemplate)
+			responseTemplate = (ResponseTemplate) view.getTag();
 
-		this.showEditorDialog(preparedResponse);
+		this.showEditorDialog(responseTemplate);
 
 	}
 
-	private void showEditorDialog(final PreparedResponse preparedResponse) {
-		if (preparedResponse == null)
+	private void showEditorDialog(final ResponseTemplate responseTemplate) {
+		if (responseTemplate == null)
 			return;
 
 		// Preparing views
 		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.activity_prepared_response_editor, null);
+		View layout = inflater.inflate(R.layout.activity_response_template_editor, null);
 
-		final EditText title = (EditText) layout.findViewById(R.id.editText_preparedResponseTitle);
-		final EditText text = (EditText) layout.findViewById(R.id.editText_preparedResponseText);
+		final EditText title = (EditText) layout.findViewById(R.id.editText_responseTemplateTitle);
+		final EditText text = (EditText) layout.findViewById(R.id.editText_responseTemplateText);
 		final LinearLayout chooseCalendar = (LinearLayout) layout.findViewById(R.id.button_chooseCalendar);
 
-		title.setText(preparedResponse.getTitle());
-		text.setText(preparedResponse.getText());
-		this.labelCalendarChooser(chooseCalendar, preparedResponse);
+		title.setText(responseTemplate.getTitle());
+		text.setText(responseTemplate.getText());
+		this.labelCalendarChooser(chooseCalendar, responseTemplate);
 
 		chooseCalendar.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -132,10 +130,10 @@ public class ActivityResponseTemplateList extends Activity {
 									public void onClick(DialogInterface dialog, int which) {
 										long calendarId = ActivityResponseTemplateList.this.userCalendarListAdapter
 												.getItemId(which);
-										preparedResponse.setCalendarId(calendarId);
+										responseTemplate.setCalendarId(calendarId);
 										Log.d(ActivityResponseTemplateList.TAG, "Setting calendarId to: " + calendarId);
 										ActivityResponseTemplateList.this.labelCalendarChooser(chooseCalendar,
-												preparedResponse);
+												responseTemplate);
 										dialog.dismiss();
 									}
 								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -169,11 +167,11 @@ public class ActivityResponseTemplateList extends Activity {
 				b.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						preparedResponse.setText(text.getText().toString());
-						preparedResponse.setTitle(title.getText().toString());
-						if (preparedResponse.isValid()) {
+						responseTemplate.setText(text.getText().toString());
+						responseTemplate.setTitle(title.getText().toString());
+						if (responseTemplate.isValid()) {
 							dialog.dismiss();
-							ActivityResponseTemplateList.this.persistentList.add(preparedResponse);
+							ActivityResponseTemplateList.this.persistentList.add(responseTemplate);
 							ActivityResponseTemplateList.this.adapter.notifyDataSetChanged();
 						} else
 							Toast.makeText(builder.getContext(), "Please enter at least Title and Text!",
@@ -185,8 +183,8 @@ public class ActivityResponseTemplateList extends Activity {
 		dialog.show();
 	}
 
-	private void labelCalendarChooser(LinearLayout calendarChooser, PreparedResponse preparedResponse) {
-		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(preparedResponse.getCalendarId());
+	private void labelCalendarChooser(LinearLayout calendarChooser, ResponseTemplate responseTemplate) {
+		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(responseTemplate.getCalendarId());
 
 		TextView calendarName = (TextView) calendarChooser.findViewById(R.id.label_chooseCalendar);
 		View calendartColor = calendarChooser.findViewById(R.id.view_calendarColor);

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.duckdns.raven.ttscallresoponder.AnsweredCallList" >
+    tools:context="org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList" >
 
     <item
         android:id="@+id/action_clearList"

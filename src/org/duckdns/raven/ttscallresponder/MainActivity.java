@@ -2,8 +2,8 @@ package org.duckdns.raven.ttscallresponder;
 
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentPreparedResponseList;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
 	/* ----- UI elements ----- */
 	private Switch swiAutoRespond = null;
-	private TextView currentPreparedResponseTitle = null;
+	private TextView currentResponseTemplateTitle = null;
 	private TextView numberOfAnsweredCalls = null;
 
 	/* ----- Helper for closing with twice back-press ----- */
@@ -69,14 +69,14 @@ public class MainActivity extends Activity {
 
 		// Get access to UI elements
 		this.swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
-		this.currentPreparedResponseTitle = (TextView) this.findViewById(R.id.textView_currentPreparedResponseTitle);
+		this.currentResponseTemplateTitle = (TextView) this.findViewById(R.id.textView_currentResponseTemplateTitle);
 		this.numberOfAnsweredCalls = (TextView) this.findViewById(R.id.textView_numberOfAnsweredCalls);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		this.getMenuInflater().inflate(R.menu.main, menu);
+		this.getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
@@ -87,16 +87,16 @@ public class MainActivity extends Activity {
 		String currentTitle = null;
 
 		// Retrieve data
-		PreparedResponse currentPreparedResponse = PersistentPreparedResponseList.getSingleton(this.getFilesDir())
-				.getItemWithId(SettingsManager.getCurrentPreparedResponseId());
-		if (currentPreparedResponse == null) {
+		ResponseTemplate currentResponseTemplate = PersistentResponseTemplateList.getSingleton(this.getFilesDir())
+				.getItemWithId(SettingsManager.getCurrentResponseTemplateId());
+		if (currentResponseTemplate == null) {
 			Log.d(MainActivity.TAG, "No current response set");
 			currentTitle = "<None>";
 		} else
-			currentTitle = currentPreparedResponse.getTitle();
+			currentTitle = currentResponseTemplate.getTitle();
 
 		// Initialize UI elements
-		this.currentPreparedResponseTitle.setText(currentTitle);
+		this.currentResponseTemplateTitle.setText(currentTitle);
 		this.applyCallReceiverState();
 		this.updateNumberOfAnsweredCalls();
 	}
@@ -157,9 +157,9 @@ public class MainActivity extends Activity {
 		this.startActivity(switchToCallList);
 	}
 
-	public void onShowPreparedResopnseList(View view) {
-		Intent switchToPreparedResopnseList = new Intent(this, ActivityResponseTemplateList.class);
-		this.startActivity(switchToPreparedResopnseList);
+	public void onShowResopnseTemplateList(View view) {
+		Intent switchToResopnseTemplateList = new Intent(this, ActivityResponseTemplateList.class);
+		this.startActivity(switchToResopnseTemplateList);
 	}
 
 	/* ----- Closing the app ----- */

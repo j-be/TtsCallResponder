@@ -1,7 +1,7 @@
 package org.duckdns.raven.ttscallresponder.tts;
 
 import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendarEvent;
 
 public class Parameterizer {
@@ -13,23 +13,23 @@ public class Parameterizer {
 		this.calendarAccess = calendarAccess;
 	}
 
-	public String parameterizeText(PreparedResponse preparedResponse) {
-		if (preparedResponse == null)
+	public String parameterizeText(ResponseTemplate responseTemplate) {
+		if (responseTemplate == null)
 			return "";
 
-		return this.parameterizeFromCalendar(preparedResponse).getText();
+		return this.parameterizeFromCalendar(responseTemplate).getText();
 	}
 
-	public PreparedResponse parameterizeFromCalendar(PreparedResponse preparedResponse) {
-		TtsParameterCalendarEvent event = this.calendarAccess.getCurrentEventFromCalendar(preparedResponse
+	public ResponseTemplate parameterizeFromCalendar(ResponseTemplate responseTemplate) {
+		TtsParameterCalendarEvent event = this.calendarAccess.getCurrentEventFromCalendar(responseTemplate
 				.getCalendarId());
 
 		if (event == null)
-			return preparedResponse;
+			return responseTemplate;
 
-		String newText = preparedResponse.getText().replaceAll("#event_title#", event.getTitle());
+		String newText = responseTemplate.getText().replaceAll("#event_title#", event.getTitle());
 		newText = newText.replaceAll("#event_end#", event.getEndTime().format(this.timeFormat));
 
-		return new PreparedResponse(preparedResponse.getTitle(), newText, preparedResponse.getCalendarId());
+		return new ResponseTemplate(responseTemplate.getTitle(), newText, responseTemplate.getCalendarId());
 	}
 }

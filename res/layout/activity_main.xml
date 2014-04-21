@@ -56,7 +56,7 @@
         android:layout_marginRight="@dimen/activity_small_margin" />
 
     <TextView
-        android:id="@+id/textView_headerPreparedResponses"
+        android:id="@+id/textView_headerResponseTemplates"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -68,19 +68,19 @@
         android:layout_marginBottom="@dimen/activity_main_big_spacing"  />
 
     <TextView
-        android:id="@+id/textView_lbl_currentPreparedResponse"
+        android:id="@+id/textView_lbl_currentResponseTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_headerPreparedResponses"
+        android:layout_below="@id/textView_headerResponseTemplates"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Currently using response:"/>
     <TextView
-        android:id="@+id/textView_currentPreparedResponseTitle"
+        android:id="@+id/textView_currentResponseTemplateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_lbl_currentPreparedResponse"
+        android:layout_below="@id/textView_lbl_currentResponseTemplate"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:singleLine="true"
         android:text="&quot;TITLE HERE&quot;"
@@ -92,8 +92,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_currentPreparedResponseTitle"
-        android:onClick="onShowPreparedResopnseList"
+        android:layout_below="@id/textView_currentResponseTemplateTitle"
+        android:onClick="onShowResopnseTemplateList"
         android:text="Show list of prepared responses"
         android:background="#cccccc"
         android:layout_marginLeft="@dimen/activity_small_margin"

@@ -3,24 +3,24 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:onClick="onPreparedResponseClick"
+    android:onClick="onResponseTemplateClick"
     android:weightSum="2.5" >
 
     <CheckBox
-        android:id="@+id/checkBox_preparedResponseSelected"
+        android:id="@+id/checkBox_responseTemplateSelected"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_weight="2.5"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/label_preparedResponseTitle"
+            android:id="@+id/label_responseTemplateTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -35,7 +35,7 @@
             android:weightSum="2" >
 
             <TextView
-                android:id="@+id/label_preparedResponseText"
+                android:id="@+id/label_responseTemplateText"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -48,15 +48,12 @@
                 android:layout_width="1dip"
                 android:layout_height="fill_parent"
                 android:gravity="right"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
                 android:layout_marginBottom="4dip"
                 android:layout_marginTop="4dip"
-                android:background="?android:attr/dividerVertical"
-                android:layout_centerHorizontal="true"/>
+                android:background="?android:attr/dividerVertical" />
 
             <ImageButton
-                android:id="@+id/button_preparedResponseSetAsCurrent"
+                android:id="@+id/button_setResponseTemplateAsCurrent"
                 android:layout_width="48dip"
                 android:layout_height="48dip"
                 android:layout_gravity="right|center_vertical"

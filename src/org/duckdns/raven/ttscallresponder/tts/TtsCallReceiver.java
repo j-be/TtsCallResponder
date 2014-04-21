@@ -4,8 +4,8 @@ import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentPreparedResponseList;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,19 +39,19 @@ public class TtsCallReceiver extends BroadcastReceiver {
 
 	/* ----- Logic ----- */
 
-	private PreparedResponse getCurrentPreparedResponse() {
-		PersistentPreparedResponseList preparedResponseList = PersistentPreparedResponseList.getSingleton(this.parent
+	private ResponseTemplate getCurrentResponseTemplate() {
+		PersistentResponseTemplateList responseTemplateList = PersistentResponseTemplateList.getSingleton(this.parent
 				.getFilesDir());
-		PreparedResponse currentPreparedResponse = preparedResponseList.getItemWithId(SettingsManager
-				.getCurrentPreparedResponseId());
+		ResponseTemplate currentResponseTemplate = responseTemplateList.getItemWithId(SettingsManager
+				.getCurrentResponseTemplateId());
 
-		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + SettingsManager.getCurrentPreparedResponseId());
-		if (currentPreparedResponse == null) {
+		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + SettingsManager.getCurrentResponseTemplateId());
+		if (currentResponseTemplate == null) {
 			Log.d(TtsCallReceiver.TAG, "No current response set");
 			return null;
 		}
 
-		return currentPreparedResponse;
+		return currentResponseTemplate;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class TtsCallReceiver extends BroadcastReceiver {
 			this.ttsEngine.parameterizeTtsEngine();
 
 			parameterizer = new Parameterizer(this.calendarAccess);
-			textToSpeak = parameterizer.parameterizeText(this.getCurrentPreparedResponse());
+			textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
 
 			Log.d(TtsCallReceiver.TAG, "Speaking: " + textToSpeak);
 			this.ttsEngine.speak(textToSpeak);
