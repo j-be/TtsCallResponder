@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList"
+            android:name="org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList"
             android:label="@string/title_activity_answered_call_list"
             android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
             <meta-data
@@ -35,7 +35,7 @@
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList"
+            android:name="org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList"
             android:label="@string/title_activity_prepared_response_list"
             android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
             <meta-data
@@ -43,7 +43,7 @@
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.settings.ActivitySettings"
+            android:name="org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings"
             android:label="@string/title_activity_activity_settings"
             android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
             <meta-data

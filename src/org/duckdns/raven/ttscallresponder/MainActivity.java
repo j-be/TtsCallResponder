@@ -1,12 +1,12 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresponder.answeredCallList.ActivityAnsweredCallList;
-import org.duckdns.raven.ttscallresponder.domain.PersistentAnsweredCallList;
-import org.duckdns.raven.ttscallresponder.domain.PersistentPreparedResponseList;
-import org.duckdns.raven.ttscallresponder.domain.PreparedResponse;
-import org.duckdns.raven.ttscallresponder.preparedTextList.ActivityPreparedResponseList;
-import org.duckdns.raven.ttscallresponder.settings.ActivitySettings;
-import org.duckdns.raven.ttscallresponder.settings.SettingsManager;
+import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
+import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentPreparedResponseList;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PreparedResponse;
+import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList;
+import org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList;
+import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -113,7 +113,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void updateNumberOfAnsweredCalls() {
-		this.numberOfAnsweredCalls.setText("" + PersistentAnsweredCallList.getSingleton(this.getFilesDir()).getCount());
+		this.numberOfAnsweredCalls.setText("" + PersistentCallList.getSingleton(this.getFilesDir()).getCount());
 	}
 
 	/* ----- Service control ----- */
@@ -158,7 +158,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void onShowPreparedResopnseList(View view) {
-		Intent switchToPreparedResopnseList = new Intent(this, ActivityPreparedResponseList.class);
+		Intent switchToPreparedResopnseList = new Intent(this, ActivityResponseTemplateList.class);
 		this.startActivity(switchToPreparedResopnseList);
 	}
 
@@ -169,12 +169,6 @@ public class MainActivity extends Activity {
 		Log.i(MainActivity.TAG, "Enter onDestroy");
 		this.unbindService(this.mConnection);
 		super.onDestroy();
-	}
-
-	@Override
-	public void finish() {
-		this.stopCallReceiverService();
-		super.finish();
 	}
 
 	@Override
@@ -189,6 +183,7 @@ public class MainActivity extends Activity {
 		}
 
 		if (nowBackPressed.toMillis(true) - this.lastBackPressed.toMillis(true) < 3000) {
+			this.stopCallReceiverService();
 			this.finish();
 		} else {
 			Toast.makeText(this,

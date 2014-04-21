@@ -1,7 +1,7 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresponder.notification.CallReceiverNotificationFactory;
-import org.duckdns.raven.ttscallresponder.ttsStuff.TtsCallReceiver;
+import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
+import org.duckdns.raven.ttscallresponder.ui.notification.CallReceiverNotificationFactory;
 
 import android.app.NotificationManager;
 import android.app.Service;
@@ -19,6 +19,8 @@ public class TtsCallResponderService extends Service {
 	private TtsCallReceiver callReceiver = null;
 	private NotificationManager notificationManager = null;
 
+	/* ----- Lifecycle control ----- */
+
 	@Override
 	public void onCreate() {
 		Log.i(TtsCallResponderService.TAG, "Enter on Create");
@@ -28,8 +30,6 @@ public class TtsCallResponderService extends Service {
 		this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		CallReceiverNotificationFactory.setContext(this);
 	}
-
-	/* ----- Lifecycle control ----- */
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
