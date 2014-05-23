@@ -72,4 +72,9 @@ public class SettingsManager {
 				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_voice),
 				SettingsManager.context.getResources().getString(R.string.default_settings_tts_engine_voice));
 	}
+
+	/* ----- DEBUG ----- */
+	public static boolean getDebugSplitAnswerMethod() {
+		return SettingsManager.settings.getBoolean("debug_split_answer_method", true);
+	}
 }

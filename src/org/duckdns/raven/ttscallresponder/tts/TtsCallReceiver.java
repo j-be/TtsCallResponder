@@ -57,8 +57,6 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-		String textToSpeak = null;
-		Parameterizer parameterizer = null;
 
 		if (this.ttsEngine == null) {
 			Log.d(TAG, "TTS engine is not running - doing nothing!");
@@ -66,24 +64,41 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		}
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-			this.answerPhoneHeadsethook(context, intent);
 			PersistentCallList.getSingleton(null).add(
 					new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+			this.answerPhoneHeadsethook(context, intent);
 
-			return;
+			if (SettingsManager.getDebugSplitAnswerMethod()) {
+				Log.d(TAG, "Splitting answer");
+				return;
+			}
+			Log.d(TAG, "NOT splitting answer");
+			this.speakText();
 		}
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-			this.ttsEngine.parameterizeTtsEngine();
-
-			parameterizer = new Parameterizer(this.calendarAccess);
-			textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
-
-			Log.d(TtsCallReceiver.TAG, "Speaking: " + textToSpeak);
-			this.ttsEngine.speak(textToSpeak);
-
-			return;
+			if (SettingsManager.getDebugSplitAnswerMethod()) {
+				Log.d(TAG, "Splitting answer");
+				this.speakText();
+				return;
+			}
+			Log.d(TAG, "NOT splitting answer");
 		}
+	}
+
+	private void speakText() {
+		String textToSpeak = null;
+		Parameterizer parameterizer = null;
+
+		this.ttsEngine.parameterizeTtsEngine();
+
+		parameterizer = new Parameterizer(this.calendarAccess);
+		textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
+
+		Log.d(TtsCallReceiver.TAG, "Speaking: " + textToSpeak);
+		this.ttsEngine.speak(textToSpeak);
+
+		return;
 	}
 
 	private void muteInCallAudio(Context context) {
