@@ -29,6 +29,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="Device specific settings">
+        <EditTextPreference
+            android:key="@string/key_settings_tts_delay"
+            android:persistent="true"
+            android:title="Before-speak delay"
+            android:summary="Milliseconds to wait between taking the call and starting to speak."
+        />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="DEBUG">
         <CheckBoxPreference android:persistent="true"
             android:summary="Speak in STATE_OFFHOOK. Else speak in STATE_RINGING"
@@ -38,4 +48,5 @@
             android:selectable="true"
             android:defaultValue="true"/>
     </PreferenceCategory>
+
 </PreferenceScreen>

@@ -73,6 +73,20 @@ public class SettingsManager {
 				SettingsManager.context.getResources().getString(R.string.default_settings_tts_engine_voice));
 	}
 
+	public static int getTtsDelay() {
+		int defaultValue = SettingsManager.context.getResources().getInteger(R.integer.default_settings_tts_delay);
+		String key = SettingsManager.context.getResources().getString(R.string.key_settings_tts_delay);
+		int fromSettings = -1;
+
+		try {
+			fromSettings = Integer.parseInt(SettingsManager.settings.getString(key, String.valueOf(defaultValue)));
+		} catch (NumberFormatException e) {
+			fromSettings = defaultValue;
+		}
+
+		return fromSettings;
+	}
+
 	/* ----- DEBUG ----- */
 	public static boolean getDebugSplitAnswerMethod() {
 		return SettingsManager.settings.getBoolean("debug_split_answer_method", true);
