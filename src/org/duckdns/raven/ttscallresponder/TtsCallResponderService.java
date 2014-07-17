@@ -79,6 +79,10 @@ public class TtsCallResponderService extends Service {
 		return this.callReceiver != null;
 	}
 
+	public void reparameterizeTtsEngine() {
+		this.callReceiver.reparameterizeTtsEngine();
+	}
+
 	public class LocalBinder extends Binder {
 		public TtsCallResponderService getService() {
 			return TtsCallResponderService.this;

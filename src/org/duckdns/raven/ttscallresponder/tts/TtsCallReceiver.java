@@ -37,6 +37,11 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		}
 	}
 
+	public void reparameterizeTtsEngine() {
+		this.ttsEngine.parameterizeTtsEngine();
+		this.ttsEngine.speak("T T S settings updated");
+	}
+
 	/* ----- Logic ----- */
 
 	private ResponseTemplate getCurrentResponseTemplate() {
@@ -89,8 +94,6 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	private void speakText() {
 		String textToSpeak = null;
 		Parameterizer parameterizer = null;
-
-		this.ttsEngine.parameterizeTtsEngine();
 
 		parameterizer = new Parameterizer(this.calendarAccess);
 		textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());

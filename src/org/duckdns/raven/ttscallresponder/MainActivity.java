@@ -42,6 +42,8 @@ public class MainActivity extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
 			MainActivity.this.applyCallReceiverState();
+			if (MainActivity.this.mCallResponderService.isRunning())
+				MainActivity.this.mCallResponderService.reparameterizeTtsEngine();
 		}
 
 		@Override
