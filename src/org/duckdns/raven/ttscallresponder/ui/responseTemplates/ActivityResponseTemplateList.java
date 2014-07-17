@@ -55,7 +55,6 @@ public class ActivityResponseTemplateList extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
 	}
 

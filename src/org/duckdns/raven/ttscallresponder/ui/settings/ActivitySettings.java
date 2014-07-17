@@ -38,10 +38,15 @@ public class ActivitySettings extends Activity {
 		this.testEngine = new CallTTSEngine(this);
 		// Check available languages
 		Intent in = new Intent(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-		// if you want specific, non-default TTS Engine also set package, else
-		// skip:
-		// in = in.setPackage("com.acapelagroup.android.tts"); // or whatever
-		// package you want
+
+		// FIXME: Ability for non-default TTS Engine.
+		// in = in.setPackage("com.acapelagroup.android.tts");
+		// or whatever package you want
+
+		// FIXME: This Activity causes onPause(). When it should be called to
+		// override the screen-change animation, it isn't.
+
+		// in.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 		this.startActivityForResult(in, ActivitySettings.TTS_CHECK_DATA);
 	}
 
@@ -87,7 +92,6 @@ public class ActivitySettings extends Activity {
 	protected void onPause() {
 		Log.i(ActivitySettings.TAG, "Enter onPause()");
 		super.onPause();
-
 		this.overridePendingTransition(R.animator.anim_slide_in_from_bottom, R.animator.anim_slide_out_to_top);
 	}
 
@@ -100,7 +104,6 @@ public class ActivitySettings extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		this.getMenuInflater().inflate(R.menu.activity_settings, menu);
 		return true;
