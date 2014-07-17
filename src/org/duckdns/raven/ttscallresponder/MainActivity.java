@@ -42,6 +42,7 @@ public class MainActivity extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
 			MainActivity.this.applyCallReceiverState();
+			Log.i(MainActivity.TAG, "Service connected");
 			if (MainActivity.this.mCallResponderService.isRunning())
 				MainActivity.this.mCallResponderService.reparameterizeTtsEngine();
 		}
@@ -50,6 +51,7 @@ public class MainActivity extends Activity {
 		public void onServiceDisconnected(ComponentName className) {
 			MainActivity.this.mCallResponderService = null;
 			MainActivity.this.applyCallReceiverState();
+			Log.i(MainActivity.TAG, "Service disconnected");
 		}
 	};
 
