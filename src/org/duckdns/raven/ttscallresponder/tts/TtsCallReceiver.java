@@ -59,7 +59,7 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
 		if (this.ttsEngine == null) {
-			Log.d(TAG, "TTS engine is not running - doing nothing!");
+			Log.d(TtsCallReceiver.TAG, "TTS engine is not running - doing nothing!");
 			return;
 		}
 
@@ -69,20 +69,20 @@ public class TtsCallReceiver extends BroadcastReceiver {
 			this.answerPhoneHeadsethook(context, intent);
 
 			if (SettingsManager.getDebugSplitAnswerMethod()) {
-				Log.d(TAG, "Splitting answer");
+				Log.d(TtsCallReceiver.TAG, "Splitting answer");
 				return;
 			}
-			Log.d(TAG, "NOT splitting answer");
+			Log.d(TtsCallReceiver.TAG, "NOT splitting answer");
 			this.speakText();
 		}
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 			if (SettingsManager.getDebugSplitAnswerMethod()) {
-				Log.d(TAG, "Splitting answer");
+				Log.d(TtsCallReceiver.TAG, "Splitting answer");
 				this.speakText();
 				return;
 			}
-			Log.d(TAG, "NOT splitting answer");
+			Log.d(TtsCallReceiver.TAG, "NOT splitting answer");
 		}
 	}
 

@@ -33,34 +33,34 @@ public class TtsCallResponderService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.i(TAG, "Service started");
+		Log.i(TtsCallResponderService.TAG, "Service started");
 
 		// Register call receiver
 		this.callReceiver = new TtsCallReceiver(this);
 		this.registerReceiver(this.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
-		Log.i(TAG, "Receiver registered");
+		Log.i(TtsCallResponderService.TAG, "Receiver registered");
 
-		this.notificationManager.notify(NOTIFICAITON_ID,
+		this.notificationManager.notify(TtsCallResponderService.NOTIFICAITON_ID,
 				CallReceiverNotificationFactory.buildCallReceiverNotification(true));
 
-		return START_STICKY;
+		return Service.START_STICKY;
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		Log.i(TAG, "Service bound");
+		Log.i(TtsCallResponderService.TAG, "Service bound");
 		return new LocalBinder();
 	}
 
 	@Override
 	public boolean onUnbind(Intent intent) {
-		Log.i(TAG, "Service unbound");
+		Log.i(TtsCallResponderService.TAG, "Service unbound");
 		return super.onUnbind(intent);
 	}
 
 	@Override
 	public boolean stopService(Intent name) {
-		Log.i(TAG, "Service stopped");
+		Log.i(TtsCallResponderService.TAG, "Service stopped");
 		if (this.callReceiver != null) {
 			this.unregisterReceiver(this.callReceiver);
 			this.callReceiver.stopTtsEngine();
@@ -68,7 +68,7 @@ public class TtsCallResponderService extends Service {
 		}
 		Log.i(TtsCallResponderService.TAG, "Receiver unregistered");
 
-		this.notificationManager.cancel(NOTIFICAITON_ID);
+		this.notificationManager.cancel(TtsCallResponderService.NOTIFICAITON_ID);
 
 		return super.stopService(name);
 	}
