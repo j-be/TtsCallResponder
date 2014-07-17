@@ -32,7 +32,12 @@ public class ActivitySettings extends Activity {
 			this.settingsFragment = new SettingsFragment();
 			this.getFragmentManager().beginTransaction().add(R.id.container, this.settingsFragment).commit();
 		}
+	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Log.i(ActivitySettings.TAG, "Enter onStart");
 		this.overridePendingTransition(R.animator.anim_slide_in_from_top, R.animator.anim_slide_out_to_bottom);
 
 		this.testEngine = new CallTTSEngine(this);
@@ -96,10 +101,10 @@ public class ActivitySettings extends Activity {
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-
+	protected void onStop() {
+		Log.i(ActivitySettings.TAG, "Enter onStop()");
 		this.testEngine.stopEngine();
+		super.onStop();
 	}
 
 	@Override
