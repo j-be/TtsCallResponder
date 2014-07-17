@@ -98,6 +98,15 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		parameterizer = new Parameterizer(this.calendarAccess);
 		textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
 
+		long timeToWait = SettingsManager.getTtsDelay();
+		Log.i(TtsCallReceiver.TAG, "Waiting " + timeToWait + " ms");
+		try {
+			Thread.sleep(timeToWait);
+		} catch (InterruptedException e) {
+			// Should not happen.
+			e.printStackTrace();
+		}
+
 		Log.d(TtsCallReceiver.TAG, "Speaking: " + textToSpeak);
 		this.ttsEngine.speak(textToSpeak);
 
