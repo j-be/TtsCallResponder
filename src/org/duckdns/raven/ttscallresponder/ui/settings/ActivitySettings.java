@@ -11,10 +11,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class ActivitySettings extends Activity {
+
+	private static String TAG = "ActivitySettings";
 
 	private final static int TTS_CHECK_DATA = 123;
 	private SettingsFragment settingsFragment = null;
@@ -82,6 +85,7 @@ public class ActivitySettings extends Activity {
 
 	@Override
 	protected void onPause() {
+		Log.i(ActivitySettings.TAG, "Enter onPause()");
 		super.onPause();
 
 		this.overridePendingTransition(R.animator.anim_slide_in_from_bottom, R.animator.anim_slide_out_to_top);
