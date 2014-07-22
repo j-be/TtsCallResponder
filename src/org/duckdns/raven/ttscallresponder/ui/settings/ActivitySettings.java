@@ -3,7 +3,7 @@ package org.duckdns.raven.ttscallresponder.ui.settings;
 import java.util.ArrayList;
 
 import org.duckdns.raven.ttscallresponder.R;
-import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
+import org.duckdns.raven.ttscallresponder.dataAccess.TtsSettingsManager;
 import org.duckdns.raven.ttscallresponder.tts.CallTTSEngine;
 
 import android.app.Activity;
@@ -84,6 +84,7 @@ public class ActivitySettings extends Activity {
 	public void onWindowFocusChanged(boolean hasFocus) {
 		ListPreference voiceListPreference = null;
 		String selectedVoice = null;
+		TtsSettingsManager ttsSettingsManager = new TtsSettingsManager(this);
 
 		super.onWindowFocusChanged(hasFocus);
 
@@ -93,7 +94,7 @@ public class ActivitySettings extends Activity {
 		voiceListPreference = ((ListPreference) this.settingsFragment.findPreference(this
 				.getString(R.string.key_settings_tts_engine_voice)));
 
-		selectedVoice = SettingsManager.getTtsLanguage();
+		selectedVoice = ttsSettingsManager.getTtsLanguage();
 		if (selectedVoice != null && !selectedVoice.isEmpty())
 			voiceListPreference.setSummary(selectedVoice);
 	}

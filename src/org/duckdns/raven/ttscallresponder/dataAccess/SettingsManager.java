@@ -53,26 +53,6 @@ public class SettingsManager {
 		editor.commit();
 	}
 
-	public static float getTtsEngineSpeechRate() {
-		float valueFromSettings = SettingsManager.settings.getFloat(
-				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_speech_rate),
-				SettingsManager.defaultSpeechRate);
-		return (float) Math.pow(valueFromSettings, 2) + SettingsManager.TTS_ENGINE_SPEECH_RATE_SHIFT;
-	}
-
-	public static float getTtsEnginePitch() {
-		float valueFromSettings = SettingsManager.settings.getFloat(
-				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_pitch),
-				SettingsManager.defaultPitch);
-		return SettingsManager.TTS_ENGINE_PITCH_STEEP * (float)Math.pow(valueFromSettings, 2) + SettingsManager.TTS_ENGINE_PITCH_XCROSSING;
-	}
-
-	public static String getTtsLanguage() {
-		return SettingsManager.settings.getString(
-				SettingsManager.context.getResources().getString(R.string.key_settings_tts_engine_voice),
-				SettingsManager.context.getResources().getString(R.string.default_settings_tts_engine_voice));
-	}
-
 	public static int getTtsDelay() {
 		int defaultValue = SettingsManager.context.getResources().getInteger(R.integer.default_settings_tts_delay);
 		String key = SettingsManager.context.getResources().getString(R.string.key_settings_tts_delay);

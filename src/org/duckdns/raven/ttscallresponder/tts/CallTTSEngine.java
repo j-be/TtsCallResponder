@@ -2,7 +2,7 @@ package org.duckdns.raven.ttscallresponder.tts;
 
 import java.util.Locale;
 
-import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
+import org.duckdns.raven.ttscallresponder.dataAccess.TtsSettingsManager;
 import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
 import android.content.Context;
@@ -18,8 +18,11 @@ public class CallTTSEngine implements OnInitListener {
 	private boolean isTtsEngineUp = false;
 	private boolean speakEnterExit = true;
 
+	private Context parent;
+
 	public CallTTSEngine(Context parent) {
 		this.ttsEngine = new TextToSpeech(parent, this);
+		this.parent = parent;
 	}
 
 	public CallTTSEngine(ActivitySettings parent) {
@@ -46,12 +49,14 @@ public class CallTTSEngine implements OnInitListener {
 	}
 
 	public void parameterizeTtsEngine() {
+		TtsSettingsManager ttsSettingsManager = new TtsSettingsManager(this.parent);
+
 		if (!this.isTtsEngineUp)
 			return;
 
 		Locale ttsLocale = null;
 
-		String[] selectedVoiceString = SettingsManager.getTtsLanguage().split("-");
+		String[] selectedVoiceString = ttsSettingsManager.getTtsLanguage().split("-");
 
 		if (selectedVoiceString.length > 1)
 			ttsLocale = new Locale(selectedVoiceString[0], selectedVoiceString[1]);
@@ -59,8 +64,8 @@ public class CallTTSEngine implements OnInitListener {
 			ttsLocale = new Locale(selectedVoiceString[0]);
 
 		this.ttsEngine.setLanguage(ttsLocale);
-		this.ttsEngine.setSpeechRate(SettingsManager.getTtsEngineSpeechRate());
-		this.ttsEngine.setPitch(SettingsManager.getTtsEnginePitch());
+		this.ttsEngine.setSpeechRate(ttsSettingsManager.getTtsEngineSpeechRate());
+		this.ttsEngine.setPitch(ttsSettingsManager.getTtsEnginePitch());
 	}
 
 	public void stopEngine() {

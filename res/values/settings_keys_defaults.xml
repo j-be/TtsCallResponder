@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Settings Keys -->
+    <!-- TTS Settings Keys -->
     <string name="key_settings_tts_engine_speech_rate">ttsSpeechRate</string>
     <string name="key_settings_tts_engine_pitch">ttsPitch</string>
     <string name="key_settings_tts_engine_voice">ttsVoice</string>
+
+    <!-- TTS Settings defaults -->
+    <item type="fraction" format="float" name="default_settings_tts_engine_speech_rate">0.5</item>
+    <item type="fraction" format="float" name="default_settings_tts_engine_pitch">0.5</item>
+    <string name="default_settings_tts_engine_voice">eng</string>
+
+    <!-- Other Settings Keys -->
     <string name="key_settings_tts_delay">ttsDelay</string>
     <string name="key_settings_current_response_template">currentResponseTemplate</string>
 
-    <!-- Settings defaults -->
-    <item type="fraction" format="float" name="default_settings_tts_engine_speech_rate">0.5</item>
-    <item type="fraction" format="float" name="default_settings_tts_engine_pitch">0.5</item>
+    <!-- Other Settings defaults -->
     <item type="integer" format="integer" name="default_settings_tts_delay">1000</item>
     <item type="integer" format="integer" name="default_settings_current_response_template">-1</item>
-    <string name="default_settings_tts_engine_voice">eng-USA</string>
+
 </resources>
