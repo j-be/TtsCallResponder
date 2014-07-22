@@ -18,7 +18,7 @@ public class CallTTSEngine implements OnInitListener {
 	private boolean isTtsEngineUp = false;
 	private boolean speakEnterExit = true;
 
-	private Context parent;
+	private final Context parent;
 
 	public CallTTSEngine(Context parent) {
 		this.ttsEngine = new TextToSpeech(parent, this);
@@ -28,6 +28,7 @@ public class CallTTSEngine implements OnInitListener {
 	public CallTTSEngine(ActivitySettings parent) {
 		this.ttsEngine = new TextToSpeech(parent, this);
 		this.speakEnterExit = false;
+		this.parent = parent;
 	}
 
 	public void speak(String text) {
