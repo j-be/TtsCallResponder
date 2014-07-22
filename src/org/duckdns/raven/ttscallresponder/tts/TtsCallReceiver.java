@@ -98,6 +98,7 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		parameterizer = new Parameterizer(this.calendarAccess);
 		textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
 
+		// FIXME: Caller does not hear anything
 		long timeToWait = SettingsManager.getTtsDelay();
 		Log.i(TtsCallReceiver.TAG, "Waiting " + timeToWait + " ms");
 		try {
