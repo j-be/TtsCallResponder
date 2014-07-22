@@ -25,10 +25,10 @@ public class CallBackListener implements OnClickListener {
 		try {
 			Intent callIntent = new Intent(Intent.ACTION_DIAL);
 			callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			callIntent.setData(Uri.parse("tel:" + phoneNumber));
-			parent.startActivity(callIntent);
+			callIntent.setData(Uri.parse("tel:" + this.phoneNumber));
+			this.parent.startActivity(callIntent);
 		} catch (ActivityNotFoundException activityException) {
-			Log.e(TAG, "Anruf gescheitert", activityException);
+			Log.e(CallBackListener.TAG, "Call failed", activityException);
 		}
 
 	}
