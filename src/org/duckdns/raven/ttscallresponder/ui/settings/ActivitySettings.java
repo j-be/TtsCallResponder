@@ -23,6 +23,8 @@ public class ActivitySettings extends Activity {
 	private SettingsFragment settingsFragment = null;
 	private CallTTSEngine testEngine = null;
 
+	private boolean enter = true;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,11 +36,18 @@ public class ActivitySettings extends Activity {
 		}
 	}
 
+	private void playAnimation() {
+		if (this.enter)
+			this.overridePendingTransition(R.animator.anim_slide_in_from_top, R.animator.anim_slide_out_to_bottom);
+		else
+			this.overridePendingTransition(R.animator.anim_slide_in_from_bottom, R.animator.anim_slide_out_to_top);
+		this.enter = !this.enter;
+	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 		Log.i(ActivitySettings.TAG, "Enter onStart");
-		this.overridePendingTransition(R.animator.anim_slide_in_from_top, R.animator.anim_slide_out_to_bottom);
 
 		this.testEngine = new CallTTSEngine(this);
 		// Check available languages
@@ -48,10 +57,6 @@ public class ActivitySettings extends Activity {
 		// in = in.setPackage("com.acapelagroup.android.tts");
 		// or whatever package you want
 
-		// FIXME: This Activity causes onPause(). When it should be called to
-		// override the screen-change animation, it isn't.
-
-		// in.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 		this.startActivityForResult(in, ActivitySettings.TTS_CHECK_DATA);
 	}
 
@@ -96,8 +101,8 @@ public class ActivitySettings extends Activity {
 	@Override
 	protected void onPause() {
 		Log.i(ActivitySettings.TAG, "Enter onPause()");
+		this.playAnimation();
 		super.onPause();
-		this.overridePendingTransition(R.animator.anim_slide_in_from_bottom, R.animator.anim_slide_out_to_top);
 	}
 
 	@Override
