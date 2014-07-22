@@ -5,17 +5,8 @@ import org.duckdns.raven.ttscallresponder.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.TypedValue;
 
 public class SettingsManager {
-
-	private static final float TTS_ENGINE_SPEECH_RATE_SHIFT = 0.5f;
-
-	private static final float TTS_ENGINE_PITCH_STEEP = 2.0f;
-	private static final float TTS_ENGINE_PITCH_XCROSSING = 0.5f;
-
-	private static float defaultSpeechRate = 0f;
-	private static float defaultPitch = 0f;
 
 	private static SharedPreferences settings = null;
 	private static Context context = null;
@@ -25,14 +16,6 @@ public class SettingsManager {
 	public static void setContext(Context context) {
 		SettingsManager.context = context;
 		SettingsManager.settings = PreferenceManager.getDefaultSharedPreferences(context);
-
-		TypedValue tmp = new TypedValue();
-
-		context.getResources().getValue(R.fraction.default_settings_tts_engine_speech_rate, tmp, true);
-		SettingsManager.defaultSpeechRate = tmp.getFloat();
-
-		context.getResources().getValue(R.fraction.default_settings_tts_engine_pitch, tmp, true);
-		SettingsManager.defaultPitch = tmp.getFloat();
 	}
 
 	private SettingsManager() {
