@@ -103,6 +103,7 @@ public class ActivityResponseTemplateList extends Activity {
 
 	}
 
+	/* ----- Editor Dialog ---- */
 	private void showEditorDialog(final ResponseTemplate responseTemplate) {
 		if (responseTemplate == null)
 			return;
@@ -115,33 +116,16 @@ public class ActivityResponseTemplateList extends Activity {
 		final EditText text = (EditText) layout.findViewById(R.id.editText_responseTemplateText);
 		final LinearLayout chooseCalendar = (LinearLayout) layout.findViewById(R.id.button_chooseCalendar);
 
+		// Set values
 		title.setText(responseTemplate.getTitle());
 		text.setText(responseTemplate.getText());
-		this.labelCalendarChooser(chooseCalendar, responseTemplate);
+		this.labelCalendarChooserButton(chooseCalendar, responseTemplate);
 
+		// Calendar chooser
 		chooseCalendar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(ActivityResponseTemplateList.this)
-						.setSingleChoiceItems(ActivityResponseTemplateList.this.userCalendarListAdapter, 0,
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										long calendarId = ActivityResponseTemplateList.this.userCalendarListAdapter
-												.getItemId(which);
-										responseTemplate.setCalendarId(calendarId);
-										Log.d(ActivityResponseTemplateList.TAG, "Setting calendarId to: " + calendarId);
-										ActivityResponseTemplateList.this.labelCalendarChooser(chooseCalendar,
-												responseTemplate);
-										dialog.dismiss();
-									}
-								}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int whichButton) {
-								dialog.dismiss();
-							}
-						}).show();
-
+				ActivityResponseTemplateList.this.showCalendarDialog(chooseCalendar, responseTemplate);
 			}
 		});
 
@@ -182,7 +166,7 @@ public class ActivityResponseTemplateList extends Activity {
 		dialog.show();
 	}
 
-	private void labelCalendarChooser(LinearLayout calendarChooser, ResponseTemplate responseTemplate) {
+	private void labelCalendarChooserButton(LinearLayout calendarChooser, ResponseTemplate responseTemplate) {
 		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(responseTemplate.getCalendarId());
 
 		TextView calendarName = (TextView) calendarChooser.findViewById(R.id.label_chooseCalendar);
@@ -194,6 +178,32 @@ public class ActivityResponseTemplateList extends Activity {
 			calendarName.setText(calendar.getName());
 			calendartColor.setBackgroundColor(calendar.getColor());
 		}
+	}
+
+	private void showCalendarDialog(final LinearLayout calendarList, final ResponseTemplate responseTemplate) {
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ActivityResponseTemplateList.this)
+				.setSingleChoiceItems(ActivityResponseTemplateList.this.userCalendarListAdapter, 0,
+						new DialogInterface.OnClickListener() {
+							// Retrieve the id when the calendar is selected
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								long calendarId = ActivityResponseTemplateList.this.userCalendarListAdapter
+										.getItemId(which);
+								responseTemplate.setCalendarId(calendarId);
+								Log.d(ActivityResponseTemplateList.TAG, "Setting calendarId to: " + calendarId);
+								ActivityResponseTemplateList.this.labelCalendarChooserButton(calendarList,
+										responseTemplate);
+								dialog.dismiss();
+							}
+						})
+				// Set Cancel Button
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int whichButton) {
+						dialog.dismiss();
+					}
+				});
+		dialogBuilder.show();
 	}
 
 	@Override
