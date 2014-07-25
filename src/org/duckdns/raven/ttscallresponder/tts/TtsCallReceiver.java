@@ -21,11 +21,13 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	private final Context parent;
 	private CallTTSEngine ttsEngine;
 	private final CalendarAccess calendarAccess;
+	private final SettingsManager settingsManager;
 
 	public TtsCallReceiver(Context parent) {
 		this.parent = parent;
 		this.ttsEngine = new CallTTSEngine(parent);
 		this.calendarAccess = new CalendarAccess(parent);
+		this.settingsManager = new SettingsManager(parent);
 	}
 
 	/* ----- Getters/Setters ----- */
@@ -45,12 +47,11 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	/* ----- Logic ----- */
 
 	private ResponseTemplate getCurrentResponseTemplate() {
-		PersistentResponseTemplateList responseTemplateList = PersistentResponseTemplateList.getSingleton(this.parent
-				.getFilesDir());
-		ResponseTemplate currentResponseTemplate = responseTemplateList.getItemWithId(SettingsManager
+		PersistentResponseTemplateList responseTemplateList = PersistentResponseTemplateList.getSingleton(this.parent);
+		ResponseTemplate currentResponseTemplate = responseTemplateList.getItemWithId(this.settingsManager
 				.getCurrentResponseTemplateId());
 
-		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + SettingsManager.getCurrentResponseTemplateId());
+		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + this.settingsManager.getCurrentResponseTemplateId());
 		if (currentResponseTemplate == null) {
 			Log.d(TtsCallReceiver.TAG, "No current response set");
 			return null;
@@ -73,7 +74,7 @@ public class TtsCallReceiver extends BroadcastReceiver {
 					new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			this.answerPhoneHeadsethook(context, intent);
 
-			if (SettingsManager.getDebugSplitAnswerMethod()) {
+			if (this.settingsManager.getDebugSplitAnswerMethod()) {
 				Log.d(TtsCallReceiver.TAG, "Splitting answer");
 				return;
 			}
@@ -82,7 +83,7 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		}
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-			if (SettingsManager.getDebugSplitAnswerMethod()) {
+			if (this.settingsManager.getDebugSplitAnswerMethod()) {
 				Log.d(TtsCallReceiver.TAG, "Splitting answer");
 				this.speakText();
 				return;
@@ -92,21 +93,19 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	}
 
 	private void speakText() {
-		String textToSpeak = null;
-		Parameterizer parameterizer = null;
+		Parameterizer parameterizer = new Parameterizer(this.calendarAccess);
+		String textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
+		int preSpeechDelay = this.settingsManager.getTtsDelay();
 
-		parameterizer = new Parameterizer(this.calendarAccess);
-		textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
-
-		// FIXME: Caller does not hear anything
-		long timeToWait = SettingsManager.getTtsDelay();
-		Log.i(TtsCallReceiver.TAG, "Waiting " + timeToWait + " ms");
+		Log.i(TtsCallReceiver.TAG, "Waiting " + preSpeechDelay + " ms");
 		try {
-			Thread.sleep(timeToWait);
+			Thread.sleep(preSpeechDelay);
 		} catch (InterruptedException e) {
 			// Should not happen.
 			e.printStackTrace();
 		}
+
+		// FIXME: Caller does not hear anything
 
 		Log.d(TtsCallReceiver.TAG, "Speaking: " + textToSpeak);
 		this.ttsEngine.speak(textToSpeak);

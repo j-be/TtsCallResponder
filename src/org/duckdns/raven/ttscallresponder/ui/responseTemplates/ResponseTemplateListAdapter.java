@@ -16,8 +16,11 @@ import android.widget.TextView;
 
 public class ResponseTemplateListAdapter extends AbstractListAdapter<ResponseTemplate> {
 
+	private final SettingsManager settingsManager;
+
 	public ResponseTemplateListAdapter(Activity parent, List<ResponseTemplate> list) {
 		super(parent, list);
+		this.settingsManager = new SettingsManager(parent);
 	}
 
 	@Override
@@ -37,7 +40,7 @@ public class ResponseTemplateListAdapter extends AbstractListAdapter<ResponseTem
 		text.setText(responseTemplate.getText());
 		selected.setChecked(responseTemplate.isSelected());
 		selected.setOnClickListener(new OnSelectedClickListener(responseTemplate));
-		if (responseTemplate.getId() == SettingsManager.getCurrentResponseTemplateId())
+		if (responseTemplate.getId() == this.settingsManager.getCurrentResponseTemplateId())
 			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
 		else
 			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light);

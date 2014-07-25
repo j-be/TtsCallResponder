@@ -20,7 +20,8 @@ public class OnSetAsCurrentClickListener implements OnClickListener {
 
 	@Override
 	public void onClick(View arg0) {
-		SettingsManager.setCurrentResponseTemplateId(this.responseTemplate.getId());
+		SettingsManager settingsManager = new SettingsManager(arg0.getContext());
+		settingsManager.setCurrentResponseTemplateId(this.responseTemplate.getId());
 		this.adapter.notifyDataSetChanged();
 	}
 }

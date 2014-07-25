@@ -10,6 +10,7 @@ import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -64,12 +65,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
-		// Instantiate needed stuff
-		SettingsManager.setContext(this);
-
 		// Bind responder service
 		Intent bindCallReceiverService = new Intent(this, TtsCallResponderService.class);
-		this.bindService(bindCallReceiverService, this.mConnection, BIND_AUTO_CREATE);
+		this.bindService(bindCallReceiverService, this.mConnection, Context.BIND_AUTO_CREATE);
 
 		// Get access to UI elements
 		this.swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
@@ -88,11 +86,12 @@ public class MainActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 
+		SettingsManager settingsManager = new SettingsManager(this);
 		String currentTitle = null;
 
 		// Retrieve data
-		ResponseTemplate currentResponseTemplate = PersistentResponseTemplateList.getSingleton(this.getFilesDir())
-				.getItemWithId(SettingsManager.getCurrentResponseTemplateId());
+		ResponseTemplate currentResponseTemplate = PersistentResponseTemplateList.getSingleton(this).getItemWithId(
+				settingsManager.getCurrentResponseTemplateId());
 		if (currentResponseTemplate == null) {
 			Log.d(MainActivity.TAG, "No current response set");
 			currentTitle = "<None>";

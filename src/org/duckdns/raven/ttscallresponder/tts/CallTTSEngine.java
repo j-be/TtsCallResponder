@@ -14,9 +14,9 @@ public class CallTTSEngine implements OnInitListener {
 
 	private static String TAG = "CallTTSEngine";
 
-	private TextToSpeech ttsEngine = null;
+	private final TextToSpeech ttsEngine;
 	private boolean isTtsEngineUp = false;
-	private boolean speakEnterExit = true;
+	private boolean isService = true;
 
 	private final Context parent;
 
@@ -27,7 +27,7 @@ public class CallTTSEngine implements OnInitListener {
 
 	public CallTTSEngine(ActivitySettings parent) {
 		this.ttsEngine = new TextToSpeech(parent, this);
-		this.speakEnterExit = false;
+		this.isService = false;
 		this.parent = parent;
 	}
 
@@ -42,7 +42,7 @@ public class CallTTSEngine implements OnInitListener {
 			Log.i(CallTTSEngine.TAG, "TTS started - parameterizing");
 			this.parameterizeTtsEngine();
 			Log.i(CallTTSEngine.TAG, "TTS parameterized");
-			if (this.speakEnterExit)
+			if (this.isService)
 				this.speak("T T S service is running");
 			else
 				Log.i(CallTTSEngine.TAG, "Settings mode - not speaking on enter");
@@ -71,7 +71,7 @@ public class CallTTSEngine implements OnInitListener {
 
 	public void stopEngine() {
 		this.isTtsEngineUp = false;
-		if (this.speakEnterExit) {
+		if (this.isService) {
 			this.speak("Stopping T T S service");
 			try {
 				Thread.sleep(3000);

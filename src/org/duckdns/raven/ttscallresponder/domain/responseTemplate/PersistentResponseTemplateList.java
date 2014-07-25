@@ -1,28 +1,30 @@
 package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
 
+import android.content.Context;
 import android.util.Log;
 
 public class PersistentResponseTemplateList extends AbstractPersistentList<ResponseTemplate> {
 
 	private static final String TAG = "PersistentResponseTemplateList";
 	private static PersistentResponseTemplateList singleton = null;
+	private final SettingsManager settingsManager;
 
-	public static PersistentResponseTemplateList getSingleton(File directory) {
+	public static PersistentResponseTemplateList getSingleton(Context parent) {
 		if (PersistentResponseTemplateList.singleton == null)
-			PersistentResponseTemplateList.singleton = new PersistentResponseTemplateList(directory);
+			PersistentResponseTemplateList.singleton = new PersistentResponseTemplateList(parent);
 
 		return PersistentResponseTemplateList.singleton;
 	}
 
-	private PersistentResponseTemplateList(File directory) {
-		super(directory);
+	private PersistentResponseTemplateList(Context parent) {
+		super(parent.getFilesDir());
+		this.settingsManager = new SettingsManager(parent);
 	}
 
 	public void removeSelected() {
@@ -33,10 +35,10 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 			item = iter.next();
 			if (item.isSelected()) {
 				Log.i(PersistentResponseTemplateList.TAG, "Deleting item " + item.getId());
-				if (item.getId() == SettingsManager.getCurrentResponseTemplateId()) {
-					SettingsManager.setCurrentResponseTemplateId(-1);
+				if (item.getId() == this.settingsManager.getCurrentResponseTemplateId()) {
+					this.settingsManager.setCurrentResponseTemplateId(-1);
 					Log.d(PersistentResponseTemplateList.TAG,
-							"Resetting default: " + SettingsManager.getCurrentResponseTemplateId());
+							"Resetting default: " + this.settingsManager.getCurrentResponseTemplateId());
 				}
 				iter.remove();
 				this.changed = true;

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-// FIXME: Rework settings architecture - call to Context of MainActivity causes NULL after standby
-// FIXME: Rework keys and defaults
-
 public class TtsSettingsManager {
 
 	private static final float TTS_ENGINE_SPEECH_RATE_SHIFT = 0.5f;
@@ -24,7 +21,7 @@ public class TtsSettingsManager {
 	private static final float default_settings_tts_engine_pitch = 0.5f;
 	private static final String default_settings_tts_engine_voice = "eng";
 
-	private final SharedPreferences settings;
+	protected final SharedPreferences settings;
 
 	public TtsSettingsManager(Context context) {
 		this.settings = PreferenceManager.getDefaultSharedPreferences(context);

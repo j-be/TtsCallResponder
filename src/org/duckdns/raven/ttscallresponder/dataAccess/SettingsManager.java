@@ -1,57 +1,51 @@
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
-import org.duckdns.raven.ttscallresponder.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
-public class SettingsManager {
+//FIXME: Rework settings architecture - call to Context of MainActivity may cause NULL after standby
 
-	private static SharedPreferences settings = null;
-	private static Context context = null;
+public class SettingsManager extends TtsSettingsManager {
 
 	public static final int COLOR_NO_ITEM_CHOSEN = 0xffcccccc;
 
-	public static void setContext(Context context) {
-		SettingsManager.context = context;
-		SettingsManager.settings = PreferenceManager.getDefaultSharedPreferences(context);
+	// Make sure the keys are the same as in values/settings_keys_defaults.xml
+	private static final String key_settings_tts_delay = "ttsDelay";
+	private static final String key_settings_current_response_template = "currentResponseTemplate";
+
+	// Make sure the defaults are the same as in
+	// values/settings_keys_defaults.xml
+	private static final int default_settings_tts_delay = 1000;
+	private static final int default_settings_current_response_template = -1;
+
+	public SettingsManager(Context context) {
+		super(context);
 	}
 
-	private SettingsManager() {
+	public long getCurrentResponseTemplateId() {
+		return this.settings.getLong(SettingsManager.key_settings_current_response_template,
+				SettingsManager.default_settings_current_response_template);
 	}
 
-	public static long getCurrentResponseTemplateId() {
-		return SettingsManager.settings
-				.getLong(
-						SettingsManager.context.getResources().getString(
-								R.string.key_settings_current_response_template), SettingsManager.context
-								.getResources().getInteger(R.integer.default_settings_current_response_template));
-	}
-
-	public static void setCurrentResponseTemplateId(long id) {
-		SharedPreferences.Editor editor = SettingsManager.settings.edit();
-		editor.putLong(SettingsManager.context.getResources()
-				.getString(R.string.key_settings_current_response_template), id);
+	public void setCurrentResponseTemplateId(long id) {
+		SharedPreferences.Editor editor = this.settings.edit();
+		editor.putLong(SettingsManager.key_settings_current_response_template, id);
 		editor.commit();
 	}
 
-	public static int getTtsDelay() {
-		int defaultValue = SettingsManager.context.getResources().getInteger(R.integer.default_settings_tts_delay);
-		String key = SettingsManager.context.getResources().getString(R.string.key_settings_tts_delay);
-		int fromSettings = -1;
+	public int getTtsDelay() {
+		int ret = SettingsManager.default_settings_tts_delay;
 
 		try {
-			fromSettings = Integer.parseInt(SettingsManager.settings.getString(key, String.valueOf(defaultValue)));
+			ret = Integer.parseInt(this.settings.getString(SettingsManager.key_settings_tts_delay, "" + ret));
 		} catch (NumberFormatException e) {
-			fromSettings = defaultValue;
 		}
 
-		return fromSettings;
+		return ret;
 	}
 
 	/* ----- DEBUG ----- */
-	public static boolean getDebugSplitAnswerMethod() {
-		return SettingsManager.settings.getBoolean("debug_split_answer_method", true);
+	public boolean getDebugSplitAnswerMethod() {
+		return this.settings.getBoolean("debug_split_answer_method", true);
 	}
 }
