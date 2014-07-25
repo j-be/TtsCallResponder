@@ -19,13 +19,14 @@ public class TtsCallReceiver extends BroadcastReceiver {
 
 	private CallTTSEngine ttsEngine;
 	private ResponseTemplate currentResponseTemplate = null;
-	private final CalendarAccess calendarAccess;
 	private final SettingsManager settingsManager;
 
-	public TtsCallReceiver(Context parent) {
-		this.ttsEngine = new CallTTSEngine(parent);
-		this.calendarAccess = new CalendarAccess(parent);
-		this.settingsManager = new SettingsManager(parent);
+	private final Context context;
+
+	public TtsCallReceiver(Context context) {
+		this.context = context;
+		this.ttsEngine = new CallTTSEngine(context);
+		this.settingsManager = new SettingsManager(context);
 	}
 
 	/* ----- Getters/Setters ----- */
@@ -92,7 +93,8 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	}
 
 	private void speakText() {
-		Parameterizer parameterizer = new Parameterizer(this.calendarAccess);
+		CalendarAccess calendarAccess = new CalendarAccess(this.context);
+		Parameterizer parameterizer = new Parameterizer(calendarAccess);
 		String textToSpeak = parameterizer.parameterizeText(this.getCurrentResponseTemplate());
 		int preSpeechDelay = this.settingsManager.getTtsDelay();
 
