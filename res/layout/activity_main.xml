@@ -51,7 +51,6 @@
         android:onClick="onShowAnsweredCallListClick"
         android:text="@string/title_activity_answered_call_list"
         android:layout_marginBottom="@dimen/activity_main_big_spacing"
-        android:background="#cccccc"
         android:layout_marginLeft="@dimen/activity_small_margin"
         android:layout_marginRight="@dimen/activity_small_margin" />
 
@@ -95,7 +94,6 @@
         android:layout_below="@id/textView_currentResponseTemplateTitle"
         android:onClick="onShowResopnseTemplateList"
         android:text="@string/title_activity_response_template_list"
-        android:background="#cccccc"
         android:layout_marginLeft="@dimen/activity_small_margin"
         android:layout_marginRight="@dimen/activity_small_margin" />
 
