@@ -4,7 +4,6 @@ import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.content.BroadcastReceiver;
@@ -18,13 +17,12 @@ import android.view.KeyEvent;
 public class TtsCallReceiver extends BroadcastReceiver {
 	private static final String TAG = "TtsCallReceiver";
 
-	private final Context parent;
 	private CallTTSEngine ttsEngine;
+	private ResponseTemplate currentResponseTemplate = null;
 	private final CalendarAccess calendarAccess;
 	private final SettingsManager settingsManager;
 
 	public TtsCallReceiver(Context parent) {
-		this.parent = parent;
 		this.ttsEngine = new CallTTSEngine(parent);
 		this.calendarAccess = new CalendarAccess(parent);
 		this.settingsManager = new SettingsManager(parent);
@@ -44,20 +42,21 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		this.ttsEngine.speak("T T S settings updated");
 	}
 
+	public void setCurrentResponseTemplate(ResponseTemplate currentResponseTemplate) {
+		this.currentResponseTemplate = currentResponseTemplate;
+		Log.i(TtsCallReceiver.TAG, "Set current response template to: " + currentResponseTemplate.getTitle());
+	}
+
 	/* ----- Logic ----- */
 
 	private ResponseTemplate getCurrentResponseTemplate() {
-		PersistentResponseTemplateList responseTemplateList = PersistentResponseTemplateList.getSingleton(this.parent);
-		ResponseTemplate currentResponseTemplate = responseTemplateList.getItemWithId(this.settingsManager
-				.getCurrentResponseTemplateId());
-
 		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + this.settingsManager.getCurrentResponseTemplateId());
-		if (currentResponseTemplate == null) {
+		if (this.currentResponseTemplate == null) {
 			Log.d(TtsCallReceiver.TAG, "No current response set");
 			return null;
 		}
 
-		return currentResponseTemplate;
+		return this.currentResponseTemplate;
 	}
 
 	@Override

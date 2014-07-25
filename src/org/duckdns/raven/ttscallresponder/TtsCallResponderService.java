@@ -1,5 +1,6 @@
 package org.duckdns.raven.ttscallresponder;
 
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 import org.duckdns.raven.ttscallresponder.ui.notification.CallReceiverNotificationFactory;
 
@@ -18,6 +19,7 @@ public class TtsCallResponderService extends Service {
 
 	private TtsCallReceiver callReceiver = null;
 	private NotificationManager notificationManager = null;
+	private ResponseTemplate currentResponseTemplate = null;
 
 	/* ----- Lifecycle control ----- */
 
@@ -42,6 +44,8 @@ public class TtsCallResponderService extends Service {
 
 		this.notificationManager.notify(TtsCallResponderService.NOTIFICAITON_ID,
 				CallReceiverNotificationFactory.buildCallReceiverNotification(true));
+
+		this.callReceiver.setCurrentResponseTemplate(this.currentResponseTemplate);
 
 		return Service.START_STICKY;
 	}
@@ -83,9 +87,16 @@ public class TtsCallResponderService extends Service {
 		this.callReceiver.reparameterizeTtsEngine();
 	}
 
+	public void setResponseTemplate(ResponseTemplate currentResponseTemplate) {
+		this.currentResponseTemplate = currentResponseTemplate;
+		if (this.isRunning())
+			this.callReceiver.setCurrentResponseTemplate(currentResponseTemplate);
+	}
+
 	public class LocalBinder extends Binder {
 		public TtsCallResponderService getService() {
 			return TtsCallResponderService.this;
 		}
 	}
+
 }

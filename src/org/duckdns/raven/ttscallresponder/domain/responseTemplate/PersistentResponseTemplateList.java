@@ -27,6 +27,19 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		this.settingsManager = new SettingsManager(parent);
 	}
 
+	public ResponseTemplate getCurrentResponseTemplate() {
+		Iterator<ResponseTemplate> iter = this.list.iterator();
+		ResponseTemplate item = null;
+
+		while (iter.hasNext()) {
+			item = iter.next();
+			if (item.getId() == this.settingsManager.getCurrentResponseTemplateId())
+				return item;
+		}
+
+		return null;
+	}
+
 	public void removeSelected() {
 		Iterator<ResponseTemplate> iter = this.list.iterator();
 		ResponseTemplate item = null;

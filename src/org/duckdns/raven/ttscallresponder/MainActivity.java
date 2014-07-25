@@ -1,6 +1,5 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
@@ -33,6 +32,9 @@ public class MainActivity extends Activity {
 	private TextView currentResponseTemplateTitle = null;
 	private TextView numberOfAnsweredCalls = null;
 
+	/* ----- Data for TTS Engine ----- */
+	private ResponseTemplate currentResponseTemplate = null;
+
 	/* ----- Helper for closing with twice back-press ----- */
 	private final Time lastBackPressed = new Time();
 
@@ -44,8 +46,10 @@ public class MainActivity extends Activity {
 			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
 			MainActivity.this.applyCallReceiverState();
 			Log.i(MainActivity.TAG, "Service connected");
-			if (MainActivity.this.mCallResponderService.isRunning())
+			if (MainActivity.this.mCallResponderService.isRunning()) {
 				MainActivity.this.mCallResponderService.reparameterizeTtsEngine();
+			}
+			MainActivity.this.mCallResponderService.setResponseTemplate(MainActivity.this.currentResponseTemplate);
 		}
 
 		@Override
@@ -84,24 +88,26 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onResume() {
+		Log.i(MainActivity.TAG, "Enter onResume");
 		super.onResume();
 
-		SettingsManager settingsManager = new SettingsManager(this);
 		String currentTitle = null;
 
 		// Retrieve data
-		ResponseTemplate currentResponseTemplate = PersistentResponseTemplateList.getSingleton(this).getItemWithId(
-				settingsManager.getCurrentResponseTemplateId());
-		if (currentResponseTemplate == null) {
+		this.currentResponseTemplate = PersistentResponseTemplateList.getSingleton(this).getCurrentResponseTemplate();
+
+		// Initialize UI elements
+		if (this.currentResponseTemplate == null) {
 			Log.d(MainActivity.TAG, "No current response set");
 			currentTitle = "<None>";
 		} else
-			currentTitle = currentResponseTemplate.getTitle();
-
-		// Initialize UI elements
+			currentTitle = this.currentResponseTemplate.getTitle();
 		this.currentResponseTemplateTitle.setText(currentTitle);
 		this.applyCallReceiverState();
 		this.updateNumberOfAnsweredCalls();
+
+		if (this.mCallResponderService != null)
+			this.mCallResponderService.setResponseTemplate(this.currentResponseTemplate);
 	}
 
 	/* ----- Update UI ----- */
@@ -124,7 +130,6 @@ public class MainActivity extends Activity {
 	private void startCallReceiverService() {
 		Intent startCallReceiverService = new Intent(this, TtsCallResponderService.class);
 		this.startService(startCallReceiverService);
-
 	}
 
 	private void stopCallReceiverService() {
