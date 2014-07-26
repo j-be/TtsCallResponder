@@ -66,10 +66,8 @@ public class TtsCallReceiver extends BroadcastReceiver {
 
 	private ResponseTemplate getCurrentResponseTemplate() {
 		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + this.settingsManager.getCurrentResponseTemplateId());
-		if (this.currentResponseTemplate == null) {
+		if (this.currentResponseTemplate == null)
 			Log.d(TtsCallReceiver.TAG, "No current response set");
-			return null;
-		}
 
 		return this.currentResponseTemplate;
 	}
