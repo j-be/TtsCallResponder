@@ -63,7 +63,16 @@ public class ResponseTemplateListAdapter extends AbstractListAdapter<ResponseTem
 			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
 		else
 			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light);
-		setAsCurrent.setOnClickListener(new OnSetAsCurrentClickListener(this, responseTemplate, this.getParent()));
+
+		setAsCurrent.setTag(Long.valueOf(responseTemplate.getId()));
+		setAsCurrent.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				SettingsManager settingsManager = new SettingsManager(v.getContext());
+				settingsManager.setCurrentResponseTemplateId((Long) v.getTag());
+				ResponseTemplateListAdapter.this.notifyDataSetChanged();
+			}
+		});
 
 		convertView.setTag(responseTemplate);
 
