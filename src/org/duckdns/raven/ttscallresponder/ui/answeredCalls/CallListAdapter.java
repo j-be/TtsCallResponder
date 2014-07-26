@@ -8,12 +8,18 @@ import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.common.AbstractListAdapter;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class CallListAdapter extends AbstractListAdapter<Call> {
+	private static final String TAG = "CallListAdapter";
 
 	private final PhoneBookAccess phoneBookAccess;
 
@@ -35,7 +41,22 @@ public class CallListAdapter extends AbstractListAdapter<Call> {
 			caller.setText(this.phoneBookAccess.getNameForPhoneNumber(call.getCaller()));
 			callTime.setText(call.getCallTime().format("%b %d %Y, %H:%M"));
 
-			callBack.setOnClickListener(new CallBackListener(this.getParent(), call.getCaller()));
+			callBack.setTag(call.getCaller());
+
+			callBack.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					try {
+						Intent callIntent = new Intent(Intent.ACTION_DIAL);
+						callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						callIntent.setData(Uri.parse("tel:" + v.getTag()));
+						v.getContext().startActivity(callIntent);
+					} catch (ActivityNotFoundException activityException) {
+						Log.e(CallListAdapter.TAG, "Dial failed", activityException);
+					}
+
+				}
+			});
 		}
 
 		return convertView;
