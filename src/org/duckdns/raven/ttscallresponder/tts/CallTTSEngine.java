@@ -11,24 +11,22 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 
 public class CallTTSEngine implements OnInitListener {
-
 	private static String TAG = "CallTTSEngine";
 
 	private final TextToSpeech ttsEngine;
 	private boolean isTtsEngineUp = false;
-	private boolean isService = true;
 
-	private final Context parent;
-
-	public CallTTSEngine(Context parent) {
-		this.ttsEngine = new TextToSpeech(parent, this);
-		this.parent = parent;
+	private boolean isFeedbackMode = true;
+	private final Context context;
+	public CallTTSEngine(Context context) {
+		this.ttsEngine = new TextToSpeech(context, this);
+		this.context = context;
 	}
 
-	public CallTTSEngine(ActivitySettings parent) {
-		this.ttsEngine = new TextToSpeech(parent, this);
-		this.isService = false;
-		this.parent = parent;
+	public CallTTSEngine(ActivitySettings activitySettings) {
+		this.ttsEngine = new TextToSpeech(activitySettings, this);
+		this.isFeedbackMode = false;
+		this.context = activitySettings;
 	}
 
 	public void speak(String text) {
@@ -39,10 +37,12 @@ public class CallTTSEngine implements OnInitListener {
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
 			this.isTtsEngineUp = true;
+
 			Log.i(CallTTSEngine.TAG, "TTS started - parameterizing");
 			this.parameterizeTtsEngine();
 			Log.i(CallTTSEngine.TAG, "TTS parameterized");
-			if (this.isService)
+
+			if (this.isFeedbackMode)
 				this.speak("T T S service is running");
 			else
 				Log.i(CallTTSEngine.TAG, "Settings mode - not speaking on enter");
@@ -50,13 +50,12 @@ public class CallTTSEngine implements OnInitListener {
 	}
 
 	public void parameterizeTtsEngine() {
-		TtsSettingsManager ttsSettingsManager = new TtsSettingsManager(this.parent);
+		TtsSettingsManager ttsSettingsManager = new TtsSettingsManager(this.context);
 
 		if (!this.isTtsEngineUp)
 			return;
 
 		Locale ttsLocale = null;
-
 		String[] selectedVoiceString = ttsSettingsManager.getTtsLanguage().split("-");
 
 		if (selectedVoiceString.length > 1)
@@ -71,7 +70,7 @@ public class CallTTSEngine implements OnInitListener {
 
 	public void stopEngine() {
 		this.isTtsEngineUp = false;
-		if (this.isService) {
+		if (this.isFeedbackMode) {
 			this.speak("Stopping T T S service");
 			try {
 				Thread.sleep(3000);
