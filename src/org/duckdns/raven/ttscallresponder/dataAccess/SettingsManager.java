@@ -5,6 +5,7 @@ import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * Helper class for accessing all settings relevant to the TtsCallResponder app.
@@ -15,6 +16,7 @@ import android.content.SharedPreferences;
  * 
  */
 public class SettingsManager extends TtsSettingsManager {
+	private static final String TAG = "SettingsManager";
 
 	// For items which color depends on user's choice, use this color if nothing
 	// is chosen (yet)
@@ -61,6 +63,7 @@ public class SettingsManager extends TtsSettingsManager {
 		SharedPreferences.Editor editor = this.settings.edit();
 		editor.putLong(SettingsManager.key_settings_current_response_template, id);
 		editor.commit();
+		Log.i(TAG, "Current Response Template set to " + id);
 	}
 
 	/**
