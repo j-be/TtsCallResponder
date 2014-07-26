@@ -26,9 +26,9 @@ public class TtsSettingsManager {
 
 	// Make sure the defaults are the same as in
 	// values/settings_keys_defaults.xml
-	private static final float default_settings_tts_engine_speech_rate = 0.5f;
-	private static final float default_settings_tts_engine_pitch = 0.5f;
-	private static final String default_settings_tts_engine_voice = "eng";
+	public static final float default_settings_tts_engine_speech_rate = 0.5f;
+	public static final float default_settings_tts_engine_pitch = 0.5f;
+	public static final String default_settings_tts_engine_voice = "eng";
 
 	// Used to access the settings key-value store
 	protected final SharedPreferences settings;

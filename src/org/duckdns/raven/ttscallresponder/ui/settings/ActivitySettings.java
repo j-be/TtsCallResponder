@@ -38,6 +38,7 @@ public class ActivitySettings extends Activity {
 					super.onCreate(savedInstanceState);
 					// Load the preferences from an XML resource
 					this.addPreferencesFromResource(R.xml.preferences);
+					ActivitySettings.this.updateLanguageListSummary();
 				}
 			};
 			this.getFragmentManager().beginTransaction().add(R.id.container, this.settingsFragment).commit();
@@ -65,6 +66,7 @@ public class ActivitySettings extends Activity {
 		// in = in.setPackage("com.acapelagroup.android.tts");
 		// or whatever package you want
 
+		// Fetch available TTS engines
 		this.startActivityForResult(in, ActivitySettings.TTS_CHECK_DATA);
 	}
 
@@ -90,21 +92,27 @@ public class ActivitySettings extends Activity {
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		ListPreference voiceListPreference = null;
-		String selectedVoice = null;
-		TtsSettingsManager ttsSettingsManager = new TtsSettingsManager(this);
-
 		super.onWindowFocusChanged(hasFocus);
 
 		if (!hasFocus)
 			return;
 
+		this.updateLanguageListSummary();
+	}
+
+	private void updateLanguageListSummary() {
+		ListPreference voiceListPreference = null;
+		String summary = null;
+		TtsSettingsManager ttsSettingsManager = new TtsSettingsManager(this);
+
 		voiceListPreference = ((ListPreference) this.settingsFragment.findPreference(this
 				.getString(R.string.key_settings_tts_engine_voice)));
 
-		selectedVoice = ttsSettingsManager.getTtsLanguage();
-		if (selectedVoice != null && !selectedVoice.isEmpty())
-			voiceListPreference.setSummary(selectedVoice);
+		summary = ttsSettingsManager.getTtsLanguage();
+		if (summary != null && !summary.isEmpty())
+			if (summary.equals(TtsSettingsManager.default_settings_tts_engine_voice))
+				summary += " [Default]";
+		voiceListPreference.setSummary(summary);
 	}
 
 	@Override
