@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -121,37 +120,33 @@ public class ActivityResponseTemplateList extends Activity {
 		// Building dialog
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(layout);
-		// Will be overridden onShow()
-		builder.setPositiveButton("Ok", null);
 
+		// OK button
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				responseTemplate.setText(text.getText().toString());
+				responseTemplate.setTitle(title.getText().toString());
+				if (responseTemplate.isValid()) {
+					ActivityResponseTemplateList.this.persistentList.add(responseTemplate);
+					ActivityResponseTemplateList.this.adapter.notifyDataSetChanged();
+					dialog.dismiss();
+				} else
+					Toast.makeText(builder.getContext(), "Please enter at least Title and Text!", Toast.LENGTH_SHORT)
+							.show();
+			}
+		});
+
+		// Cancel button
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
-		final AlertDialog dialog = builder.create();
 
-		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialogInterface) {
-				Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-				b.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						responseTemplate.setText(text.getText().toString());
-						responseTemplate.setTitle(title.getText().toString());
-						if (responseTemplate.isValid()) {
-							dialog.dismiss();
-							ActivityResponseTemplateList.this.persistentList.add(responseTemplate);
-							ActivityResponseTemplateList.this.adapter.notifyDataSetChanged();
-						} else
-							Toast.makeText(builder.getContext(), "Please enter at least Title and Text!",
-									Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
-		});
+		// Show
+		final AlertDialog dialog = builder.create();
 		dialog.show();
 	}
 
