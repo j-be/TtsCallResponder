@@ -14,6 +14,14 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
+/**
+ * TODO comment
+ * 
+ * FIXME: License
+ * 
+ * @author Juri Berlanda
+ * 
+ */
 public class TtsCallReceiver extends BroadcastReceiver {
 	private static final String TAG = "TtsCallReceiver";
 
@@ -29,7 +37,7 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		this.settingsManager = new SettingsManager(context);
 	}
 
-	/* ----- Getters/Setters ----- */
+	/* ----- Getters / Setters ----- */
 
 	public void stopTtsEngine() {
 		if (this.ttsEngine != null) {
@@ -126,11 +134,14 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	}
 
 	/**
-	 * Dirty Hack
+	 * Hack! Below function is somehow able to answer an incoming call by faking
+	 * a headset.
 	 * 
-	 * Source:
-	 * http://stackoverflow.com/questions/15481524/how-to-programatically
-	 * -answer-end-a-call-in-android-4-1
+	 * @param context
+	 *            the context we are currently running in
+	 * @author 
+	 *         http://stackoverflow.com/questions/15481524/how-to-programatically
+	 *         -answer-end-a-call-in-android-4-1
 	 */
 	private void answerPhoneHeadsethook(Context context) {
 		Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
