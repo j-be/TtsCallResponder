@@ -161,19 +161,14 @@ public class TtsCallReceiver extends BroadcastReceiver {
 
 		Intent headSetUnPluggedintent = new Intent(Intent.ACTION_HEADSET_PLUG);
 		headSetUnPluggedintent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY);
-		headSetUnPluggedintent.putExtra("state", 1); // 0 = unplugged 1 =
-														// Headset with
-														// microphone 2 =
-														// Headset without
-														// microphone
+		// 0 = unplugged 1 = Headset with microphone 2 = Headset without
+		// microphone
+		headSetUnPluggedintent.putExtra("state", 1);
 		headSetUnPluggedintent.putExtra("name", "Headset");
-		// TODO: Should we require a permission?
 		try {
 			context.sendOrderedBroadcast(headSetUnPluggedintent, null);
 			Log.d(TtsCallReceiver.TAG, "ACTION_HEADSET_PLUG broadcasted ...");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
 			Log.d(TtsCallReceiver.TAG, "Catch block of ACTION_HEADSET_PLUG broadcast");
 			Log.d(TtsCallReceiver.TAG, "Call Answered From Catch Block !!");
 		}
