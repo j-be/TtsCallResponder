@@ -11,6 +11,7 @@ import java.util.List;
 
 import android.util.Log;
 
+// TODO comment
 public abstract class AbstractPersistentList<ListItem extends SerializeableListItem> {
 
 	private static final String TAG = "AbstractPersistentList";

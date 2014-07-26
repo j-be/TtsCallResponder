@@ -2,10 +2,10 @@ package org.duckdns.raven.ttscallresponder.domain.common;
 
 import java.util.List;
 
-
 import android.app.Activity;
 import android.widget.BaseAdapter;
 
+// TODO comment
 public abstract class AbstractListAdapter<ModelType extends ObjectWithId> extends BaseAdapter {
 
 	protected List<ModelType> list;

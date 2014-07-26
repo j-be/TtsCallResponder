@@ -9,6 +9,7 @@ import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
 import android.content.Context;
 import android.util.Log;
 
+// TODO comment
 public class PersistentResponseTemplateList extends AbstractPersistentList<ResponseTemplate> {
 
 	private static final String TAG = "PersistentResponseTemplateList";
