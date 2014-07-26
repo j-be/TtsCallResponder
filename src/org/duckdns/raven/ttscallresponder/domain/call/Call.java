@@ -4,6 +4,14 @@ import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
 
 import android.text.format.Time;
 
+/**
+ * POJO representing an incoming call
+ * 
+ * FIXME: License
+ * 
+ * @author Juri Berlanda
+ * 
+ */
 public class Call extends SerializeableListItem {
 	private static final long serialVersionUID = -724628669974903213L;
 
@@ -20,7 +28,7 @@ public class Call extends SerializeableListItem {
 		this.callTime = now.toMillis(false);
 	}
 
-	/* ----- Getters/Setters ----- */
+	/* ----- Getters / Setters ----- */
 
 	public String getCaller() {
 		return this.callingNumber;

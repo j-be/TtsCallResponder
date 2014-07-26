@@ -13,15 +13,40 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * This service is meant to run in background and is responsible for registering
+ * and unregistering a {@link TtsCallReceiver}, i.e. for enabling and disabling
+ * automatic call answering.
+ * 
+ * FIXME: License
+ * 
+ * @author Juri Berlanda
+ * 
+ */
 public class TtsCallResponderService extends Service {
 	private static final String TAG = "TtsCallResponderService";
+
+	// Some random ID for taskbar notification
 	private static final int NOTIFICAITON_ID = 129;
 
+	// The call receiver which is used to react on incoming calls
 	private TtsCallReceiver callReceiver = null;
+	// Used to show notification in taskbar if service is running
 	private NotificationManager notificationManager = null;
+	// The currently used response template. This is passed through to the
+	// receiver
 	private ResponseTemplate currentResponseTemplate = null;
 
-	/* ----- Lifecycle control ----- */
+	/* ----- Service connection ----- */
+
+	// Provide access to the service object on binds
+	public class LocalBinder extends Binder {
+		public TtsCallResponderService getService() {
+			return TtsCallResponderService.this;
+		}
+	}
+
+	/* ----- Lifecycle management ----- */
 
 	@Override
 	public void onCreate() {
@@ -33,6 +58,7 @@ public class TtsCallResponderService extends Service {
 		CallReceiverNotificationFactory.setContext(this);
 	}
 
+	/* Callback on Service start */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i(TtsCallResponderService.TAG, "Service started");
@@ -50,18 +76,7 @@ public class TtsCallResponderService extends Service {
 		return Service.START_STICKY;
 	}
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		Log.i(TtsCallResponderService.TAG, "Service bound");
-		return new LocalBinder();
-	}
-
-	@Override
-	public boolean onUnbind(Intent intent) {
-		Log.i(TtsCallResponderService.TAG, "Service unbound");
-		return super.onUnbind(intent);
-	}
-
+	/* Method to explicitly stop the service */
 	@Override
 	public boolean stopService(Intent name) {
 		Log.i(TtsCallResponderService.TAG, "Service stopped");
@@ -83,6 +98,8 @@ public class TtsCallResponderService extends Service {
 		return this.callReceiver != null;
 	}
 
+	/* --- Passthrough of updates for response template and TTS parameters --- */
+
 	public void reparameterizeTtsEngine() {
 		this.callReceiver.reparameterizeTtsEngine();
 	}
@@ -93,10 +110,17 @@ public class TtsCallResponderService extends Service {
 			this.callReceiver.setCurrentResponseTemplate(currentResponseTemplate);
 	}
 
-	public class LocalBinder extends Binder {
-		public TtsCallResponderService getService() {
-			return TtsCallResponderService.this;
-		}
+	/* --- Helpers for lifecycle logging --- */
+	@Override
+	public IBinder onBind(Intent intent) {
+		Log.i(TtsCallResponderService.TAG, "Service bound");
+		return new LocalBinder();
+	}
+
+	@Override
+	public boolean onUnbind(Intent intent) {
+		Log.i(TtsCallResponderService.TAG, "Service unbound");
+		return super.onUnbind(intent);
 	}
 
 }
