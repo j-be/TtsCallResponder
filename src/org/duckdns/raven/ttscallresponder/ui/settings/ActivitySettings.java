@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.PreferenceFragment;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
@@ -20,7 +21,7 @@ public class ActivitySettings extends Activity {
 	private static String TAG = "ActivitySettings";
 
 	private final static int TTS_CHECK_DATA = 123;
-	private SettingsFragment settingsFragment = null;
+	private PreferenceFragment settingsFragment = null;
 	private CallTTSEngine testEngine = null;
 
 	private boolean enter = true;
@@ -31,7 +32,14 @@ public class ActivitySettings extends Activity {
 		this.setContentView(R.layout.activity_settings);
 
 		if (savedInstanceState == null) {
-			this.settingsFragment = new SettingsFragment();
+			this.settingsFragment = new PreferenceFragment() {
+				@Override
+				public void onCreate(Bundle savedInstanceState) {
+					super.onCreate(savedInstanceState);
+					// Load the preferences from an XML resource
+					this.addPreferencesFromResource(R.xml.preferences);
+				}
+			};
 			this.getFragmentManager().beginTransaction().add(R.id.container, this.settingsFragment).commit();
 		}
 	}
