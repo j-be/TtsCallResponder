@@ -8,13 +8,16 @@ import org.duckdns.raven.ttscallresponder.domain.common.AbstractListAdapter;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ResponseTemplateListAdapter extends AbstractListAdapter<ResponseTemplate> {
+	private static final String TAG = "ResponseTemplateListAdapter";
 
 	private final SettingsManager settingsManager;
 
@@ -39,7 +42,23 @@ public class ResponseTemplateListAdapter extends AbstractListAdapter<ResponseTem
 		title.setText(responseTemplate.getTitle());
 		text.setText(responseTemplate.getText());
 		selected.setChecked(responseTemplate.isSelected());
-		selected.setOnClickListener(new OnSelectedClickListener(responseTemplate));
+
+		// selected.setOnClickListener(new
+		// OnSelectedClickListener(responseTemplate));
+
+		selected.setTag(responseTemplate);
+		selected.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CheckBox checkBox = (CheckBox) v;
+				ResponseTemplate responseTemplate = (ResponseTemplate) checkBox.getTag();
+				responseTemplate.setSelected(checkBox.isChecked());
+				Log.i(TAG,
+						"Item " + responseTemplate.getTitle() + " selected for removal: "
+								+ responseTemplate.isSelected());
+			}
+		});
+
 		if (responseTemplate.getId() == this.settingsManager.getCurrentResponseTemplateId())
 			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
 		else
