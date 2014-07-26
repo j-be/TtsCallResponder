@@ -53,7 +53,13 @@ public class TtsCallReceiver extends BroadcastReceiver {
 
 	public void setCurrentResponseTemplate(ResponseTemplate currentResponseTemplate) {
 		this.currentResponseTemplate = currentResponseTemplate;
-		Log.i(TtsCallReceiver.TAG, "Set current response template to: " + currentResponseTemplate.getTitle());
+		if (currentResponseTemplate != null)
+			Log.i(TtsCallReceiver.TAG, "Set current response template to: " + currentResponseTemplate.getTitle());
+		else {
+			// FIXME: The engine is running with no response template set. So it
+			// is answering, but not speaking anything.
+			Log.w(TtsCallReceiver.TAG, "No current response template set");
+		}
 	}
 
 	/* ----- Logic ----- */
