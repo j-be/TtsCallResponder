@@ -13,17 +13,9 @@ import android.util.Log;
 public class PersistentResponseTemplateList extends AbstractPersistentList<ResponseTemplate> {
 
 	private static final String TAG = "PersistentResponseTemplateList";
-	private static PersistentResponseTemplateList singleton = null;
 	private final SettingsManager settingsManager;
 
-	public static PersistentResponseTemplateList getSingleton(Context parent) {
-		if (PersistentResponseTemplateList.singleton == null)
-			PersistentResponseTemplateList.singleton = new PersistentResponseTemplateList(parent);
-
-		return PersistentResponseTemplateList.singleton;
-	}
-
-	private PersistentResponseTemplateList(Context parent) {
+	public PersistentResponseTemplateList(Context parent) {
 		super(parent.getFilesDir());
 		this.settingsManager = new SettingsManager(parent);
 	}
@@ -49,11 +41,6 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 			item = iter.next();
 			if (item.isSelected()) {
 				Log.i(PersistentResponseTemplateList.TAG, "Deleting item " + item.getId());
-				if (item.getId() == this.settingsManager.getCurrentResponseTemplateId()) {
-					this.settingsManager.setCurrentResponseTemplateId(-1);
-					Log.d(PersistentResponseTemplateList.TAG,
-							"Resetting default: " + this.settingsManager.getCurrentResponseTemplateId());
-				}
 				iter.remove();
 				this.changed = true;
 			}

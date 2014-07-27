@@ -85,7 +85,8 @@ public class MainActivity extends Activity {
 	}
 
 	private void updateNumberOfAnsweredCalls() {
-		this.numberOfAnsweredCalls.setText("" + PersistentCallList.getSingleton(this.getFilesDir()).getCount());
+		PersistentCallList callList = new PersistentCallList(this.getFilesDir());
+		this.numberOfAnsweredCalls.setText("" + callList.getCount());
 	}
 
 	/* ----- Service control helpers ----- */
@@ -176,7 +177,8 @@ public class MainActivity extends Activity {
 		String currentTitle = null;
 
 		// Retrieve data
-		this.currentResponseTemplate = PersistentResponseTemplateList.getSingleton(this).getCurrentResponseTemplate();
+		PersistentResponseTemplateList responseTemplateList = new PersistentResponseTemplateList(this);
+		this.currentResponseTemplate = responseTemplateList.getCurrentResponseTemplate();
 
 		// Initialize UI elements
 		if (this.currentResponseTemplate == null) {

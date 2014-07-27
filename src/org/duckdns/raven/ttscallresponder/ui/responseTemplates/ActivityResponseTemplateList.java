@@ -43,7 +43,7 @@ public class ActivityResponseTemplateList extends Activity {
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
 		ListView responseTemplatesListView = (ListView) this.findViewById(R.id.list_responseTemplates);
-		this.persistentList = PersistentResponseTemplateList.getSingleton(this);
+		this.persistentList = new PersistentResponseTemplateList(this);
 		this.adapter = new ResponseTemplateListAdapter(this, this.persistentList.getPersistentList());
 		responseTemplatesListView.setAdapter(this.adapter);
 

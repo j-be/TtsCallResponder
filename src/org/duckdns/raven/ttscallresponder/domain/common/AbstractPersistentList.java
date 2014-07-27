@@ -90,9 +90,8 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	}
 
 	public List<ListItem> getPersistentList() {
-		Log.i(TAG, "Loading list");
-
 		if (this.list == null) {
+			Log.i(TAG, "No list yet");
 			this.list = this.loadPersistentList();
 		}
 
@@ -107,6 +106,8 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
+
+		Log.i(TAG, "Loading list");
 
 		try {
 			fis = new FileInputStream(persistentListFile);

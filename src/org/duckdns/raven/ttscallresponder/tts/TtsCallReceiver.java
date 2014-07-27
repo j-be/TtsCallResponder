@@ -82,8 +82,9 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		}
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-			PersistentCallList.getSingleton(null).add(
-					new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+			PersistentCallList callList = new PersistentCallList(this.context.getFilesDir());
+			callList.add(new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
+			callList.savePersistentList();
 			this.answerPhoneHeadsethook(context);
 
 			if (this.settingsManager.getDebugSplitAnswerMethod()) {

@@ -27,7 +27,7 @@ public class ActivityAnsweredCallList extends Activity {
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
 
 		ListView answeredCallsListView = (ListView) this.findViewById(R.id.list_answered_calls);
-		this.answeredCallList = PersistentCallList.getSingleton(this.getFilesDir());
+		this.answeredCallList = new PersistentCallList(this.getFilesDir());
 		this.adapter = new CallListAdapter(this, this.answeredCallList.getPersistentList());
 		answeredCallsListView.setAdapter(this.adapter);
 		this.adapter.notifyDataSetChanged();
