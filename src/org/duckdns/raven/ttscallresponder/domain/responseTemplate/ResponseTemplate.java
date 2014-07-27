@@ -22,7 +22,9 @@ public class ResponseTemplate extends SerializeableListItem {
 	private String title = "";
 	private String text = "";
 	private long calendarId = -1;
-	private boolean selected = false;
+	// FIXME: Below has to be removed! Is a feature of the list, not the
+	// template
+	private transient boolean selected = false;
 
 	/**
 	 * Extended constructor. Does NOT assign a valid ID.
