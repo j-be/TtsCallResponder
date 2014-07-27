@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
-import org.duckdns.raven.ttscallresponder.domain.common.AbstractListAdapter;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.app.Activity;
@@ -12,25 +11,27 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class ResponseTemplateListAdapter extends AbstractListAdapter<ResponseTemplate> {
+public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> {
 	private static final String TAG = "ResponseTemplateListAdapter";
 
 	private final SettingsManager settingsManager;
+	private final Activity parent;
 
 	public ResponseTemplateListAdapter(Activity parent, List<ResponseTemplate> list) {
-		super(parent, list);
+		super(parent, org.duckdns.raven.ttscallresponder.R.layout.widget_response_template, list);
 		this.settingsManager = new SettingsManager(parent);
+		this.parent = parent;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = this.getParent().getLayoutInflater()
-					.inflate(R.layout.widget_response_template, parent, false);
+			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_response_template, parent, false);
 		}
 
 		TextView title = (TextView) convertView.findViewById(R.id.label_responseTemplateTitle);
@@ -38,7 +39,7 @@ public class ResponseTemplateListAdapter extends AbstractListAdapter<ResponseTem
 		CheckBox selected = (CheckBox) convertView.findViewById(R.id.checkBox_responseTemplateSelected);
 		ImageButton setAsCurrent = (ImageButton) convertView.findViewById(R.id.button_setResponseTemplateAsCurrent);
 
-		ResponseTemplate responseTemplate = (ResponseTemplate) this.getItem(position);
+		ResponseTemplate responseTemplate = this.getItem(position);
 		title.setText(responseTemplate.getTitle());
 		text.setText(responseTemplate.getText());
 		selected.setChecked(responseTemplate.isSelected());
