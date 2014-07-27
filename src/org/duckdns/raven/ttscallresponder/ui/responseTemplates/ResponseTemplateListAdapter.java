@@ -44,9 +44,6 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		text.setText(responseTemplate.getText());
 		selected.setChecked(responseTemplate.isSelected());
 
-		// selected.setOnClickListener(new
-		// OnSelectedClickListener(responseTemplate));
-
 		selected.setTag(responseTemplate);
 		selected.setOnClickListener(new OnClickListener() {
 			@Override
