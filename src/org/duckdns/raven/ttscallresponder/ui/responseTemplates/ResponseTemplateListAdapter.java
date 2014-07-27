@@ -60,7 +60,7 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		if (responseTemplate.getId() == this.settingsManager.getCurrentResponseTemplateId())
 			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
 		else
-			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light);
+			setAsCurrent.setImageResource(R.drawable.btn_check_off_disable);
 
 		setAsCurrent.setTag(Long.valueOf(responseTemplate.getId()));
 		setAsCurrent.setOnClickListener(new OnClickListener() {
