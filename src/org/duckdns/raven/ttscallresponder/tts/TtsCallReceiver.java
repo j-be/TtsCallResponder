@@ -111,7 +111,8 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		ResponseTemplate responseTemplate = this.getCurrentResponseTemplate();
 
 		String textToSpeak = Parameterizer.parameterizeFromCalendar(responseTemplate,
-				calendarAccess.getCurrentEventFromCalendar(responseTemplate.getCalendarId())).getText();
+				calendarAccess.getCurrentEventFromCalendar(responseTemplate.getCalendarId()),
+				this.settingsManager.getTtsLanguage()).getText();
 
 		Log.i(TtsCallReceiver.TAG, "Waiting " + preSpeechDelay + " ms");
 		try {
