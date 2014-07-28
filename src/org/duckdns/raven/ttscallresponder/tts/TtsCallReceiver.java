@@ -68,7 +68,6 @@ public class TtsCallReceiver extends BroadcastReceiver implements OnSharedPrefer
 		if (key.startsWith(TtsSettingsManager.key_settings_tts_prefix)) {
 			Log.i(TtsCallReceiver.TAG, key + " is a TTS setting - updating TTS settings in receiver");
 			TtsCallReceiver.this.ttsEngine.parameterizeTtsEngine();
-			this.ttsEngine.speak("T T S settings updated");
 		}
 
 		// Change of ResponseTemplate

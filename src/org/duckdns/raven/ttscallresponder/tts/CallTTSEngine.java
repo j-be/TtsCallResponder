@@ -80,6 +80,9 @@ public class CallTTSEngine implements OnInitListener {
 		this.ttsEngine.setLanguage(ttsSettingsManager.getTtsLanguage());
 		this.ttsEngine.setSpeechRate(ttsSettingsManager.getTtsEngineSpeechRate());
 		this.ttsEngine.setPitch(ttsSettingsManager.getTtsEnginePitch());
+
+		// User feedback
+		this.speak("T T S settings updated");
 	}
 
 	/**
