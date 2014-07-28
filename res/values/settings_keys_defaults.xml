@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- TTS Settings Keys -->
-    <string name="key_settings_tts_engine_speech_rate">ttsSpeechRate</string>
-    <string name="key_settings_tts_engine_pitch">ttsPitch</string>
-    <string name="key_settings_tts_engine_voice">ttsVoice</string>
+    <string name="key_settings_tts_engine_speech_rate">tts_SpeechRate</string>
+    <string name="key_settings_tts_engine_pitch">tts_Pitch</string>
+    <string name="key_settings_tts_engine_voice">tts_Voice</string>
 
     <!-- TTS Settings defaults -->
     <item type="fraction" format="float" name="default_settings_tts_engine_speech_rate">0.5</item>

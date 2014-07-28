@@ -23,8 +23,11 @@ public class SettingsManager extends TtsSettingsManager {
 	public static final int COLOR_NO_ITEM_CHOSEN = 0xffcccccc;
 
 	// Make sure the keys are the same as in values/settings_keys_defaults.xml
-	private static final String key_settings_tts_delay = "ttsDelay";
-	private static final String key_settings_current_response_template = "currentResponseTemplate";
+	public static final String key_settings_receiver_prefix = "receiver_";
+	private static final String key_settings_tts_delay = SettingsManager.key_settings_receiver_prefix
+			+ "preTtsSpeakDelay";
+	private static final String key_settings_current_response_template = SettingsManager.key_settings_receiver_prefix
+			+ "currentResponseTemplate";
 
 	// Make sure the defaults are the same as in
 	// values/settings_keys_defaults.xml

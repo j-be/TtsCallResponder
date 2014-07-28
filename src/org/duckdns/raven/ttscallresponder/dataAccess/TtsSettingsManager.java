@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
 /**
@@ -22,9 +23,11 @@ public class TtsSettingsManager {
 	private static final float TTS_ENGINE_PITCH_XCROSSING = 0.5f;
 
 	// Make sure the keys are the same as in values/settings_keys_defaults.xml
-	private static final String key_settings_tts_engine_speech_rate = "ttsSpeechRate";
-	private static final String key_settings_tts_engine_pitch = "ttsPitch";
-	private static final String key_settings_tts_engine_voice = "ttsVoice";
+	public static final String key_settings_tts_prefix = "tts_";
+	private static final String key_settings_tts_engine_speech_rate = TtsSettingsManager.key_settings_tts_prefix
+			+ "SpeechRate";
+	private static final String key_settings_tts_engine_pitch = TtsSettingsManager.key_settings_tts_prefix + "Pitch";
+	private static final String key_settings_tts_engine_voice = TtsSettingsManager.key_settings_tts_prefix + "Voice";
 
 	// Make sure the defaults are the same as in
 	// values/settings_keys_defaults.xml
@@ -43,6 +46,16 @@ public class TtsSettingsManager {
 	 */
 	public TtsSettingsManager(Context context) {
 		this.settings = PreferenceManager.getDefaultSharedPreferences(context);
+	}
+
+	// TODO comment
+	public void registerSettingsChangeListener(OnSharedPreferenceChangeListener listener) {
+		this.settings.registerOnSharedPreferenceChangeListener(listener);
+	}
+
+	// TODO comment
+	public void unregisterSettingsChangeListener(OnSharedPreferenceChangeListener listener) {
+		this.settings.unregisterOnSharedPreferenceChangeListener(listener);
 	}
 
 	/**

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.TtsSettingsManager;
-import org.duckdns.raven.ttscallresponder.tts.CallTTSEngine;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,8 +12,6 @@ import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class ActivitySettings extends Activity {
 
@@ -22,7 +19,6 @@ public class ActivitySettings extends Activity {
 
 	private final static int TTS_CHECK_DATA = 123;
 	private PreferenceFragment settingsFragment = null;
-	private CallTTSEngine testEngine = null;
 
 	private boolean enter = true;
 
@@ -58,7 +54,6 @@ public class ActivitySettings extends Activity {
 		super.onStart();
 		Log.i(ActivitySettings.TAG, "Enter onStart");
 
-		this.testEngine = new CallTTSEngine(this);
 		// Check available languages
 		Intent in = new Intent(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
 
@@ -121,33 +116,4 @@ public class ActivitySettings extends Activity {
 		this.playAnimation();
 		super.onPause();
 	}
-
-	@Override
-	protected void onStop() {
-		Log.i(ActivitySettings.TAG, "Enter onStop()");
-		this.testEngine.stopEngine();
-		super.onStop();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		this.getMenuInflater().inflate(R.menu.activity_settings, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_test_tts_settings) {
-			this.testEngine.parameterizeTtsEngine();
-			this.testEngine.speak("Test T T S");
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
 }

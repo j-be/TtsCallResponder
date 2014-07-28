@@ -2,6 +2,7 @@ package org.duckdns.raven.ttscallresponder.tts;
 
 import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
+import org.duckdns.raven.ttscallresponder.dataAccess.TtsSettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
@@ -9,6 +10,8 @@ import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTempla
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.media.AudioManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -22,7 +25,7 @@ import android.view.KeyEvent;
  * @author Juri Berlanda
  * 
  */
-public class TtsCallReceiver extends BroadcastReceiver {
+public class TtsCallReceiver extends BroadcastReceiver implements OnSharedPreferenceChangeListener {
 	private static final String TAG = "TtsCallReceiver";
 
 	private CallTTSEngine ttsEngine;
@@ -35,6 +38,8 @@ public class TtsCallReceiver extends BroadcastReceiver {
 		this.context = context;
 		this.ttsEngine = new CallTTSEngine(context);
 		this.settingsManager = new SettingsManager(context);
+
+		this.settingsManager.registerSettingsChangeListener(this);
 	}
 
 	/* ----- Getters / Setters ----- */
@@ -44,11 +49,8 @@ public class TtsCallReceiver extends BroadcastReceiver {
 			this.ttsEngine.stopEngine();
 			this.ttsEngine = null;
 		}
-	}
 
-	public void reparameterizeTtsEngine() {
-		this.ttsEngine.parameterizeTtsEngine();
-		this.ttsEngine.speak("T T S settings updated");
+		this.settingsManager.unregisterSettingsChangeListener(this);
 	}
 
 	public void setCurrentResponseTemplate(ResponseTemplate currentResponseTemplate) {
@@ -63,6 +65,16 @@ public class TtsCallReceiver extends BroadcastReceiver {
 	}
 
 	/* ----- Logic ----- */
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		Log.i(TtsCallReceiver.TAG, "Change in settings detected. Key: " + key);
+		if (key.startsWith(TtsSettingsManager.key_settings_tts_prefix)) {
+			Log.i(TtsCallReceiver.TAG, key + " is a TTS setting - updating TTS settings in receiver");
+			TtsCallReceiver.this.ttsEngine.parameterizeTtsEngine();
+			this.ttsEngine.speak("T T S settings updated");
+		}
+	}
 
 	private ResponseTemplate getCurrentResponseTemplate() {
 		Log.d(TtsCallReceiver.TAG, "CurrentResponseId: " + this.settingsManager.getCurrentResponseTemplateId());

@@ -98,12 +98,6 @@ public class TtsCallResponderService extends Service {
 		return this.callReceiver != null;
 	}
 
-	/* --- Passthrough of updates for response template and TTS parameters --- */
-
-	public void reparameterizeTtsEngine() {
-		this.callReceiver.reparameterizeTtsEngine();
-	}
-
 	public void setResponseTemplate(ResponseTemplate currentResponseTemplate) {
 		this.currentResponseTemplate = currentResponseTemplate;
 		if (this.isRunning())

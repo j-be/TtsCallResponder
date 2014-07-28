@@ -56,11 +56,8 @@ public class MainActivity extends Activity {
 			// Fetch the service object
 			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
 			MainActivity.this.applyCallReceiverState();
+
 			Log.i(MainActivity.TAG, "Service connected");
-			// Apply current settings
-			if (MainActivity.this.mCallResponderService.isRunning()) {
-				MainActivity.this.mCallResponderService.reparameterizeTtsEngine();
-			}
 			MainActivity.this.mCallResponderService.setResponseTemplate(MainActivity.this.currentResponseTemplate);
 		}
 
