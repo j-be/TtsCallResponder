@@ -42,13 +42,24 @@ public class ActivityResponseTemplateList extends Activity {
 
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
-		ListView responseTemplatesListView = (ListView) this.findViewById(R.id.list_responseTemplates);
-		this.persistentList = new PersistentResponseTemplateList(this);
+		// FIXME: Change to Fragment API to avoid using deprecated stuff
+		this.persistentList = (PersistentResponseTemplateList) this.getLastNonConfigurationInstance();
+		if (this.persistentList == null)
+			this.persistentList = new PersistentResponseTemplateList(this);
+
 		this.adapter = new ResponseTemplateListAdapter(this, this.persistentList.getPersistentList());
+		ListView responseTemplatesListView = (ListView) this.findViewById(R.id.list_responseTemplates);
+
 		responseTemplatesListView.setAdapter(this.adapter);
 
 		this.calendarAccess = new CalendarAccess(this);
 		this.userCalendarListAdapter = new UserCalendarListAdapter(this);
+	}
+
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		Log.i(ActivityResponseTemplateList.TAG, "Retaining list");
+		return this.persistentList;
 	}
 
 	@Override
