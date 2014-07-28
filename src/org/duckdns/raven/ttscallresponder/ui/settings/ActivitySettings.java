@@ -108,7 +108,7 @@ public class ActivitySettings extends Activity {
 		voiceListPreference = ((ListPreference) this.settingsFragment.findPreference(this
 				.getString(R.string.key_settings_tts_engine_voice)));
 
-		summary = ttsSettingsManager.getTtsLanguage();
+		summary = ttsSettingsManager.getTtsLanguage().toString();
 		if (summary != null && !summary.isEmpty())
 			if (summary.equals(TtsSettingsManager.default_settings_tts_engine_voice))
 				summary += " [Default]";

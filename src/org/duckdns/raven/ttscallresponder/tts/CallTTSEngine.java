@@ -100,17 +100,8 @@ public class CallTTSEngine implements OnInitListener {
 		if (!this.isTtsEngineUp)
 			return;
 
-		// Compose the locale
-		Locale ttsLocale = null;
-		String[] selectedVoiceString = ttsSettingsManager.getTtsLanguage().split("-");
-
-		if (selectedVoiceString.length > 1)
-			ttsLocale = new Locale(selectedVoiceString[0], selectedVoiceString[1]);
-		else
-			ttsLocale = new Locale(selectedVoiceString[0]);
-
 		// Apply the settings
-		this.ttsEngine.setLanguage(ttsLocale);
+		this.ttsEngine.setLanguage(ttsSettingsManager.getTtsLanguage());
 		this.ttsEngine.setSpeechRate(ttsSettingsManager.getTtsEngineSpeechRate());
 		this.ttsEngine.setPitch(ttsSettingsManager.getTtsEnginePitch());
 	}

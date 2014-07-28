@@ -1,5 +1,7 @@
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -70,10 +72,22 @@ public class TtsSettingsManager {
 	 * Getter for the TTS language. Some TTS engines might use this for
 	 * different voices (e.g. male/female).
 	 * 
-	 * @return the currently set language
+	 * @return the currently set language as Locale
 	 */
-	public String getTtsLanguage() {
-		return this.settings.getString(TtsSettingsManager.key_settings_tts_engine_voice,
+	public Locale getTtsLanguage() {
+		Locale ret = null;
+
+		String localeString = this.settings.getString(TtsSettingsManager.key_settings_tts_engine_voice,
 				TtsSettingsManager.default_settings_tts_engine_voice);
+
+		// Compose the locale
+		String[] selectedVoiceString = localeString.split("-");
+
+		if (selectedVoiceString.length > 1)
+			ret = new Locale(selectedVoiceString[0], selectedVoiceString[1]);
+		else
+			ret = new Locale(selectedVoiceString[0]);
+
+		return ret;
 	}
 }
