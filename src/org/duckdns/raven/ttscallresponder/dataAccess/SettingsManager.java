@@ -48,6 +48,17 @@ public class SettingsManager extends TtsSettingsManager {
 	}
 
 	/**
+	 * Alternate constructor
+	 * 
+	 * @param sharedPreferences
+	 *            the {@link SharedPreferences} from which the settings shall be
+	 *            fetched
+	 */
+	public SettingsManager(SharedPreferences sharedPreferences) {
+		super(sharedPreferences);
+	}
+
+	/**
 	 * Getter for the ID of the {@link ResponseTemplate} which is currently in
 	 * use.
 	 * 

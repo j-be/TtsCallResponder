@@ -51,9 +51,8 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 				CheckBox checkBox = (CheckBox) v;
 				ResponseTemplate responseTemplate = (ResponseTemplate) checkBox.getTag();
 				responseTemplate.setSelected(checkBox.isChecked());
-				Log.i(TAG,
-						"Item " + responseTemplate.getTitle() + " selected for removal: "
-								+ responseTemplate.isSelected());
+				Log.i(ResponseTemplateListAdapter.TAG, "Item " + responseTemplate.getTitle()
+						+ " selected for removal: " + responseTemplate.isSelected());
 			}
 		});
 

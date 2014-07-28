@@ -48,6 +48,17 @@ public class TtsSettingsManager {
 		this.settings = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
+	/**
+	 * Alternate constructor
+	 * 
+	 * @param sharedPreferences
+	 *            the {@link SharedPreferences} from which the settings shall be
+	 *            fetched
+	 */
+	public TtsSettingsManager(SharedPreferences sharedPreferences) {
+		this.settings = sharedPreferences;
+	}
+
 	// TODO comment
 	public void registerSettingsChangeListener(OnSharedPreferenceChangeListener listener) {
 		this.settings.registerOnSharedPreferenceChangeListener(listener);
