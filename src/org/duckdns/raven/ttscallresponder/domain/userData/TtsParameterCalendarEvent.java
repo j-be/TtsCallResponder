@@ -3,7 +3,6 @@ package org.duckdns.raven.ttscallresponder.domain.userData;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.content.ContentResolver;
-import android.text.format.Time;
 
 /**
  * POJO representing a event from a calendar for parameterization of a
@@ -17,7 +16,7 @@ import android.text.format.Time;
 public class TtsParameterCalendarEvent {
 
 	private final String title;
-	private final Time endTime;
+	private final long endTime;
 
 	/**
 	 * Default constructor. All needed information can be fetched using
@@ -28,7 +27,7 @@ public class TtsParameterCalendarEvent {
 	 * @param endTime
 	 *            the time when the event ends
 	 */
-	public TtsParameterCalendarEvent(String title, Time endTime) {
+	public TtsParameterCalendarEvent(String title, long endTime) {
 		this.title = title;
 		this.endTime = endTime;
 	}
@@ -39,7 +38,7 @@ public class TtsParameterCalendarEvent {
 		return this.title;
 	}
 
-	public Time getEndTime() {
+	public long getEndTime() {
 		return this.endTime;
 	}
 }

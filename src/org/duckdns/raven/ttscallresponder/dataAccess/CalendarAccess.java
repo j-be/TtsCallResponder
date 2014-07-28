@@ -15,7 +15,6 @@ import android.provider.BaseColumns;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
-import android.text.format.Time;
 import android.util.Log;
 
 /**
@@ -133,7 +132,7 @@ public class CalendarAccess {
 				CalendarContract.Events.DTSTART);
 
 		// Parse and return the first event
-		System.out.println("eventCursor count=" + eventCursor.getCount());
+		Log.i(CalendarAccess.TAG, "eventCursor count: " + eventCursor.getCount());
 		if (eventCursor.getCount() > 0)
 			if (eventCursor.moveToFirst())
 				return this.parseEventFromCursor(eventCursor);
@@ -148,9 +147,7 @@ public class CalendarAccess {
 	}
 
 	private TtsParameterCalendarEvent parseEventFromCursor(Cursor cursor) {
-		Time eventEnd = new Time();
-		eventEnd.set(cursor.getLong(2));
-		return new TtsParameterCalendarEvent(cursor.getString(1), eventEnd);
+		return new TtsParameterCalendarEvent(cursor.getString(1), cursor.getLong(2));
 	}
 
 }

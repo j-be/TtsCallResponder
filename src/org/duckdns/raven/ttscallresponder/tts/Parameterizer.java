@@ -3,6 +3,8 @@ package org.duckdns.raven.ttscallresponder.tts;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendarEvent;
 
+import android.text.format.Time;
+
 /**
  * This class is able to parameterize {@link ResponseTemplate}s according to
  * current events from calendar.
@@ -35,7 +37,10 @@ public class Parameterizer {
 			return responseTemplate;
 
 		String newText = responseTemplate.getText().replaceAll("#event_title#", event.getTitle());
-		newText = newText.replaceAll("#event_end#", event.getEndTime().format(Parameterizer.timeFormat));
+
+		Time endTime = new Time();
+		endTime.set(event.getEndTime());
+		newText = newText.replaceAll("#event_end#", endTime.format(Parameterizer.timeFormat));
 
 		return new ResponseTemplate(responseTemplate.getTitle(), newText, responseTemplate.getCalendarId());
 	}
