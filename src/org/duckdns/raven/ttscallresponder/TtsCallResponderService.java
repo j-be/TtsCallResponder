@@ -1,6 +1,5 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 import org.duckdns.raven.ttscallresponder.ui.notification.CallReceiverNotificationFactory;
 
@@ -33,9 +32,6 @@ public class TtsCallResponderService extends Service {
 	private TtsCallReceiver callReceiver = null;
 	// Used to show notification in taskbar if service is running
 	private NotificationManager notificationManager = null;
-	// The currently used response template. This is passed through to the
-	// receiver
-	private ResponseTemplate currentResponseTemplate = null;
 
 	/* ----- Service connection ----- */
 
@@ -71,8 +67,6 @@ public class TtsCallResponderService extends Service {
 		this.notificationManager.notify(TtsCallResponderService.NOTIFICAITON_ID,
 				CallReceiverNotificationFactory.buildCallReceiverNotification(true));
 
-		this.callReceiver.setCurrentResponseTemplate(this.currentResponseTemplate);
-
 		return Service.START_STICKY;
 	}
 
@@ -96,12 +90,6 @@ public class TtsCallResponderService extends Service {
 
 	public boolean isRunning() {
 		return this.callReceiver != null;
-	}
-
-	public void setResponseTemplate(ResponseTemplate currentResponseTemplate) {
-		this.currentResponseTemplate = currentResponseTemplate;
-		if (this.isRunning())
-			this.callReceiver.setCurrentResponseTemplate(currentResponseTemplate);
 	}
 
 	/* --- Helpers for lifecycle logging --- */

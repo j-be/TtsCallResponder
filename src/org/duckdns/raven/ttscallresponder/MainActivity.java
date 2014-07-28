@@ -58,7 +58,6 @@ public class MainActivity extends Activity {
 			MainActivity.this.applyCallReceiverState();
 
 			Log.i(MainActivity.TAG, "Service connected");
-			MainActivity.this.mCallResponderService.setResponseTemplate(MainActivity.this.currentResponseTemplate);
 		}
 
 		@Override
@@ -186,10 +185,6 @@ public class MainActivity extends Activity {
 		this.currentResponseTemplateTitle.setText(currentTitle);
 		this.applyCallReceiverState();
 		this.updateNumberOfAnsweredCalls();
-
-		// Update response template in the service
-		if (this.mCallResponderService != null)
-			this.mCallResponderService.setResponseTemplate(this.currentResponseTemplate);
 	}
 
 	/* --- Closing the app --- */

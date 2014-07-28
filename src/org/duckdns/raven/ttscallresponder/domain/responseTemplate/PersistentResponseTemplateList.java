@@ -41,8 +41,8 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 			item = iter.next();
 			if (item.isSelected()) {
 				Log.i(PersistentResponseTemplateList.TAG, "Deleting item " + item.getId());
+				this.entryChanged(item.getId());
 				iter.remove();
-				this.changed = true;
 			}
 		}
 	}
@@ -63,5 +63,22 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		ResponseTemplate.setHighestUsedId(maxId);
 
 		return ret;
+	}
+
+	@Override
+	public void savePersistentList() {
+		boolean issueUpdate = false;
+
+		Log.i(PersistentResponseTemplateList.TAG, "Changed items: " + this.changed.toString());
+
+		if (this.changed.contains(Long.valueOf(this.settingsManager.getCurrentResponseTemplateId()))) {
+			issueUpdate = true;
+			Log.i(PersistentResponseTemplateList.TAG, "Current response template changed");
+		}
+
+		super.savePersistentList();
+
+		if (issueUpdate)
+			this.settingsManager.setCurrentResponseTemplateUpdated();
 	}
 }

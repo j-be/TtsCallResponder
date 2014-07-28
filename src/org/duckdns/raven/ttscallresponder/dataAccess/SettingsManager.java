@@ -5,6 +5,7 @@ import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.format.Time;
 import android.util.Log;
 
 /**
@@ -26,8 +27,10 @@ public class SettingsManager extends TtsSettingsManager {
 	public static final String key_settings_receiver_prefix = "receiver_";
 	private static final String key_settings_tts_delay = SettingsManager.key_settings_receiver_prefix
 			+ "preTtsSpeakDelay";
-	private static final String key_settings_current_response_template = SettingsManager.key_settings_receiver_prefix
+	public static final String key_settings_current_response_template = SettingsManager.key_settings_receiver_prefix
 			+ "currentResponseTemplate";
+	public static final String key_settings_current_response_template_last_changed = SettingsManager.key_settings_receiver_prefix
+			+ "currentResponseTemplateLastChanged";
 
 	// Make sure the defaults are the same as in
 	// values/settings_keys_defaults.xml
@@ -66,7 +69,7 @@ public class SettingsManager extends TtsSettingsManager {
 		SharedPreferences.Editor editor = this.settings.edit();
 		editor.putLong(SettingsManager.key_settings_current_response_template, id);
 		editor.commit();
-		Log.i(TAG, "Current Response Template set to " + id);
+		Log.i(SettingsManager.TAG, "Current Response Template set to " + id);
 	}
 
 	/**
@@ -85,6 +88,15 @@ public class SettingsManager extends TtsSettingsManager {
 		}
 
 		return ret;
+	}
+
+	// TODO comment
+	public void setCurrentResponseTemplateUpdated() {
+		SharedPreferences.Editor editor = this.settings.edit();
+		Time now = new Time();
+		now.setToNow();
+		editor.putLong(SettingsManager.key_settings_current_response_template_last_changed, now.toMillis(false));
+		editor.commit();
 	}
 
 	/* ----- DEBUG ----- */

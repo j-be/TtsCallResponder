@@ -5,6 +5,7 @@ import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.dataAccess.TtsSettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.content.BroadcastReceiver;
@@ -39,6 +40,10 @@ public class TtsCallReceiver extends BroadcastReceiver implements OnSharedPrefer
 		this.ttsEngine = new CallTTSEngine(context);
 		this.settingsManager = new SettingsManager(context);
 
+		// Get the current ResponseTemplate
+		PersistentResponseTemplateList responseTemplateList = new PersistentResponseTemplateList(context);
+		this.currentResponseTemplate = responseTemplateList.getCurrentResponseTemplate();
+
 		this.settingsManager.registerSettingsChangeListener(this);
 	}
 
@@ -53,27 +58,38 @@ public class TtsCallReceiver extends BroadcastReceiver implements OnSharedPrefer
 		this.settingsManager.unregisterSettingsChangeListener(this);
 	}
 
-	public void setCurrentResponseTemplate(ResponseTemplate currentResponseTemplate) {
-		this.currentResponseTemplate = currentResponseTemplate;
-		if (currentResponseTemplate != null)
-			Log.i(TtsCallReceiver.TAG, "Set current response template to: " + currentResponseTemplate.getTitle());
-		else {
-			// FIXME: The engine is running with no response template set. So it
-			// is answering, but not speaking anything.
-			Log.w(TtsCallReceiver.TAG, "No current response template set");
-		}
-	}
-
 	/* ----- Logic ----- */
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		Log.i(TtsCallReceiver.TAG, "Change in settings detected. Key: " + key);
+
+		// Changes in TTS engine settings
 		if (key.startsWith(TtsSettingsManager.key_settings_tts_prefix)) {
 			Log.i(TtsCallReceiver.TAG, key + " is a TTS setting - updating TTS settings in receiver");
 			TtsCallReceiver.this.ttsEngine.parameterizeTtsEngine();
 			this.ttsEngine.speak("T T S settings updated");
 		}
+
+		// Change of ResponseTemplate
+		if (key.equals(SettingsManager.key_settings_current_response_template)) {
+			Log.i(TtsCallReceiver.TAG, "Current ResponseTemplate changed. Key: " + key);
+			PersistentResponseTemplateList responseTemplateList = new PersistentResponseTemplateList(this.context);
+			this.currentResponseTemplate = responseTemplateList.getCurrentResponseTemplate();
+			this.ttsEngine.speak("Set response to " + this.currentResponseTemplate.getTitle());
+		}
+
+		// Changes to current ResponseTemplate
+		if (key.equals(SettingsManager.key_settings_current_response_template_last_changed)) {
+			Log.i(TtsCallReceiver.TAG, "Current ResponseTemplate was changed. Key: " + key);
+			PersistentResponseTemplateList responseTemplateList = new PersistentResponseTemplateList(this.context);
+			this.currentResponseTemplate = responseTemplateList.getCurrentResponseTemplate();
+			if (this.currentResponseTemplate == null)
+				this.ttsEngine.speak("No template set");
+			else
+				this.ttsEngine.speak("Updated current template to " + this.currentResponseTemplate.getText());
+		}
+
 	}
 
 	private ResponseTemplate getCurrentResponseTemplate() {

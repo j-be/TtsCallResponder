@@ -6,8 +6,10 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import android.util.Log;
 
@@ -18,7 +20,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 
 	private final File directory;
 	protected List<ListItem> list = null;
-	protected boolean changed = false;
+	protected Set<Long> changed = new HashSet<Long>();
 
 	protected AbstractPersistentList(File directory) {
 		this.directory = directory;
@@ -28,22 +30,20 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 
 	abstract protected String getFileName();
 
-	protected void dataHasChanged() {
-		this.changed = true;
+	protected void entryChanged(long id) {
+		this.changed.add(Long.valueOf(id));
 	}
 
 	public void add(ListItem listItem) {
 		boolean found = false;
 		ListItem iterItem = null;
 
-		this.dataHasChanged();
-
 		if (listItem.getId() < 0) {
-			Log.d(TAG, "Adding new");
+			Log.d(AbstractPersistentList.TAG, "Adding new");
 			listItem.addId();
 			this.list.add(listItem);
 		} else {
-			Log.d(TAG, "Update existing");
+			Log.d(AbstractPersistentList.TAG, "Update existing");
 			Iterator<ListItem> iter = this.list.iterator();
 			while (iter.hasNext() && !found) {
 				iterItem = iter.next();
@@ -53,11 +53,14 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 				}
 			}
 		}
+
+		this.entryChanged(listItem.id);
 	}
 
 	public void clear() {
+		for (ListItem item : this.list)
+			this.entryChanged(item.getId());
 		this.list.clear();
-		this.dataHasChanged();
 	}
 
 	public void discardChanges() {
@@ -73,7 +76,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 
 		while (iter.hasNext()) {
 			item = iter.next();
-			Log.d(TAG, "Checking item with id: " + item.getId());
+			Log.d(AbstractPersistentList.TAG, "Checking item with id: " + item.getId());
 			if (item.getId() == id)
 				return item;
 		}
@@ -82,7 +85,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	}
 
 	public boolean hasChanged() {
-		return this.changed;
+		return !this.changed.isEmpty();
 	}
 
 	public int getCount() {
@@ -91,7 +94,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 
 	public List<ListItem> getPersistentList() {
 		if (this.list == null) {
-			Log.i(TAG, "No list yet");
+			Log.i(AbstractPersistentList.TAG, "No list yet");
 			this.list = this.loadPersistentList();
 		}
 
@@ -107,7 +110,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 
-		Log.i(TAG, "Loading list");
+		Log.i(AbstractPersistentList.TAG, "Loading list");
 
 		try {
 			fis = new FileInputStream(persistentListFile);
@@ -119,7 +122,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 			else
 				ret = null;
 		} catch (Exception e) {
-			Log.d(TAG, "failed to load list, assuming first run");
+			Log.d(AbstractPersistentList.TAG, "failed to load list, assuming first run");
 		} finally {
 			try {
 				if (ois != null)
@@ -132,13 +135,13 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 		if (ret == null)
 			ret = new ArrayList<ListItem>();
 
-		this.changed = false;
+		this.changed.clear();
 
 		return ret;
 	}
 
 	public void savePersistentList() {
-		Log.i(TAG, "Saving list");
+		Log.i(AbstractPersistentList.TAG, "Saving list");
 		File persistentListFile = new File(this.directory.getAbsoluteFile() + File.separator + this.getFileName());
 
 		FileOutputStream fos = null;
@@ -149,9 +152,9 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 			oos = new ObjectOutputStream(fos);
 
 			oos.writeObject(this.list);
-			this.changed = false;
+			this.changed.clear();
 		} catch (Exception e) {
-			Log.e(TAG, "failed to save list", e);
+			Log.e(AbstractPersistentList.TAG, "failed to save list", e);
 		} finally {
 			try {
 				if (oos != null)

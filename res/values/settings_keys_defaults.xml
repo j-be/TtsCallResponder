@@ -11,8 +11,8 @@
     <string name="default_settings_tts_engine_voice">eng</string>
 
     <!-- Other Settings Keys -->
-    <string name="key_settings_tts_delay">ttsDelay</string>
-    <string name="key_settings_current_response_template">currentResponseTemplate</string>
+    <string name="key_settings_tts_delay">receiver_preTtsSpeakDelay</string>
+    <string name="key_settings_current_response_template">receiver_currentResponseTemplate</string>
 
     <!-- Other Settings defaults -->
     <item type="integer" format="integer" name="default_settings_tts_delay">1000</item>
