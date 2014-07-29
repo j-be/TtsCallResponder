@@ -7,19 +7,40 @@ import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
 
 import android.content.Context;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.util.Log;
 
-// TODO comment
+/**
+ * Persistent list for {@link ResponseTemplate} objects.
+ * 
+ * FIXME: License
+ * 
+ * @see {@link AbstractPersistentList} for further details
+ * 
+ * @author Juri Berlanda
+ * 
+ */
 public class PersistentResponseTemplateList extends AbstractPersistentList<ResponseTemplate> {
-
 	private static final String TAG = "PersistentResponseTemplateList";
+
 	private final SettingsManager settingsManager;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param parent
+	 *            the {@link Context} the list is running in
+	 */
 	public PersistentResponseTemplateList(Context parent) {
 		super(parent.getFilesDir());
 		this.settingsManager = new SettingsManager(parent);
 	}
 
+	/**
+	 * Getter for the currently active {@link ResponseTemplate}
+	 * 
+	 * @return the currently active {@link ResponseTemplate}
+	 */
 	public ResponseTemplate getCurrentResponseTemplate() {
 		Iterator<ResponseTemplate> iter = this.list.iterator();
 		ResponseTemplate item = null;
@@ -33,6 +54,13 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		return null;
 	}
 
+	/**
+	 * Remove all {@link ResponseTemplate}s from list which have
+	 * {@link ResponseTemplate#isSelected()} set to true.
+	 * 
+	 * This is just temporary - to save the changes you have to further invoke
+	 * {@link PersistentResponseTemplateList#savePersistentList()}.
+	 */
 	public void removeSelected() {
 		Iterator<ResponseTemplate> iter = this.list.iterator();
 		ResponseTemplate item = null;
@@ -41,6 +69,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 			item = iter.next();
 			if (item.isSelected()) {
 				Log.i(PersistentResponseTemplateList.TAG, "Deleting item " + item.getId());
+				// Store changes
 				this.entryChanged(item.getId());
 				iter.remove();
 			}
@@ -52,6 +81,10 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		return "responseTemplateList";
 	}
 
+	/**
+	 * Custom list load function. This is necessary for setting the highest
+	 * known ID on {@link ResponseTemplate}.
+	 */
 	@Override
 	protected List<ResponseTemplate> loadPersistentList() {
 		List<ResponseTemplate> ret = super.loadPersistentList();
@@ -65,12 +98,16 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		return ret;
 	}
 
+	/**
+	 * Custom list save function. This is necessary to notify all
+	 * {@link OnSharedPreferenceChangeListener} if the active
+	 * {@link ResponseTemplate} changed.
+	 */
 	@Override
 	public void savePersistentList() {
 		boolean issueUpdate = false;
 
 		Log.i(PersistentResponseTemplateList.TAG, "Changed items: " + this.changed.toString());
-
 		if (this.changed.contains(Long.valueOf(this.settingsManager.getCurrentResponseTemplateId()))) {
 			issueUpdate = true;
 			Log.i(PersistentResponseTemplateList.TAG, "Current response template changed");
@@ -79,6 +116,8 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		super.savePersistentList();
 
 		if (issueUpdate)
+			// Set dummy preference to cause a call on
+			// OnSharedPreferenceChangeListeners
 			this.settingsManager.setCurrentResponseTemplateUpdated();
 	}
 }

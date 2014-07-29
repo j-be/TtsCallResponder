@@ -7,12 +7,11 @@ import java.util.List;
 import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
 
 /**
- * Persistent list for {@link Call} objects. This list is implemented as a
- * Singelton.
+ * Persistent list for {@link Call} objects.
  * 
  * FIXME: License
  * 
- * @see AbstractPersistentList for further details.
+ * @see {@link AbstractPersistentList} for further details
  * 
  * @author Juri Berlanda
  * 
@@ -31,9 +30,6 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 		super(directory);
 	}
 
-	/**
-	 * @see AbstractPersistentList
-	 */
 	@Override
 	protected String getFileName() {
 		return "answeredCallList";

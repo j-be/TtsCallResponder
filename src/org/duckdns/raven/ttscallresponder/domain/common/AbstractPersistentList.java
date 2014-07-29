@@ -28,6 +28,12 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 		this.getPersistentList();
 	}
 
+	/**
+	 * This method MUST return a unique filename for each class extending
+	 * {@link AbstractPersistentList}
+	 * 
+	 * @return a unique String, which is a valid filename
+	 */
 	abstract protected String getFileName();
 
 	protected void entryChanged(long id) {

@@ -19,11 +19,18 @@ public class Call extends SerializeableListItem {
 	private long callTime = -1;
 	private static long highestUsedId = -1;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param callingNumber
+	 *            the number which is calling
+	 */
 	public Call(String callingNumber) {
 		super(-1);
 		Time now = new Time();
 		this.callingNumber = callingNumber;
 
+		// Save "Now" as call time
 		now.setToNow();
 		this.callTime = now.toMillis(false);
 	}
