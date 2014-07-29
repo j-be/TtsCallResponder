@@ -59,12 +59,27 @@ public class TtsSettingsManager {
 		this.settings = sharedPreferences;
 	}
 
-	// TODO comment
+	/**
+	 * Add an {@link OnSharedPreferenceChangeListener} to the
+	 * {@link SharedPreferences}. Whenever a setting changes it's callback will
+	 * be invoked.
+	 * 
+	 * @param listener
+	 *            the {@link OnSharedPreferenceChangeListener} implementation
+	 *            which shall be added
+	 */
 	public void registerSettingsChangeListener(OnSharedPreferenceChangeListener listener) {
 		this.settings.registerOnSharedPreferenceChangeListener(listener);
 	}
 
-	// TODO comment
+	/**
+	 * Remove an {@link OnSharedPreferenceChangeListener} from the
+	 * {@link SharedPreferences}.
+	 * 
+	 * @param listener
+	 *            the {@link OnSharedPreferenceChangeListener} implementation
+	 *            which shall be removed
+	 */
 	public void unregisterSettingsChangeListener(OnSharedPreferenceChangeListener listener) {
 		this.settings.unregisterOnSharedPreferenceChangeListener(listener);
 	}
@@ -106,7 +121,6 @@ public class TtsSettingsManager {
 
 		// Compose the locale
 		String[] selectedVoiceString = localeString.split("-");
-
 		if (selectedVoiceString.length > 1)
 			ret = new Locale(selectedVoiceString[0], selectedVoiceString[1]);
 		else
