@@ -9,6 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+/**
+ * TODO: Comment after merge
+ * 
+ * FIXME: License
+ * 
+ * @author Juri Berlanda
+ * 
+ */
 public class CallReceiverNotificationFactory {
 
 	private static Context context = null;
