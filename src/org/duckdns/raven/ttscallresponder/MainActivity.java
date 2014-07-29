@@ -85,6 +85,11 @@ public class MainActivity extends Activity {
 			this.startCallReceiver();
 		else
 			this.stopCallReceiver();
+
+		if (this.isCallReceiverRunning())
+			Toast.makeText(this, "Enabled automatic call responder", Toast.LENGTH_SHORT).show();
+		else
+			Toast.makeText(this, "Disabled automatic call responder", Toast.LENGTH_SHORT).show();
 	}
 
 	/* --- Change to other activities --- */
