@@ -1,9 +1,11 @@
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
+import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -100,7 +102,10 @@ public class SettingsManager extends TtsSettingsManager {
 		return ret;
 	}
 
-	// TODO comment
+	/**
+	 * Dummy setting for notifying {@link OnSharedPreferenceChangeListener}s
+	 * that the active {@link ResponseTemplate} changed.
+	 */
 	public void setCurrentResponseTemplateUpdated() {
 		SharedPreferences.Editor editor = this.settings.edit();
 		Time now = new Time();
