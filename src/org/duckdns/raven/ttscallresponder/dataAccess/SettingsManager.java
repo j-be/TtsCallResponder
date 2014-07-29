@@ -1,7 +1,6 @@
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
-import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 
 import android.content.Context;
 import android.content.SharedPreferences;

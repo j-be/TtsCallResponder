@@ -1,7 +1,6 @@
 package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
 import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
-import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 
 import android.util.Log;
 
