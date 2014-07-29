@@ -26,14 +26,14 @@ public class ActivityAnsweredCallList extends Activity {
 	// Adapter from list to ListView
 	private CallListAdapter adapter = null;
 
-	/* Add clear button to ActionBar */
+	/* Add "Clear list" and "Back to parent" buttons to ActionBar */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.getMenuInflater().inflate(R.menu.activity_answered_call_list, menu);
 		return true;
 	}
 
-	/* Handle clear buttons in ActionBar */
+	/* Handle "Clear list" and "Back to parent" buttons in ActionBar */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();

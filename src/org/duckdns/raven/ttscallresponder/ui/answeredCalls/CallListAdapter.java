@@ -40,7 +40,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 	 * Default constructor.
 	 * 
 	 * @param parent
-	 *            the activity on which the list shall be drawn
+	 *            the {@link Activity} on which the list shall be drawn
 	 * @param list
 	 *            the {@link List} of {@link Call}s which shall be drawn
 	 */
