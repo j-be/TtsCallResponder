@@ -9,11 +9,9 @@ import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +33,10 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	private final static String TAG = "MainActivity";
 
+	private static final ComponentName RECEIVER_COMPONENT_NAME = new ComponentName(
+			"org.duckdns.raven.ttscallresponder",
+			"org.duckdns.raven.ttscallresponder.tts.StartAnsweringServiceReceiver");
+
 	/* ----- UI elements ----- */
 	private Switch swiAutoRespond = null;
 	private TextView currentResponseTemplateTitle = null;
@@ -46,38 +48,10 @@ public class MainActivity extends Activity {
 	/* ----- Helper for closing with twice back-press ----- */
 	private final Time lastBackPressed = new Time();
 
-	/* ----- Service connection ----- */
-
-	// This stuff is needed to communicate with the service while it is running
-	private TtsCallResponderService mCallResponderService = null;
-	private final ServiceConnection mConnection = new ServiceConnection() {
-		@Override
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			// Fetch the service object
-			MainActivity.this.mCallResponderService = ((TtsCallResponderService.LocalBinder) service).getService();
-			MainActivity.this.applyCallReceiverState();
-
-			Log.i(MainActivity.TAG, "Service connected");
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName className) {
-			// Discard service object
-			MainActivity.this.mCallResponderService = null;
-			MainActivity.this.applyCallReceiverState();
-			Log.i(MainActivity.TAG, "Service disconnected");
-		}
-	};
-
 	/* ----- Update UI helpers ----- */
 
 	private void applyCallReceiverState() {
-		boolean running = false;
-
-		// Check if service is running and set the switch state accordingly
-		if (this.mCallResponderService != null)
-			running = this.mCallResponderService.isRunning();
-		this.swiAutoRespond.setChecked(running);
+		this.swiAutoRespond.setChecked(this.isCallReceiverRunning());
 	}
 
 	private void updateNumberOfAnsweredCalls() {
@@ -87,40 +61,33 @@ public class MainActivity extends Activity {
 
 	/* ----- Service control helpers ----- */
 
-	private void startCallReceiverService() {
-		Intent startCallReceiverService = new Intent(this, TtsCallResponderService.class);
-		this.startService(startCallReceiverService);
+	private void startCallReceiver() {
+		this.getPackageManager().setComponentEnabledSetting(RECEIVER_COMPONENT_NAME,
+				PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 	}
 
-	private void stopCallReceiverService() {
-		Intent stopCallReceiverService = new Intent(this, TtsCallResponderService.class);
-		this.mCallResponderService.stopService(stopCallReceiverService);
+	private boolean isCallReceiverRunning() {
+		return this.getPackageManager().getComponentEnabledSetting(RECEIVER_COMPONENT_NAME) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+	}
+
+	private void stopCallReceiver() {
+		this.getPackageManager().setComponentEnabledSetting(RECEIVER_COMPONENT_NAME,
+				PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 	}
 
 	/* ----- User interactions ----- */
-
-	/* Settings button in action bar */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			// Open settings activity
-			Intent switchToSettings = new Intent(this, ActivitySettings.class);
-			this.startActivity(switchToSettings);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	/* Handle service start and stop */
 	public void onSwitchAutorespondClick(View view) {
 		Switch swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
 
 		if (swiAutoRespond.isChecked())
-			this.startCallReceiverService();
+			this.startCallReceiver();
 		else
-			this.stopCallReceiverService();
+			this.stopCallReceiver();
 	}
+
+	/* --- Change to other activities --- */
 
 	/* Switch to list of answered calls */
 	public void onShowAnsweredCallListClick(View view) {
@@ -135,6 +102,19 @@ public class MainActivity extends Activity {
 		this.startActivity(switchToResopnseTemplateList);
 	}
 
+	/* Settings button in action bar */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			// Open settings activity
+			Intent switchToSettings = new Intent(this, ActivitySettings.class);
+			this.startActivity(switchToSettings);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	/* ----- Lifecycle management ----- */
 
 	/* --- Creating the app --- */
@@ -146,10 +126,6 @@ public class MainActivity extends Activity {
 
 		// Set the layout
 		this.setContentView(R.layout.activity_main);
-
-		// Bind responder service
-		Intent bindCallReceiverService = new Intent(this, TtsCallResponderService.class);
-		this.bindService(bindCallReceiverService, this.mConnection, Context.BIND_AUTO_CREATE);
 
 		// Get access to UI elements
 		this.swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
@@ -191,33 +167,30 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		Log.i(MainActivity.TAG, "Enter onDestroy");
-		// Unbind from the service
-		this.unbindService(this.mConnection);
 		super.onDestroy();
 	}
 
 	@Override
 	public void onBackPressed() {
-		Time nowBackPressed = new Time();
-
-		nowBackPressed.setToNow();
-
-		// If service is not running close immediately
-		if (this.mCallResponderService == null || !this.mCallResponderService.isRunning()) {
+		if (!this.isCallReceiverRunning())
 			this.finish();
-			return;
+		else {
+			Time nowBackPressed = new Time();
+
+			nowBackPressed.setToNow();
+
+			// If service is running (else this code is not reached) require
+			// double-press of "Back" button to close
+			if (nowBackPressed.toMillis(true) - this.lastBackPressed.toMillis(true) < 3000) {
+				this.stopCallReceiver();
+				this.finish();
+			} else {
+				Toast.makeText(this,
+						"Press \'Back\' again to stop receiving calls.\nTo keep the receiver running, use \'Home\'.",
+						Toast.LENGTH_LONG).show();
+				this.lastBackPressed.setToNow();
+			}
 		}
 
-		// If service is running (else this code is not reached) require
-		// double-press of "Back" button to close
-		if (nowBackPressed.toMillis(true) - this.lastBackPressed.toMillis(true) < 3000) {
-			this.stopCallReceiverService();
-			this.finish();
-		} else {
-			Toast.makeText(this,
-					"Press \'Back\' again to stop receiving calls.\nTo keep the receiver running, use \'Home\'.",
-					Toast.LENGTH_LONG).show();
-			this.lastBackPressed.setToNow();
-		}
 	}
 }

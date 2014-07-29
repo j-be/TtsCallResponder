@@ -54,6 +54,13 @@
         <service android:name="org.duckdns.raven.ttscallresponder.TtsCallResponderService"
             android:enabled="false" />
 
+        <receiver android:name="org.duckdns.raven.ttscallresponder.tts.StartAnsweringServiceReceiver"
+            android:enabled="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
