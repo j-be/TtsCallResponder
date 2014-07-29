@@ -9,7 +9,6 @@ import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -93,6 +92,8 @@ public class ActivityResponseTemplateList extends Activity {
 
 		// Invoke the dialog
 		this.showEditorDialog(responseTemplate);
+		if (responseTemplate != null)
+			this.showEditorDialog(responseTemplate);
 	}
 
 	/* ----- Editor Dialog ---- */
@@ -101,7 +102,7 @@ public class ActivityResponseTemplateList extends Activity {
 			return;
 
 		// Preparing views
-		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = this.getLayoutInflater();
 		View layout = inflater.inflate(R.layout.activity_response_template_editor, null);
 
 		final EditText title = (EditText) layout.findViewById(R.id.editText_responseTemplateTitle);

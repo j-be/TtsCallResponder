@@ -19,16 +19,13 @@ import android.support.v4.app.NotificationCompat;
  */
 public class CallReceiverNotificationFactory {
 
-	private static Context context = null;
+	private final Context context;
 
-	private CallReceiverNotificationFactory() {
+	public CallReceiverNotificationFactory(Context context) {
+		this.context = context;
 	}
 
-	public static void setContext(Context context) {
-		CallReceiverNotificationFactory.context = context;
-	}
-
-	public static Notification buildCallReceiverNotification(boolean enabled) {
+	public Notification buildCallReceiverNotification(boolean enabled) {
 		String newText = null;
 
 		// Create Text
@@ -40,16 +37,15 @@ public class CallReceiverNotificationFactory {
 		}
 
 		// Create Notification
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(CallReceiverNotificationFactory.context)
-				.setContentTitle(CallReceiverNotificationFactory.context.getResources().getString(R.string.app_name))
-				.setContentText(newText).setSmallIcon(R.drawable.ic_launcher).setOngoing(true);
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this.context)
+				.setContentTitle(this.context.getResources().getString(R.string.app_name)).setContentText(newText)
+				.setSmallIcon(R.drawable.ic_launcher).setOngoing(true);
 
 		// Create Intent
-		Intent bringMainToFront = new Intent(CallReceiverNotificationFactory.context, MainActivity.class);
+		Intent bringMainToFront = new Intent(this.context, MainActivity.class);
 		bringMainToFront.setAction(Intent.ACTION_MAIN);
 		bringMainToFront.addCategory(Intent.CATEGORY_LAUNCHER);
-		PendingIntent resultPendingIntent = PendingIntent.getActivity(CallReceiverNotificationFactory.context, 0,
-				bringMainToFront, 0);
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(this.context, 0, bringMainToFront, 0);
 		mBuilder.setContentIntent(resultPendingIntent);
 
 		return mBuilder.build();
