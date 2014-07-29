@@ -31,14 +31,8 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 
 	// The TTS engine
 	private TextToSpeech ttsEngine;
-
+	// The response for the caller
 	private String response;
-
-	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -66,7 +60,8 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 	}
 
 	/**
-	 * Callback after the engine is started. Used for setting the parameters.
+	 * Callback after the engine is started. Used for setting the parameters and
+	 * speaking the answer.
 	 * 
 	 * @param status
 	 *            tells whether the engine was successfully initialized or not.
@@ -96,14 +91,18 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 				e.printStackTrace();
 			}
 
-			Log.i(TAG, "Speaking: " + this.response);
+			// Enable callback after speech synthesis completed
 			HashMap<String, String> ttsParams = new HashMap<String, String>();
 			ttsParams.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, this.getPackageName());
+
+			Log.i(TAG, "Speaking: " + this.response);
 			this.ttsEngine.speak(this.response, TextToSpeech.QUEUE_FLUSH, ttsParams);
 		}
 	}
 
-	// TODO: Comment
+	/**
+	 * Callback invoked after speech synthesis is complete.
+	 */
 	@Override
 	public void onUtteranceCompleted(String utteranceId) {
 		Log.i(TAG, "Speech completed, stopping");
@@ -156,5 +155,13 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 			Log.d(TAG, "Call Answered From Catch Block !!");
 		}
 		Log.d(TAG, "Call Answered using headsethook");
+	}
+
+	/**
+	 * Binding is not needed for this service. It does all by itself.
+	 */
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
 	}
 }
