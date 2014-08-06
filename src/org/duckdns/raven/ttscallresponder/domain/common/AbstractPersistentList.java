@@ -29,13 +29,15 @@ import android.util.Log;
  *            {@link SerializeableListItem}.
  */
 public abstract class AbstractPersistentList<ListItem extends SerializeableListItem> {
-
 	private static final String TAG = "AbstractPersistentList";
 
 	// The directory on the FileSystem where the list is saved
 	private final File directory;
-	protected List<ListItem> list = null;
-	protected Set<Long> changed = new HashSet<Long>();
+	// The serialized/serialized list
+	private List<ListItem> list = null;
+	// Set containing the IDs of items, which have changed since last
+	// save/load operation
+	private final Set<Long> changed = new HashSet<Long>();
 
 	/**
 	 * Default constructor
@@ -46,7 +48,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 */
 	protected AbstractPersistentList(File directory) {
 		this.directory = directory;
-
 		this.getPersistentList();
 	}
 
@@ -84,7 +85,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 *            the item which shall be added to or updated in the list
 	 */
 	public void add(ListItem listItem) {
-		boolean found = false;
+		boolean listChanged = false;
 		ListItem iterItem = null;
 
 		if (listItem.getId() < 0) {
@@ -92,20 +93,22 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 			Log.d(AbstractPersistentList.TAG, "Adding new");
 			listItem.addId();
 			this.list.add(listItem);
+			listChanged = true;
 		} else {
 			// Any other ID means item should already exist
 			Log.d(AbstractPersistentList.TAG, "Update existing");
 			Iterator<ListItem> iter = this.list.iterator();
-			while (iter.hasNext() && !found) {
+			while (iter.hasNext() && !listChanged) {
 				iterItem = iter.next();
 				if (iterItem.getId() == listItem.getId()) {
 					iterItem.update(listItem);
-					found = true;
+					listChanged = true;
 				}
 			}
 		}
 
-		this.entryChanged(listItem.id);
+		if (listChanged)
+			this.entryChanged(listItem.id);
 	}
 
 	/**
@@ -143,7 +146,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 			this.getPersistentList();
 
 		Iterator<ListItem> iter = this.list.iterator();
-
 		while (iter.hasNext()) {
 			item = iter.next();
 			Log.d(AbstractPersistentList.TAG, "Checking item with id: " + item.getId());
@@ -163,6 +165,19 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 */
 	public boolean hasChanged() {
 		return !this.changed.isEmpty();
+	}
+
+	/**
+	 * Tells if the item with given ID has changed since the last call of either
+	 * {@link AbstractPersistentList#savePersistentList()} or
+	 * {@link AbstractPersistentList#loadPersistentList()}.
+	 * 
+	 * @param id
+	 *            the ID of the item
+	 * @return true, if the item has changed,; false else
+	 */
+	public boolean hasChanged(long id) {
+		return this.changed.contains(Long.valueOf(id));
 	}
 
 	/**
@@ -199,38 +214,36 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 		Object readObject = null;
 		List<ListItem> ret = null;
 
-		File persistentListFile = new File(this.directory.getAbsoluteFile() + File.separator + this.getFileName());
-
-		FileInputStream fis = null;
 		ObjectInputStream ois = null;
+
+		File persistentListFile = new File(this.directory.getAbsoluteFile() + File.separator + this.getFileName());
 
 		Log.i(AbstractPersistentList.TAG, "Loading list");
 
 		try {
-			fis = new FileInputStream(persistentListFile);
-			ois = new ObjectInputStream(fis);
-
+			// Read List from FileSystem
+			ois = new ObjectInputStream(new FileInputStream(persistentListFile));
 			readObject = ois.readObject();
+
 			// Check as far as possible and cast
 			if (readObject instanceof List<?>)
 				ret = (List<ListItem>) readObject;
 			else
 				ret = null;
+
 		} catch (Exception e) {
 			// Ending up here means either that no list exists yet, or that the
 			// list is not castable (i.e. items have wrong type).
 			Log.d(AbstractPersistentList.TAG, "failed to load list, assuming first run");
+			ret = new ArrayList<ListItem>();
 		} finally {
 			try {
 				if (ois != null)
 					ois.close();
-				if (fis != null)
-					fis.close();
-			} catch (Exception e) { /* do nothing */
+			} catch (Exception e) {
+				/* do nothing */
 			}
 		}
-		if (ret == null)
-			ret = new ArrayList<ListItem>();
 
 		// Clear the set of changed items
 		this.changed.clear();
@@ -243,17 +256,18 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 * is the only method to change the list on the FileSystem.
 	 */
 	public void savePersistentList() {
-		Log.i(AbstractPersistentList.TAG, "Saving list");
 		File persistentListFile = new File(this.directory.getAbsoluteFile() + File.separator + this.getFileName());
 
-		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 
-		try {
-			fos = new FileOutputStream(persistentListFile);
-			oos = new ObjectOutputStream(fos);
+		Log.i(AbstractPersistentList.TAG, "Saving list");
 
+		try {
+			// Serialize the list to the FileSystem
+			oos = new ObjectOutputStream(new FileOutputStream(persistentListFile));
 			oos.writeObject(this.list);
+
+			// Only clear changed state if save was successful
 			this.changed.clear();
 		} catch (Exception e) {
 			Log.e(AbstractPersistentList.TAG, "failed to save list", e);
@@ -261,9 +275,8 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 			try {
 				if (oos != null)
 					oos.close();
-				if (fos != null)
-					fos.close();
-			} catch (Exception e) { /* do nothing */
+			} catch (Exception e) {
+				/* do nothing */
 			}
 		}
 	}

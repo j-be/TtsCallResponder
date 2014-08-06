@@ -42,7 +42,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 	 * @return the currently active {@link ResponseTemplate}
 	 */
 	public ResponseTemplate getCurrentResponseTemplate() {
-		Iterator<ResponseTemplate> iter = this.list.iterator();
+		Iterator<ResponseTemplate> iter = this.getPersistentList().iterator();
 		ResponseTemplate item = null;
 
 		while (iter.hasNext()) {
@@ -62,7 +62,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 	 * {@link PersistentResponseTemplateList#savePersistentList()}.
 	 */
 	public void removeSelected() {
-		Iterator<ResponseTemplate> iter = this.list.iterator();
+		Iterator<ResponseTemplate> iter = this.getPersistentList().iterator();
 		ResponseTemplate item = null;
 
 		while (iter.hasNext()) {
@@ -107,8 +107,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 	public void savePersistentList() {
 		boolean issueUpdate = false;
 
-		Log.i(PersistentResponseTemplateList.TAG, "Changed items: " + this.changed.toString());
-		if (this.changed.contains(Long.valueOf(this.settingsManager.getCurrentResponseTemplateId()))) {
+		if (this.hasChanged(this.settingsManager.getCurrentResponseTemplateId())) {
 			issueUpdate = true;
 			Log.i(PersistentResponseTemplateList.TAG, "Current response template changed");
 		}
