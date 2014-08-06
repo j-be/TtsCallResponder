@@ -17,7 +17,7 @@ import android.widget.ListAdapter;
 public abstract class ObjectWithId implements Serializable {
 	private static final long serialVersionUID = 4348935637831361397L;
 
-	protected long id = -1;
+	private long id = -1;
 
 	/**
 	 * Default constructor
@@ -36,5 +36,15 @@ public abstract class ObjectWithId implements Serializable {
 	 */
 	public long getId() {
 		return this.id;
+	}
+
+	/**
+	 * Setter for the ID. Use with caution!
+	 * 
+	 * @param id
+	 *            the new ID of the object
+	 */
+	protected void setId(long id) {
+		this.id = id;
 	}
 }

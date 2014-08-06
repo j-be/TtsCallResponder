@@ -108,7 +108,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 		}
 
 		if (listChanged)
-			this.entryChanged(listItem.id);
+			this.entryChanged(listItem.getId());
 	}
 
 	/**

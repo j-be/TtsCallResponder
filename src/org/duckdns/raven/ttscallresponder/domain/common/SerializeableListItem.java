@@ -25,16 +25,6 @@ public abstract class SerializeableListItem extends ObjectWithId implements Seri
 	}
 
 	/**
-	 * Setter for the ID. Use with caution!
-	 * 
-	 * @param id
-	 *            the new ID of the object
-	 */
-	protected void setId(long id) {
-		this.id = id;
-	}
-
-	/**
 	 * Method to update the members of the object with the ones from an other
 	 * instance. Every member is overwritten EXCEPT for the ID.
 	 * 
