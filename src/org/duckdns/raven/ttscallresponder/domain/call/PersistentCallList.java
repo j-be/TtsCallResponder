@@ -11,7 +11,7 @@ import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
  * 
  * FIXME: License
  * 
- * @see {@link AbstractPersistentList} for further details
+ * @see AbstractPersistentList
  * 
  * @author Juri Berlanda
  * 

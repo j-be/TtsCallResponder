@@ -15,7 +15,7 @@ import android.util.Log;
  * 
  * FIXME: License
  * 
- * @see {@link AbstractPersistentList} for further details
+ * @see AbstractPersistentList
  * 
  * @author Juri Berlanda
  * 
