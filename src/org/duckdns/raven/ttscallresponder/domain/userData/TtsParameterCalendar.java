@@ -9,6 +9,8 @@ import android.content.ContentResolver;
  * POJO representing a calendar for parameterization of a
  * {@link ResponseTemplate}
  * 
+ * TODO comment getters/setters
+ * 
  * FIXME: License
  * 
  * @author Juri Berlanda

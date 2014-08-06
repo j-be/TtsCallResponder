@@ -5,7 +5,9 @@ import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
 import android.text.format.Time;
 
 /**
- * POJO representing an incoming call
+ * POJO representing an incoming call.
+ * 
+ * TODO comment getters/setters
  * 
  * FIXME: License
  * 
