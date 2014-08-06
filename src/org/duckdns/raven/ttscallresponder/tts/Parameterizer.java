@@ -9,7 +9,7 @@ import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendarEv
 
 /**
  * This class is able to parameterize {@link ResponseTemplate}s according to
- * current events from calendar.
+ * current events from calendar. Use it statically!
  * 
  * FIXME: License
  * 
@@ -17,6 +17,10 @@ import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendarEv
  * 
  */
 public class Parameterizer {
+
+	// To avoid misusage
+	private Parameterizer() {
+	}
 
 	/**
 	 * Parameterizes a {@link ResponseTemplate} with a
