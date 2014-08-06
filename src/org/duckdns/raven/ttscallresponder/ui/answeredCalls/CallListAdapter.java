@@ -50,6 +50,15 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		this.parent = parent;
 	}
 
+	/**
+	 * Creates a nice little view to display a missed call. The view:
+	 * <ul>
+	 * <li>shows the caller's name, if number is in contacts; else only the
+	 * number</li>
+	 * <li>shows the call's time</li>
+	 * <li>offers a way to pre-dial the number to reply the call</li>
+	 * </ul>
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {

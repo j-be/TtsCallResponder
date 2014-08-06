@@ -49,6 +49,15 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		this.parent = parent;
 	}
 
+	/**
+	 * Creates a view for displaying a {@link ResponseTemplate}. The view:
+	 * <ul>
+	 * <li>shows the first 3 rows of the template's text</li>
+	 * <li>shows the template's title</li>
+	 * <li>allows to mark the template for deletion</li>
+	 * <li>allows to set the template as the currently active one</li>
+	 * </ul>
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {

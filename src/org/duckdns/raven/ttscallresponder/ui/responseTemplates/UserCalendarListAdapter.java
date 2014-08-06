@@ -44,6 +44,14 @@ public class UserCalendarListAdapter extends ArrayAdapter<TtsParameterCalendar> 
 				SettingsManager.COLOR_NO_ITEM_CHOSEN), 0);
 	}
 
+	/**
+	 * Creates a view which represents a calendar. The view:
+	 * <ul>
+	 * <li>shows the calendar's display name</li>
+	 * <li>shows the calendar's type</li>
+	 * <li>shows the calendar's color</li>
+	 * </ul>
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
