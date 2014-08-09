@@ -1,9 +1,7 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
-import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.ui.fragments.AutoResponderCtrlFragment;
 import org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
@@ -34,7 +32,6 @@ public class MainActivity extends Activity {
 
 	// UI elements
 	private TextView currentResponseTemplateTitle = null;
-	private TextView numberOfAnsweredCalls = null;
 
 	// TODO: React on setting changes
 	private ResponseTemplate currentResponseTemplate = null;
@@ -42,23 +39,9 @@ public class MainActivity extends Activity {
 	// Helper for closing with twice back-press
 	private final Time lastBackPressed = new Time();
 
-	/* ----- Update UI helpers ----- */
-
-	private void updateNumberOfAnsweredCalls() {
-		PersistentCallList callList = new PersistentCallList(this.getFilesDir());
-		this.numberOfAnsweredCalls.setText("" + callList.getCount());
-	}
-
 	/* ----- User interactions ----- */
 
 	/* --- Change to other activities --- */
-
-	/* Switch to list of answered calls */
-	public void onShowAnsweredCallListClick(View view) {
-		Intent switchToCallList = new Intent(this, ActivityAnsweredCallList.class);
-		switchToCallList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		this.startActivity(switchToCallList);
-	}
 
 	/* Switch to response template management */
 	public void onShowResopnseTemplateList(View view) {
@@ -93,7 +76,6 @@ public class MainActivity extends Activity {
 
 		// Get access to UI elements
 		this.currentResponseTemplateTitle = (TextView) this.findViewById(R.id.textView_currentResponseTemplateTitle);
-		this.numberOfAnsweredCalls = (TextView) this.findViewById(R.id.textView_numberOfAnsweredCalls);
 	}
 
 	@Override
@@ -122,7 +104,6 @@ public class MainActivity extends Activity {
 		} else
 			currentTitle = this.currentResponseTemplate.getTitle();
 		this.currentResponseTemplateTitle.setText(currentTitle);
-		this.updateNumberOfAnsweredCalls();
 	}
 
 	/* --- Closing the app --- */

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView_lbl_numberOfAnsweredCalls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView_numberOfAnsweredCalls"
+        android:clickable="true"
+        android:text="@string/label_number_of_answered_calls"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textView_numberOfAnsweredCalls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/textView_lbl_numberOfAnsweredCalls"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:text="@string/label_placeholder_number"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button_showAnsweredCallList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textView_lbl_numberOfAnsweredCalls"
+        android:text="@string/title_activity_answered_call_list"
+        android:layout_marginBottom="@dimen/activity_main_big_spacing"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_marginRight="@dimen/activity_small_margin" />
+
+</RelativeLayout>

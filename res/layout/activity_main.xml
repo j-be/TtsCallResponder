@@ -8,40 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         class="org.duckdns.raven.ttscallresponder.ui.fragments.AutoResponderCtrlFragment" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/answeredCallsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/autoResponderFragment"
+        class="org.duckdns.raven.ttscallresponder.ui.fragments.AnsweredCallsFragment" >
 	</fragment>
-
-    <TextView
-        android:id="@+id/textView_numberOfAnsweredCalls"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button_showAnsweredCallList"
-        android:layout_below="@+id/autoResponderFragment"
-        android:text="@string/label_placeholder_number"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/textView_lbl_numberOfAnsweredCalls"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView_numberOfAnsweredCalls"
-        android:layout_alignBottom="@+id/textView_numberOfAnsweredCalls"
-        android:layout_alignLeft="@+id/textView_currentResponseTemplateTitle"
-        android:clickable="true"
-        android:text="@string/label_number_of_answered_calls"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    
-    <Button
-        android:id="@+id/button_showAnsweredCallList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_lbl_numberOfAnsweredCalls"
-        android:onClick="onShowAnsweredCallListClick"
-        android:text="@string/title_activity_answered_call_list"
-        android:layout_marginBottom="@dimen/activity_main_big_spacing"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:layout_marginRight="@dimen/activity_small_margin" />
 
     <TextView
         android:id="@+id/textView_headerResponseTemplates"
@@ -49,7 +24,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/button_showAnsweredCallList"
+        android:layout_below="@id/answeredCallsFragment"
         android:layout_marginTop="48dip"
         android:text="@string/header_main_response_templates"
         android:textAppearance="?android:attr/textAppearanceMedium"
