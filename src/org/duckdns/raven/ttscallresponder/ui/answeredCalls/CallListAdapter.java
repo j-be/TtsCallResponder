@@ -34,7 +34,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 	// Provides phone-number to name resolving
 	private final PhoneBookAccess phoneBookAccess;
 	// Provides context needed for layout inflater
-	private final Activity parent;
+	protected final Activity parent;
 
 	/**
 	 * Default constructor.
@@ -61,7 +61,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
+		if (convertView == null || convertView.findViewById(R.id.label_caller) == null) {
 			// Inflate the layout
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_call, parent, false);
 		}

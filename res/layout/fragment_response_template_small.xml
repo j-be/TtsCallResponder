@@ -9,7 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="48dip"
         android:text="@string/header_main_response_templates"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="@dimen/activity_main_big_spacing"  />

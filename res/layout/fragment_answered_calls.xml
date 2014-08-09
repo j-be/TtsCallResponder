@@ -4,33 +4,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView_lbl_numberOfAnsweredCalls"
-        android:layout_width="wrap_content"
+    <TextView 
+        android:id="@+id/textView_header_callers"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView_numberOfAnsweredCalls"
-        android:clickable="true"
-        android:text="@string/label_number_of_answered_calls"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="@string/header_callers"/>
 
-    <TextView
-        android:id="@+id/textView_numberOfAnsweredCalls"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/list_answered_calls"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/textView_lbl_numberOfAnsweredCalls"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:text="@string/label_placeholder_number"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_below="@id/textView_header_callers" >
+    </ListView>
 
     <Button
         android:id="@+id/button_showAnsweredCallList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_lbl_numberOfAnsweredCalls"
-        android:text="@string/title_activity_answered_call_list"
+        android:layout_below="@id/list_answered_calls"
         android:layout_marginBottom="@dimen/activity_main_big_spacing"
         android:layout_marginLeft="@dimen/activity_small_margin"
-        android:layout_marginRight="@dimen/activity_small_margin" />
+        android:layout_marginRight="@dimen/activity_small_margin"
+        android:text="@string/title_activity_answered_call_list" />
 
 </RelativeLayout>
