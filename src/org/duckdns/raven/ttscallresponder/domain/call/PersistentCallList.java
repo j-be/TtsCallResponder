@@ -17,10 +17,9 @@ import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
  * 
  */
 public class PersistentCallList extends AbstractPersistentList<Call> {
-	private static final String TAG = "PersistentAnsweredCallList";
 
 	/**
-	 * Default constructor - only accessible via singleton
+	 * Default constructor
 	 * 
 	 * @param directory
 	 *            the directory in the FileSystem, in which the list will be
