@@ -1,7 +1,6 @@
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
-import org.duckdns.raven.ttscallresponder.tts.TtsCallReceiver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -88,8 +87,8 @@ public class SettingsManager extends TtsSettingsManager {
 	 * Getter for the delay between answering the call and starting to speak.
 	 * This setting can be used to adapt the timing to different phones
 	 * 
-	 * @return the time in Milliseconds, which the {@link TtsCallReceiver} will
-	 *         wait after answering the call and before starting to speak
+	 * @return the time (in Milliseconds) to wait after answering the call and
+	 *         before starting to speak
 	 */
 	public int getTtsDelay() {
 		int ret = SettingsManager.default_settings_tts_delay;
