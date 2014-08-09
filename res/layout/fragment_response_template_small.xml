@@ -2,28 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_screen_item"
-    android:padding="@dimen/activity_main_small_spacing" >
-
-    <TextView
-        android:id="@+id/textView_headerResponseTemplates"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:padding="@dimen/activity_main_small_spacing"
-        android:text="@string/header_main_response_templates"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:typeface="sans" />
+    android:background="@drawable/home_screen_item" >
 
     <TextView
         android:id="@+id/textView_lbl_currentResponseTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_main_small_spacing"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_headerResponseTemplates"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/label_current_response_template"/>
+
     <TextView
         android:id="@+id/textView_currentResponseTemplateTitle"
         android:layout_width="wrap_content"
@@ -36,5 +25,13 @@
         android:text="@string/label_placeholder_text"
         android:layout_marginLeft="@dimen/activity_main_big_spacing"
         android:layout_marginBottom="@dimen/activity_main_small_spacing" />
+
+    <Button
+        android:id="@+id/textView_headerResponseTemplates"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_currentResponseTemplateTitle"
+        style="@style/CustomStyleButton"
+        android:text="@string/header_main_response_templates" />
 
 </RelativeLayout>

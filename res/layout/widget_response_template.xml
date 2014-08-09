@@ -41,6 +41,7 @@
                 android:layout_gravity="left"
                 android:lines="3"
                 android:text="@string/label_placeholder_text_long"
+                android:textColor="@color/textLightColor"
                 android:layout_weight="1.9"/>
 
             <View
