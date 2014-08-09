@@ -15,25 +15,24 @@
     </fragment>
 
     <fragment
-        android:id="@+id/answeredCallsFragment"
+        android:id="@+id/responseTemplateSmallFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/autoResponderFragment"
         android:layout_marginTop="@dimen/activity_main_small_spacing"
         android:layout_marginLeft="@dimen/activity_main_small_spacing"
         android:layout_marginRight="@dimen/activity_main_small_spacing"
-        class="org.duckdns.raven.ttscallresponder.ui.fragments.AnsweredCallsFragment" >
-    </fragment>
-
-    <fragment
-        android:id="@+id/responseTemplateSmallFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/answeredCallsFragment"
-        android:layout_marginTop="@dimen/activity_main_small_spacing"
-        android:layout_marginLeft="@dimen/activity_main_small_spacing"
-        android:layout_marginRight="@dimen/activity_main_small_spacing"
         class="org.duckdns.raven.ttscallresponder.ui.fragments.ResponseTemplateFragmentSmall" >
     </fragment>
 
+    <fragment
+        android:id="@+id/answeredCallsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/responseTemplateSmallFragment"
+        android:layout_marginTop="@dimen/activity_main_small_spacing"
+        android:layout_marginLeft="@dimen/activity_main_small_spacing"
+        android:layout_marginRight="@dimen/activity_main_small_spacing"
+        class="org.duckdns.raven.ttscallresponder.ui.fragments.AnsweredCallsFragment" >
+    </fragment>
 </RelativeLayout>

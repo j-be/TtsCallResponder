@@ -8,9 +8,12 @@
 
     <Switch
         android:id="@+id/switch_answerCalls"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/switch_auto_respond" />
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/activity_main_small_spacing"
+        android:text="@string/switch_auto_respond"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:typeface="sans" />
 
 </LinearLayout>

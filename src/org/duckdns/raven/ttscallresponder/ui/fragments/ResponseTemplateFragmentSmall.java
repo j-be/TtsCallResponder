@@ -38,7 +38,7 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 
 		// Get access to UI elements
 		this.currentResponseTemplateTitle = (TextView) ret.findViewById(R.id.textView_currentResponseTemplateTitle);
-		ret.findViewById(R.id.button_show_response_template_list).setOnClickListener(new OnClickListener() {
+		ret.findViewById(R.id.textView_headerResponseTemplates).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ResponseTemplateFragmentSmall.this.onShowResopnseTemplateList(v);

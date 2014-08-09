@@ -6,12 +6,16 @@
     android:padding="@dimen/activity_main_small_spacing"
     android:orientation="vertical" >
 
-    <TextView 
+    <TextView
         android:id="@+id/textView_header_callers"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:text="@string/header_callers"/>
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/activity_main_small_spacing"
+        android:text="@string/header_callers"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:typeface="sans" />
 
     <ListView
         android:id="@+id/list_answered_calls"

@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_main_small_spacing"
-    android:padding="@dimen/activity_main_small_spacing"
-    android:background="@drawable/home_screen_item"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/list_responseTemplates"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
     <LinearLayout
+        android:id="@+id/list_bottom_bar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#666666"
-        android:layout_weight="0.02" >
+        android:layout_marginLeft="@dimen/activity_main_small_spacing"
+        android:layout_marginRight="@dimen/activity_main_small_spacing"
+        android:layout_marginBottom="@dimen/activity_main_small_spacing"
+        android:layout_marginTop="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/home_screen_item" >
         <ImageButton
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_weight="1"
             android:id="@+id/button_deleteResponseTemplate"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:src="@android:drawable/ic_menu_delete"
             android:contentDescription="@string/button_delete"
@@ -32,14 +27,22 @@
 
         <ImageButton
             android:id="@+id/button_addResponseTemplate"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="bottom|left"
+            android:layout_width="0dp"
             android:layout_weight="1"
-            android:background="?android:attr/selectableItemBackground"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:src="@android:drawable/ic_menu_add"
             android:contentDescription="@string/button_add"
-            android:onClick="onAddClick"
-            android:src="@android:drawable/ic_menu_add" />
-
+            android:onClick="onAddClick" />
     </LinearLayout>
-</LinearLayout>
+
+    <ListView
+        android:id="@+id/list_responseTemplates"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="@dimen/activity_main_small_spacing"
+        android:layout_above="@id/list_bottom_bar"
+        android:padding="@dimen/activity_main_small_spacing"
+        android:background="@drawable/home_screen_item" />
+
+</RelativeLayout>
