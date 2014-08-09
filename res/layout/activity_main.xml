@@ -16,49 +16,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/autoResponderFragment"
         class="org.duckdns.raven.ttscallresponder.ui.fragments.AnsweredCallsFragment" >
-	</fragment>
+    </fragment>
 
-    <TextView
-        android:id="@+id/textView_headerResponseTemplates"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="fill_parent"
+    <fragment
+        android:id="@+id/responseTemplateSmallFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@id/answeredCallsFragment"
-        android:layout_marginTop="48dip"
-        android:text="@string/header_main_response_templates"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginBottom="@dimen/activity_main_big_spacing"  />
-
-    <TextView
-        android:id="@+id/textView_lbl_currentResponseTemplate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_headerResponseTemplates"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/label_current_response_template"/>
-    <TextView
-        android:id="@+id/textView_currentResponseTemplateTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_lbl_currentResponseTemplate"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:singleLine="true"
-        android:text="@string/label_placeholder_text"
-        android:layout_marginLeft="@dimen/activity_main_big_spacing"
-        android:layout_marginBottom="@dimen/activity_main_small_spacing" />
-
-    <Button
-        android:id="@+id/button_show_response_template_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_currentResponseTemplateTitle"
-        android:onClick="onShowResopnseTemplateList"
-        android:text="@string/title_activity_response_template_list"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:layout_marginRight="@dimen/activity_small_margin" />
+        class="org.duckdns.raven.ttscallresponder.ui.fragments.ResponseTemplateFragmentSmall" >
+    </fragment>
 
 </RelativeLayout>

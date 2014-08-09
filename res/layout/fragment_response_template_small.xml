@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+        <TextView
+        android:id="@+id/textView_headerResponseTemplates"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="48dip"
+        android:text="@string/header_main_response_templates"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginBottom="@dimen/activity_main_big_spacing"  />
+
+    <TextView
+        android:id="@+id/textView_lbl_currentResponseTemplate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textView_headerResponseTemplates"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/label_current_response_template"/>
+    <TextView
+        android:id="@+id/textView_currentResponseTemplateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textView_lbl_currentResponseTemplate"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:singleLine="true"
+        android:text="@string/label_placeholder_text"
+        android:layout_marginLeft="@dimen/activity_main_big_spacing"
+        android:layout_marginBottom="@dimen/activity_main_small_spacing" />
+
+    <Button
+        android:id="@+id/button_show_response_template_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textView_currentResponseTemplateTitle"
+        android:text="@string/title_activity_response_template_list"
+        android:layout_marginLeft="@dimen/activity_small_margin"
+        android:layout_marginRight="@dimen/activity_small_margin" />
+
+</RelativeLayout>

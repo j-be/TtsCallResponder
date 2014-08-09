@@ -1,9 +1,6 @@
 package org.duckdns.raven.ttscallresponder;
 
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
-import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.ui.fragments.AutoResponderCtrlFragment;
-import org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
 import android.app.Activity;
@@ -13,8 +10,6 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -30,24 +25,10 @@ public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
 	public static final int NOTIFICATION_ID_AUTORESPONDER_RUNNING = 130;
 
-	// UI elements
-	private TextView currentResponseTemplateTitle = null;
-
-	// TODO: React on setting changes
-	private ResponseTemplate currentResponseTemplate = null;
-
 	// Helper for closing with twice back-press
 	private final Time lastBackPressed = new Time();
 
 	/* ----- User interactions ----- */
-
-	/* --- Change to other activities --- */
-
-	/* Switch to response template management */
-	public void onShowResopnseTemplateList(View view) {
-		Intent switchToResopnseTemplateList = new Intent(this, ActivityResponseTemplateList.class);
-		this.startActivity(switchToResopnseTemplateList);
-	}
 
 	/* Settings button in action bar */
 	@Override
@@ -73,9 +54,6 @@ public class MainActivity extends Activity {
 
 		// Set the layout
 		this.setContentView(R.layout.activity_main);
-
-		// Get access to UI elements
-		this.currentResponseTemplateTitle = (TextView) this.findViewById(R.id.textView_currentResponseTemplateTitle);
 	}
 
 	@Override
@@ -85,33 +63,7 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	/* --- Resuming the app (i.e. Activity becomes visible --- */
-	@Override
-	public void onResume() {
-		Log.i(MainActivity.TAG, "Enter onResume");
-		super.onResume();
-
-		String currentTitle = null;
-
-		// Retrieve data
-		PersistentResponseTemplateList responseTemplateList = new PersistentResponseTemplateList(this);
-		this.currentResponseTemplate = responseTemplateList.getCurrentResponseTemplate();
-
-		// Initialize UI elements
-		if (this.currentResponseTemplate == null) {
-			Log.d(MainActivity.TAG, "No current response set");
-			currentTitle = "<None>";
-		} else
-			currentTitle = this.currentResponseTemplate.getTitle();
-		this.currentResponseTemplateTitle.setText(currentTitle);
-	}
-
 	/* --- Closing the app --- */
-	@Override
-	protected void onDestroy() {
-		Log.i(MainActivity.TAG, "Enter onDestroy");
-		super.onDestroy();
-	}
 
 	@Override
 	public void onBackPressed() {
