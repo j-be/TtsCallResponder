@@ -91,7 +91,6 @@ public class ActivityResponseTemplateList extends Activity {
 			responseTemplate = (ResponseTemplate) view.getTag();
 
 		// Invoke the dialog
-		this.showEditorDialog(responseTemplate);
 		if (responseTemplate != null)
 			this.showEditorDialog(responseTemplate);
 	}
