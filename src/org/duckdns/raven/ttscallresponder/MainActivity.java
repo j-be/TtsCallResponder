@@ -3,25 +3,19 @@ package org.duckdns.raven.ttscallresponder;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
-import org.duckdns.raven.ttscallresponder.tts.StartAnsweringServiceReceiver;
 import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList;
-import org.duckdns.raven.ttscallresponder.ui.notification.CallReceiverNotificationFactory;
+import org.duckdns.raven.ttscallresponder.ui.fragments.AutoResponderCtrlFragment;
 import org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,16 +32,7 @@ public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
 	public static final int NOTIFICATION_ID_AUTORESPONDER_RUNNING = 130;
 
-	// ComponentName for the CallReceiver
-	private static final ComponentName RECEIVER_COMPONENT_NAME = new ComponentName(
-			"org.duckdns.raven.ttscallresponder", StartAnsweringServiceReceiver.class.getName());
-
-	// Notification
-	private NotificationManager notificationManager = null;
-	private CallReceiverNotificationFactory notificationFactory = null;
-
 	// UI elements
-	private Switch swiAutoRespond = null;
 	private TextView currentResponseTemplateTitle = null;
 	private TextView numberOfAnsweredCalls = null;
 
@@ -59,57 +44,12 @@ public class MainActivity extends Activity {
 
 	/* ----- Update UI helpers ----- */
 
-	private void applyCallReceiverState() {
-		this.swiAutoRespond.setChecked(this.isCallReceiverRunning());
-		if (this.isCallReceiverRunning())
-			this.notificationManager.notify(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING,
-					this.notificationFactory.buildCallReceiverNotification(true));
-		else
-			this.notificationManager.cancel(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING);
-	}
-
 	private void updateNumberOfAnsweredCalls() {
 		PersistentCallList callList = new PersistentCallList(this.getFilesDir());
 		this.numberOfAnsweredCalls.setText("" + callList.getCount());
 	}
 
-	/* ----- Auto responder control helpers ----- */
-
-	private void startCallReceiver() {
-		this.getPackageManager().setComponentEnabledSetting(MainActivity.RECEIVER_COMPONENT_NAME,
-				PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-		this.notificationManager.notify(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING,
-				this.notificationFactory.buildCallReceiverNotification(true));
-	}
-
-	private boolean isCallReceiverRunning() {
-		return this.getPackageManager().getComponentEnabledSetting(MainActivity.RECEIVER_COMPONENT_NAME) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-	}
-
-	private void stopCallReceiver() {
-		this.getPackageManager().setComponentEnabledSetting(MainActivity.RECEIVER_COMPONENT_NAME,
-				PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-		this.notificationManager.cancel(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING);
-	}
-
 	/* ----- User interactions ----- */
-
-	/* Handle service start and stop */
-	public void onSwitchAutorespondClick(View view) {
-		Switch swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
-
-		if (swiAutoRespond.isChecked())
-			this.startCallReceiver();
-		else
-			this.stopCallReceiver();
-
-		if (this.isCallReceiverRunning()) {
-			Toast.makeText(this, "Enabled automatic call responder", Toast.LENGTH_SHORT).show();
-		} else {
-			Toast.makeText(this, "Disabled automatic call responder", Toast.LENGTH_SHORT).show();
-			this.notificationManager.cancel(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING);
-		}
-	}
 
 	/* --- Change to other activities --- */
 
@@ -152,13 +92,8 @@ public class MainActivity extends Activity {
 		this.setContentView(R.layout.activity_main);
 
 		// Get access to UI elements
-		this.swiAutoRespond = (Switch) this.findViewById(R.id.switch_answerCalls);
 		this.currentResponseTemplateTitle = (TextView) this.findViewById(R.id.textView_currentResponseTemplateTitle);
 		this.numberOfAnsweredCalls = (TextView) this.findViewById(R.id.textView_numberOfAnsweredCalls);
-
-		// Set notification
-		this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-		this.notificationFactory = new CallReceiverNotificationFactory(this);
 	}
 
 	@Override
@@ -187,7 +122,6 @@ public class MainActivity extends Activity {
 		} else
 			currentTitle = this.currentResponseTemplate.getTitle();
 		this.currentResponseTemplateTitle.setText(currentTitle);
-		this.applyCallReceiverState();
 		this.updateNumberOfAnsweredCalls();
 	}
 
@@ -200,7 +134,9 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		if (!this.isCallReceiverRunning())
+		AutoResponderCtrlFragment fragment = (AutoResponderCtrlFragment) this.getFragmentManager().findFragmentById(
+				R.id.autoResponderFragment);
+		if (!fragment.isCallReceiverRunning())
 			this.finish();
 		else {
 			Time nowBackPressed = new Time();
@@ -210,7 +146,7 @@ public class MainActivity extends Activity {
 			// If service is running (else this code is not reached) require
 			// double-press of "Back" button to close
 			if (nowBackPressed.toMillis(true) - this.lastBackPressed.toMillis(true) < 3000) {
-				this.stopCallReceiver();
+				fragment.stopCallReceiver();
 				this.finish();
 			} else {
 				Toast.makeText(this,
