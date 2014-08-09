@@ -18,33 +18,34 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light" >
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList"
+            android:name=".ui.answeredCalls.ActivityAnsweredCallList"
             android:label="@string/title_activity_answered_call_list"
-            android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.ui.responseTemplates.ActivityResponseTemplateList"
+            android:name=".ui.responseTemplates.ActivityResponseTemplateList"
             android:label="@string/title_activity_response_template_list"
-            android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
         </activity>
         <activity
-            android:name="org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings"
+            android:name=".ui.settings.ActivitySettings"
             android:label="@string/title_activity_activity_settings"
-            android:parentActivityName="org.duckdns.raven.ttscallresponder.MainActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
