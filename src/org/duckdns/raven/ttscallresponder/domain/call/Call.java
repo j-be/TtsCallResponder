@@ -1,5 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.call;
 
+import java.util.Vector;
+
 import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
 
 import android.text.format.Time;
@@ -18,7 +20,7 @@ public class Call extends SerializeableListItem {
 	private static final long serialVersionUID = -724628669974903213L;
 
 	private String callingNumber = null;
-	private long callTime = -1;
+	private Vector<Long> callTime = null;
 	private static long highestUsedId = -1;
 
 	/**
@@ -34,7 +36,8 @@ public class Call extends SerializeableListItem {
 
 		// Save "Now" as call time
 		now.setToNow();
-		this.callTime = now.toMillis(false);
+		this.callTime = new Vector<Long>();
+		this.callTime.add(Long.valueOf(now.toMillis(false)));
 	}
 
 	/* ----- Getters / Setters ----- */
@@ -50,13 +53,17 @@ public class Call extends SerializeableListItem {
 	public Time getCallTime() {
 		Time ret = new Time();
 
-		ret.set(this.callTime);
+		ret.set(this.callTime.firstElement().longValue());
 
 		return ret;
 	}
 
-	public void setCallTime(Time callTime) {
-		this.callTime = callTime.toMillis(false);
+	public void addCallTime(Time callTime) {
+		this.callTime.insertElementAt(Long.valueOf(callTime.toMillis(false)), 0);
+	}
+
+	public int getCallCount() {
+		return this.callTime.size();
 	}
 
 	@Override

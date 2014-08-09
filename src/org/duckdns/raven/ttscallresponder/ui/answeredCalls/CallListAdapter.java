@@ -76,7 +76,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		// Resolve phone number to name
 		caller.setText(this.phoneBookAccess.getNameForPhoneNumber(call.getCaller()));
 		// FIXME: Make locale dependend
-		callTime.setText(call.getCallTime().format("%b %d %Y, %H:%M"));
+		callTime.setText(call.getCallCount() + " x, last: " + call.getCallTime().format("%b %d %Y, %H:%M"));
 
 		// Attach the phone number to the call-back button
 		callBack.setTag(call.getCaller());

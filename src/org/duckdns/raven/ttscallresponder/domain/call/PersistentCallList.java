@@ -35,6 +35,23 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 		return "answeredCallList";
 	}
 
+	@Override
+	public void add(Call listItem) {
+		List<Call> list = this.getPersistentList();
+		boolean found = false;
+
+		// Group calls from the same number
+		for (Call call : list)
+			if (call.getCaller().equals(listItem.getCaller())) {
+				found = true;
+				call.addCallTime(listItem.getCallTime());
+			}
+
+		// Add new entry, if caller not yet present
+		if (!found)
+			super.add(listItem);
+	}
+
 	/**
 	 * Custom list load function. This is necessary for setting the highest
 	 * known ID on {@link Call}.
