@@ -44,7 +44,7 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 	 *            drawn
 	 */
 	public ResponseTemplateListAdapter(Activity parent, List<ResponseTemplate> list) {
-		super(parent, org.duckdns.raven.ttscallresponder.R.layout.widget_response_template, list);
+		super(parent, R.layout.widget_response_template, list);
 		this.settingsManager = new SettingsManager(parent);
 		this.parent = parent;
 	}
