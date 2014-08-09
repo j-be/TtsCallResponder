@@ -62,10 +62,10 @@ public class MainActivity extends Activity {
 	private void applyCallReceiverState() {
 		this.swiAutoRespond.setChecked(this.isCallReceiverRunning());
 		if (this.isCallReceiverRunning())
-			this.notificationManager.notify(NOTIFICATION_ID_AUTORESPONDER_RUNNING,
+			this.notificationManager.notify(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING,
 					this.notificationFactory.buildCallReceiverNotification(true));
 		else
-			this.notificationManager.cancel(NOTIFICATION_ID_AUTORESPONDER_RUNNING);
+			this.notificationManager.cancel(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING);
 	}
 
 	private void updateNumberOfAnsweredCalls() {
@@ -76,17 +76,20 @@ public class MainActivity extends Activity {
 	/* ----- Auto responder control helpers ----- */
 
 	private void startCallReceiver() {
-		this.getPackageManager().setComponentEnabledSetting(RECEIVER_COMPONENT_NAME,
+		this.getPackageManager().setComponentEnabledSetting(MainActivity.RECEIVER_COMPONENT_NAME,
 				PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+		this.notificationManager.notify(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING,
+				this.notificationFactory.buildCallReceiverNotification(true));
 	}
 
 	private boolean isCallReceiverRunning() {
-		return this.getPackageManager().getComponentEnabledSetting(RECEIVER_COMPONENT_NAME) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+		return this.getPackageManager().getComponentEnabledSetting(MainActivity.RECEIVER_COMPONENT_NAME) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 	}
 
 	private void stopCallReceiver() {
-		this.getPackageManager().setComponentEnabledSetting(RECEIVER_COMPONENT_NAME,
+		this.getPackageManager().setComponentEnabledSetting(MainActivity.RECEIVER_COMPONENT_NAME,
 				PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+		this.notificationManager.cancel(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING);
 	}
 
 	/* ----- User interactions ----- */
@@ -102,11 +105,9 @@ public class MainActivity extends Activity {
 
 		if (this.isCallReceiverRunning()) {
 			Toast.makeText(this, "Enabled automatic call responder", Toast.LENGTH_SHORT).show();
-			this.notificationManager.notify(NOTIFICATION_ID_AUTORESPONDER_RUNNING,
-					this.notificationFactory.buildCallReceiverNotification(true));
 		} else {
 			Toast.makeText(this, "Disabled automatic call responder", Toast.LENGTH_SHORT).show();
-			this.notificationManager.cancel(NOTIFICATION_ID_AUTORESPONDER_RUNNING);
+			this.notificationManager.cancel(MainActivity.NOTIFICATION_ID_AUTORESPONDER_RUNNING);
 		}
 	}
 
