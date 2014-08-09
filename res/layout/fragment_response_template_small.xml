@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/home_screen_item"
+    android:padding="@dimen/activity_main_small_spacing" >
 
         <TextView
         android:id="@+id/textView_headerResponseTemplates"
@@ -11,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:text="@string/header_main_response_templates"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginBottom="@dimen/activity_main_big_spacing"  />
+        android:layout_marginBottom="@dimen/activity_main_small_spacing" />
 
     <TextView
         android:id="@+id/textView_lbl_currentResponseTemplate"

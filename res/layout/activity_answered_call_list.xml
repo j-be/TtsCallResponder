@@ -2,5 +2,8 @@
 <ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_answered_calls"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:layout_margin="@dimen/activity_main_small_spacing"
+    android:padding="@dimen/activity_main_small_spacing"
+    android:background="@drawable/home_screen_item" >
 </ListView>
