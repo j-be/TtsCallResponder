@@ -18,15 +18,4 @@
         android:layout_below="@id/textView_header_callers" >
     </ListView>
 
-    <Button
-        android:id="@+id/button_showAnsweredCallList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/list_answered_calls"
-        android:layout_marginBottom="@dimen/activity_main_big_spacing"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:layout_marginRight="@dimen/activity_small_margin"
-        android:text="@string/title_activity_answered_call_list" />
-
 </RelativeLayout>
