@@ -11,6 +11,6 @@
     android:textColor="@color/textLightColor"
     android:text="TEXT"
     android:textStyle="italic"
-    android:textAppearance="?android:attr/textAppearanceMedium" >
+    android:textAppearance="?android:attr/textAppearanceSmall" >
 </TextView>
 </LinearLayout>

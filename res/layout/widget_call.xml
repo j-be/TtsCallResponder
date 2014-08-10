@@ -7,9 +7,10 @@
         <TextView
             android:id="@+id/label_caller" 
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="NAME_HERE" 
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="NAME_HERE" />
 
         <ImageButton
             android:id="@+id/button_callBack"
