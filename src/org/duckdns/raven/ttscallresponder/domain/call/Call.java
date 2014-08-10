@@ -1,5 +1,6 @@
 package org.duckdns.raven.ttscallresponder.domain.call;
 
+import java.util.Date;
 import java.util.Vector;
 
 import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
@@ -50,16 +51,12 @@ public class Call extends SerializeableListItem {
 		this.callingNumber = caller;
 	}
 
-	public Time getCallTime() {
-		Time ret = new Time();
-
-		ret.set(this.callTime.firstElement().longValue());
-
-		return ret;
+	public Date getCallTime() {
+		return new Date(this.callTime.firstElement().longValue());
 	}
 
-	public void addCallTime(Time callTime) {
-		this.callTime.insertElementAt(Long.valueOf(callTime.toMillis(false)), 0);
+	public void addCallTime(Date callTime) {
+		this.callTime.insertElementAt(Long.valueOf(callTime.getTime()), 0);
 	}
 
 	public int getCallCount() {

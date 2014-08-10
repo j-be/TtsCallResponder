@@ -1,6 +1,8 @@
 package org.duckdns.raven.ttscallresponder.ui.answeredCalls;
 
+import java.text.DateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
@@ -74,9 +76,15 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		// Get the call for the current position
 		Call call = this.getItem(position);
 		// Resolve phone number to name
-		caller.setText(this.phoneBookAccess.getNameForPhoneNumber(call.getCaller()));
-		// FIXME: Make locale dependend
-		callTime.setText(call.getCallCount() + " x, last: " + call.getCallTime().format("%b %d %Y, %H:%M"));
+		String text = this.phoneBookAccess.getNameForPhoneNumber(call.getCaller());
+		Log.d(CallListAdapter.TAG, "is caller null? " + (caller == null) + " - position: " + position);
+		caller.setText(text);
+		// Set DateTime String
+		DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
+		String dateTimeString = dateFormat.format(call.getCallTime());
+		dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+		dateTimeString += " - " + dateFormat.format(call.getCallTime());
+		callTime.setText(call.getCallCount() + " x, last: " + dateTimeString);
 
 		// Attach the phone number to the call-back button
 		callBack.setTag(call.getCaller());
