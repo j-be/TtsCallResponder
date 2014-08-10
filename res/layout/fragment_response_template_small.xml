@@ -8,7 +8,7 @@
         android:id="@+id/textView_lbl_currentResponseTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_main_small_spacing"
+        style="@style/TopLeftRightBorder"
         android:layout_alignParentLeft="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/label_current_response_template"/>
@@ -17,20 +17,39 @@
         android:id="@+id/textView_currentResponseTemplateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView_lbl_currentResponseTemplate"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignBaseline="@+id/textView_lbl_currentResponseTemplate"
+        android:layout_toRightOf="@+id/textView_lbl_currentResponseTemplate"
         android:singleLine="true"
-        android:textStyle="bold"
         android:text="@string/label_placeholder_text"
-        android:layout_marginLeft="@dimen/activity_main_big_spacing"
-        android:layout_marginBottom="@dimen/activity_main_small_spacing" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView_lbl_currentEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_main_small_spacing"
+        android:layout_below="@id/textView_lbl_currentResponseTemplate"
+        android:layout_alignParentLeft="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/label_current_event"/>
+
+    <TextView
+        android:id="@+id/textView_currentEventTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView_lbl_currentEvent"
+        android:layout_toRightOf="@+id/textView_lbl_currentEvent"
+        android:singleLine="true"
+        android:text="@string/label_placeholder_text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/textView_headerResponseTemplates"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_currentResponseTemplateTitle"
+        android:layout_below="@id/textView_lbl_currentEvent"
         style="@style/CustomStyleButton"
         android:text="@string/header_main_response_templates" />
 

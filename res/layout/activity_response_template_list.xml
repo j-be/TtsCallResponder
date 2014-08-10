@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        style="@style/TopLeftRightBorder"
+        android:layout_margin="@dimen/activity_main_small_spacing"
         android:layout_alignParentBottom="true"
         android:background="@drawable/home_screen_item" >
         <ImageButton
@@ -38,7 +38,7 @@
         android:id="@+id/list_responseTemplates"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="@dimen/activity_main_small_spacing"
+        style="@style/TopLeftRightBorder"
         android:layout_above="@id/list_bottom_bar"
         android:padding="@dimen/activity_main_small_spacing"
         android:background="@drawable/home_screen_item" />
