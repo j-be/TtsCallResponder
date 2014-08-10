@@ -31,9 +31,9 @@
     <string name="hint_title">Enter a title here</string>
     <string name="hint_text">Type your response text here</string>
 
-    <string name="header_main_response_templates">Response template list &gt;&gt;</string>
+    <string name="header_main_response_templates">Response template list</string>
     <string name="header_main_autoresponder">Auto Responder</string>
-    <string name="header_callers">&lt;&lt; Call list</string>
+    <string name="header_callers">Call list</string>
 
     <string-array name="slider_speech_rate_summaries">
         <item>Very slow</item>

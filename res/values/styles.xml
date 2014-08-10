@@ -1,4 +1,9 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <color name="backgroundColor">#dddddd</color>
+    <color name="buttonColor">#bbbbbb</color>
+    <color name="buttonPressedColor">#aaaaaa</color>
+    <color name="textLightColor">#555555</color>
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -15,6 +20,27 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:actionBarItemBackground">@drawable/custom_button</item>
+    </style>
+
+    <style name="MyActionBar"
+           parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/buttonColor</item>
+    </style>
+
+    <style name="CustomStyleButton" parent="@android:style/Widget.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item  name="android:background">@drawable/custom_button</item>
+        <item name="android:padding">10dip</item>
+    </style>
+
+    <style name="TopLeftRightBorder">
+        <item name="android:layout_marginTop"> @dimen/activity_main_small_spacing</item>
+        <item name="android:layout_marginLeft"> @dimen/activity_main_small_spacing</item>
+        <item name="android:layout_marginRight"> @dimen/activity_main_small_spacing</item>
     </style>
 
 </resources>
