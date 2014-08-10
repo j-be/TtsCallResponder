@@ -21,7 +21,7 @@ import android.widget.TextView;
 public class AnsweredCallsFragment extends Fragment {
 	private static final String TAG = "AnsweredCallsFragment";
 
-	private ListView callersList = null;
+	private ShortCallListAdapter callListAdapter = null;
 
 	TextView header = null;
 
@@ -34,7 +34,10 @@ public class AnsweredCallsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View ret = inflater.inflate(R.layout.fragment_answered_calls, container, false);
 
-		this.callersList = ((ListView) ret.findViewById(R.id.list_answered_calls));
+		ListView callersList = ((ListView) ret.findViewById(R.id.list_answered_calls));
+		this.callListAdapter = new ShortCallListAdapter(this.getActivity(), PersistentCallList.getSingleton()
+				.getPersistentList());
+		callersList.setAdapter(this.callListAdapter);
 		this.header = (TextView) ret.findViewById(R.id.textView_header_callers);
 		this.header.setOnClickListener(new OnClickListener() {
 			@Override
@@ -65,8 +68,6 @@ public class AnsweredCallsFragment extends Fragment {
 	private void updateNumberOfAnsweredCalls() {
 		Log.d(AnsweredCallsFragment.TAG, "Updating list...");
 
-		ShortCallListAdapter callListAdapter = new ShortCallListAdapter(this.getActivity(), new PersistentCallList(this
-				.getActivity().getFilesDir()).getPersistentList());
-		this.callersList.setAdapter(callListAdapter);
+		this.callListAdapter.notifyDataSetChanged();
 	}
 }

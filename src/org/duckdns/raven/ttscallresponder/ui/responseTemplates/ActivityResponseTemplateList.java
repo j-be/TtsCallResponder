@@ -164,8 +164,10 @@ public class ActivityResponseTemplateList extends Activity {
 		// Try to retrieve list from previous state - for exemple on screen
 		// orientation change
 		this.persistentList = (PersistentResponseTemplateList) this.getLastNonConfigurationInstance();
-		if (this.persistentList == null)
+		if (this.persistentList == null) {
 			this.persistentList = new PersistentResponseTemplateList(this);
+			this.persistentList.loadPersistentList();
+		}
 
 		// Apply the list to the ListView
 		this.adapter = new ResponseTemplateListAdapter(this, this.persistentList.getPersistentList());

@@ -52,7 +52,6 @@ public class ActivityAnsweredCallList extends Activity {
 	/* Clear the list */
 	public void clearAnsweredCallListClick() {
 		this.answeredCallList.clear();
-		this.answeredCallList.savePersistentList();
 		this.adapter.notifyDataSetChanged();
 	}
 
@@ -70,7 +69,7 @@ public class ActivityAnsweredCallList extends Activity {
 
 		// Create the adapter and apply it on he ListView
 		ListView answeredCallsListView = (ListView) this.findViewById(R.id.list_answered_calls);
-		this.answeredCallList = new PersistentCallList(this.getFilesDir());
+		this.answeredCallList = PersistentCallList.getSingleton();
 		this.adapter = new CallListAdapter(this, this.answeredCallList.getPersistentList());
 		answeredCallsListView.setAdapter(this.adapter);
 		this.adapter.notifyDataSetChanged();

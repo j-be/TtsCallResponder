@@ -1,6 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.call;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +19,19 @@ import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
  */
 public class PersistentCallList extends AbstractPersistentList<Call> {
 
+	public static PersistentCallList singleton = null;
+
+	public static synchronized void initSingleton(File directory) {
+		if (PersistentCallList.singleton == null) {
+			PersistentCallList.singleton = new PersistentCallList(directory);
+			PersistentCallList.singleton.loadPersistentList();
+		}
+	}
+
+	public static PersistentCallList getSingleton() {
+		return PersistentCallList.singleton;
+	}
+
 	/**
 	 * Default constructor
 	 * 
@@ -25,7 +39,7 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 	 *            the directory in the FileSystem, in which the list will be
 	 *            saved and from which it will be loaded.
 	 */
-	public PersistentCallList(File directory) {
+	private PersistentCallList(File directory) {
 		super(directory);
 	}
 
@@ -51,20 +65,22 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 			super.add(listItem);
 	}
 
+	public void sort() {
+		Collections.sort(this.getPersistentList(), new CallComparator());
+	}
+
 	/**
 	 * Custom list load function. This is necessary for setting the highest
 	 * known ID on {@link Call}.
 	 */
 	@Override
-	protected List<Call> loadPersistentList() {
-		List<Call> ret = super.loadPersistentList();
+	protected void loadPersistentList() {
+		super.loadPersistentList();
 		long maxId = -1;
 
-		Iterator<Call> iter = ret.iterator();
+		Iterator<Call> iter = this.getPersistentList().iterator();
 		while (iter.hasNext())
 			maxId = Math.max(maxId, iter.next().getId());
 		Call.setHighestUsedId(maxId);
-
-		return ret;
 	}
 }

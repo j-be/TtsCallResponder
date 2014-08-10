@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
+import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -86,25 +87,38 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		dateTimeString += " - " + dateFormat.format(call.getCallTime());
 		callTime.setText(call.getCallCount() + " x, last: " + dateTimeString);
 
+		if (call.isCalledBack())
+			callBack.setImageResource(R.drawable.call_contact_called);
+		else
+			callBack.setImageResource(R.drawable.call_contact);
 		// Attach the phone number to the call-back button
-		callBack.setTag(call.getCaller());
+		callBack.setTag(call);
 		// Add listener to the call-back button
 		callBack.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				try {
+					if (!(v.getTag() instanceof Call))
+						return;
+					Call call = (Call) v.getTag();
 					// Open the dialer and pre-dial the number
 					Intent callIntent = new Intent(Intent.ACTION_DIAL);
 					callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					callIntent.setData(Uri.parse("tel:" + v.getTag()));
+					callIntent.setData(Uri.parse("tel:" + call.getCaller()));
+					call.setCalledBack(true);
 					v.getContext().startActivity(callIntent);
 				} catch (ActivityNotFoundException activityException) {
 					Log.e(CallListAdapter.TAG, "Dial failed", activityException);
 				}
-
 			}
 		});
 
 		return convertView;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		PersistentCallList.getSingleton().sort();
+		super.notifyDataSetChanged();
 	}
 }

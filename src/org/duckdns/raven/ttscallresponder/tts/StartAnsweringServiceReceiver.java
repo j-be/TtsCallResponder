@@ -15,16 +15,19 @@ public class StartAnsweringServiceReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-		Log.i(TAG, "Phone state changed: " + state);
+		Log.i(StartAnsweringServiceReceiver.TAG, "Phone state changed: " + state);
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-			Log.i(TAG, "Ringing - preparing service");
+			Log.i(StartAnsweringServiceReceiver.TAG, "Ringing - preparing service");
 			Intent startResponderService = new Intent(context, TtsAnsweringService.class);
 			context.startService(startResponderService);
-			Log.i(TAG, "Service started");
+			Log.i(StartAnsweringServiceReceiver.TAG, "Service started");
 
-			Log.i(TAG, "Adding to answered calls: " + intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER));
-			PersistentCallList callList = new PersistentCallList(context.getFilesDir());
+			Log.i(StartAnsweringServiceReceiver.TAG,
+					"Adding to answered calls: " + intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER));
+			// FIXME: Move me to application
+			PersistentCallList.initSingleton(context.getFilesDir());
+			PersistentCallList callList = PersistentCallList.getSingleton();
 			callList.add(new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 			callList.savePersistentList();
 		}

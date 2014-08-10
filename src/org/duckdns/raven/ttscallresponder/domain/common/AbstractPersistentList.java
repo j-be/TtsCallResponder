@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import android.content.Context;
 import android.util.Log;
@@ -34,7 +35,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	// The directory on the FileSystem where the list is saved
 	private final File directory;
 	// The serialized/serialized list
-	private List<ListItem> list = null;
+	private final List<ListItem> list = new Vector<ListItem>();
 	// Set containing the IDs of items, which have changed since last
 	// save/load operation
 	private final Set<Long> changed = new HashSet<Long>();
@@ -128,7 +129,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 * {@link AbstractPersistentList#loadPersistentList()}.
 	 */
 	public void discardChanges() {
-		this.list = this.loadPersistentList();
+		this.loadPersistentList();
 	}
 
 	/**
@@ -198,7 +199,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	public List<ListItem> getPersistentList() {
 		if (this.list == null) {
 			Log.i(AbstractPersistentList.TAG, "No list yet");
-			this.list = this.loadPersistentList();
+			this.loadPersistentList();
 		}
 
 		return this.list;
@@ -210,7 +211,7 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 * 
 	 * @return a {@link List} representing the list saved on the FileSystem
 	 */
-	protected List<ListItem> loadPersistentList() {
+	protected void loadPersistentList() {
 		Object readObject = null;
 		List<ListItem> ret = null;
 
@@ -248,9 +249,8 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 		// Clear the set of changed items
 		this.changed.clear();
 
-		this.list = ret;
-
-		return ret;
+		this.list.clear();
+		this.list.addAll(ret);
 	}
 
 	/**

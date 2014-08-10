@@ -1,5 +1,6 @@
 package org.duckdns.raven.ttscallresponder;
 
+import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.ui.fragments.AutoResponderCtrlFragment;
 import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
@@ -52,6 +53,9 @@ public class MainActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 
+		// FIXME: Move to application
+		PersistentCallList.initSingleton(this.getFilesDir());
+
 		// Set the layout
 		this.setContentView(R.layout.activity_main);
 	}
@@ -88,5 +92,11 @@ public class MainActivity extends Activity {
 				this.lastBackPressed.setToNow();
 			}
 		}
+	}
+
+	@Override
+	public void onPause() {
+		PersistentCallList.getSingleton().savePersistentList();
+		super.onPause();
 	}
 }
