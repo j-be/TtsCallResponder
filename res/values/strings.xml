@@ -14,8 +14,9 @@
     <string name="label_title">Title:</string>
     <string name="label_text">Text:</string>
     <string name="label_calendar">Calendar:</string>
-    <string name="label_current_response_template">Active template:</string>
+    <string name="label_current_response_template">Template:</string>
     <string name="label_current_event">Event:</string>
+    <string name="label_current_event_end">ends at </string>
 
     <string name="label_placeholder_text">&quot;TODO&quot;</string>
     <string name="label_placeholder_text_long">&quot;Short version of a long bla blad blas blag blah blaj blak blal blaq blaw blae&quot;</string>

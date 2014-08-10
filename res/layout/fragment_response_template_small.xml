@@ -28,11 +28,10 @@
         android:id="@+id/textView_lbl_currentEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_main_small_spacing"
-        android:layout_below="@id/textView_lbl_currentResponseTemplate"
-        android:layout_alignParentLeft="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/label_current_event"/>
+        android:layout_alignLeft="@+id/textView_lbl_currentResponseTemplate"
+        android:layout_below="@+id/textView_lbl_currentResponseTemplate"
+        android:text="@string/label_current_event"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView_currentEventTitle"
@@ -45,11 +44,34 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/textView_lbl_currentEventEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView_currentEventTitle"
+        android:layout_below="@+id/textView_lbl_currentEvent"
+        android:layout_marginBottom="@dimen/activity_main_small_spacing"
+        android:layout_marginRight="@dimen/activity_main_small_spacing"
+        android:text="@string/label_current_event_end"
+        android:textStyle="italic"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textView_currentEventEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView_lbl_currentEventEnd"
+        android:layout_toRightOf="@+id/textView_lbl_currentEventEnd"
+        android:singleLine="true"
+        android:text="@string/label_placeholder_text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/textView_headerResponseTemplates"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_lbl_currentEvent"
+        android:layout_below="@id/textView_lbl_currentEventEnd"
         style="@style/CustomStyleButton"
         android:text="@string/header_main_response_templates" />
 
