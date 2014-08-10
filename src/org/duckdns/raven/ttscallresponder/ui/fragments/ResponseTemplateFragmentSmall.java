@@ -56,6 +56,7 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 		String currentTitle = null;
 
 		// Retrieve data
+		this.responseTemplateList.loadPersistentList();
 		ResponseTemplate currentResponseTemplate = this.responseTemplateList.getCurrentResponseTemplate();
 
 		// Initialize UI elements

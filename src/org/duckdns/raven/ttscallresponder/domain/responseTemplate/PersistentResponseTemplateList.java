@@ -86,7 +86,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 	 * known ID on {@link ResponseTemplate}.
 	 */
 	@Override
-	protected List<ResponseTemplate> loadPersistentList() {
+	public List<ResponseTemplate> loadPersistentList() {
 		List<ResponseTemplate> ret = super.loadPersistentList();
 		long maxId = -1;
 

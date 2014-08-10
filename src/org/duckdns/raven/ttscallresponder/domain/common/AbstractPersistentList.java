@@ -248,6 +248,8 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 		// Clear the set of changed items
 		this.changed.clear();
 
+		this.list = ret;
+
 		return ret;
 	}
 
