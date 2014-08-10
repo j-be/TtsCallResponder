@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView_lbl_responseTemplateTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:text="@string/label_title" />
-
-    <EditText
-        android:id="@+id/editText_responseTemplateTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_title"
-        android:singleLine="true"
-        android:ems="10" >
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView_lbl_responseTemplateText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:text="@string/label_text"
-        android:layout_marginTop="@dimen/activity_main_small_spacing" />
-
-    <EditText
-        android:id="@+id/editText_responseTemplateText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top|left"
-        android:hint="@string/hint_text"
-        android:lines="5" />
-
-    <TextView
-        android:id="@+id/textView_lbl_responseTemplateCalendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:text="@string/label_calendar"
-        android:layout_marginTop="@dimen/activity_main_small_spacing" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
 
     <LinearLayout
-        android:id="@+id/button_chooseCalendar"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/activity_small_margin"
-        android:layout_marginRight="@dimen/activity_small_margin"
-        android:layout_marginBottom="@dimen/activity_small_margin" >
+        android:background="@drawable/home_screen_item"
+        style="@style/TopLeftRightBorder"
+        android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/label_chooseCalendar"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView_lbl_responseTemplateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:text="@string/label_title" />
+
+        <EditText
+            android:id="@+id/editText_responseTemplateTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_title"
+            android:singleLine="true"
+            android:ems="10" >
+        </EditText>
+
+        <TextView
+            android:id="@+id/textView_lbl_responseTemplateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:text="@string/label_text"
+            android:layout_marginTop="@dimen/activity_main_small_spacing" />
+
+        <EditText
+            android:id="@+id/editText_responseTemplateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:hint="@string/hint_text"
+            android:lines="5" />
+
+        <TextView
+            android:id="@+id/textView_lbl_responseTemplateCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:text="@string/label_calendar"
+            android:layout_marginTop="@dimen/activity_main_small_spacing" />
+
+        <LinearLayout
+            android:id="@+id/button_chooseCalendar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal" />
+            android:orientation="vertical"
+            android:layout_margin="@dimen/activity_main_small_spacing" >
 
-        <View
-            android:id="@+id/view_calendarColor"
-            android:layout_width="fill_parent"
-            android:layout_height="5dip"
-            android:layout_marginLeft="@dimen/activity_small_margin"
-            android:layout_marginRight="@dimen/activity_small_margin"
-            android:layout_marginBottom="@dimen/activity_small_margin"
-            android:background="#cccccc" />
+            <TextView
+                android:id="@+id/label_chooseCalendar"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
 
-   </LinearLayout>
-
-</LinearLayout>
+            <View
+                android:id="@+id/view_calendarColor"
+                android:layout_width="fill_parent"
+                android:layout_height="5dip"
+                android:layout_marginLeft="@dimen/activity_small_margin"
+                android:layout_marginRight="@dimen/activity_small_margin"
+                android:layout_marginBottom="@dimen/activity_small_margin"
+                android:background="#cccccc" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -2,6 +2,8 @@ package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
 import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
@@ -14,7 +16,7 @@ import android.util.Log;
  * @author Juri Berlanda
  * 
  */
-public class ResponseTemplate extends SerializeableListItem {
+public class ResponseTemplate extends SerializeableListItem implements Parcelable {
 	private final static String TAG = "ResponseTemplate";
 	private static final long serialVersionUID = 2242526560402451991L;
 
@@ -149,5 +151,36 @@ public class ResponseTemplate extends SerializeableListItem {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+	/* ----- Parcelable interface ----- */
+
+	public static Parcelable.Creator<ResponseTemplate> CREATOR = new Parcelable.Creator<ResponseTemplate>() {
+
+		@Override
+		public ResponseTemplate createFromParcel(Parcel source) {
+			ResponseTemplate ret = new ResponseTemplate(source.readString(), source.readString(), source.readLong());
+			ret.setId(source.readLong());
+			return ret;
+		}
+
+		@Override
+		public ResponseTemplate[] newArray(int size) {
+			return new ResponseTemplate[size];
+		}
+
+	};
+
+	@Override
+	public int describeContents() {
+		return (int) this.getId();
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.title);
+		dest.writeString(this.text);
+		dest.writeLong(this.calendarId);
+		dest.writeLong(this.getId());
 	}
 }
