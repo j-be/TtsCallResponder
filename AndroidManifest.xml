@@ -59,7 +59,8 @@
                 android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
         </activity>
 
-        <service android:name="org.duckdns.raven.ttscallresponder.tts.TtsAnsweringService" />
+        <service android:name="org.duckdns.raven.ttscallresponder.tts.TtsAnsweringService"
+            android:enabled="false" />
 
         <receiver android:name="org.duckdns.raven.ttscallresponder.tts.StartAnsweringServiceReceiver"
             android:enabled="false" >
