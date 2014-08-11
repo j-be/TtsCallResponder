@@ -20,7 +20,7 @@
     <ListView
         android:id="@+id/list_answered_calls"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_below="@id/button_callers_dummy" >
     </ListView>
 

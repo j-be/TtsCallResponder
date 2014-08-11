@@ -3,7 +3,7 @@ package org.duckdns.raven.ttscallresponder.ui.fragments;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList;
-import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ShortCallListAdapter;
+import org.duckdns.raven.ttscallresponder.ui.answeredCalls.CallListAdapter;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -20,7 +20,7 @@ import android.widget.TextView;
 public class AnsweredCallsFragment extends Fragment {
 	private static final String TAG = "AnsweredCallsFragment";
 
-	private ShortCallListAdapter callListAdapter = null;
+	private CallListAdapter callListAdapter = null;
 
 	TextView header = null;
 
@@ -34,7 +34,7 @@ public class AnsweredCallsFragment extends Fragment {
 		View ret = inflater.inflate(R.layout.fragment_answered_calls, container, false);
 
 		ListView callersList = ((ListView) ret.findViewById(R.id.list_answered_calls));
-		this.callListAdapter = new ShortCallListAdapter(this.getActivity(), PersistentCallList.getSingleton()
+		this.callListAdapter = new CallListAdapter(this.getActivity(), PersistentCallList.getSingleton()
 				.getPersistentList());
 		callersList.setAdapter(this.callListAdapter);
 		this.header = (TextView) ret.findViewById(R.id.textView_header_callers);
