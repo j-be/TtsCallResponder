@@ -4,6 +4,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="activity_main_big_spacing">20dip</dimen>
+    <dimen name="activity_main_small_spacing">7dip</dimen>
+    <dimen name="activity_small_margin">3dip</dimen>
     <dimen name="shadow_size">3dip</dimen>
 
 </resources>
