@@ -9,7 +9,6 @@
         android:id="@+id/switch_answerCalls"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_main_small_spacing"
         android:text="@string/switch_auto_respond"
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceMedium"
