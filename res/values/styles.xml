@@ -4,6 +4,7 @@
     <color name="buttonColor">#bbbbbb</color>
     <color name="buttonPressedColor">#aaaaaa</color>
     <color name="textLightColor">#555555</color>
+    <color name="shadowColor">#15000000</color>
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
