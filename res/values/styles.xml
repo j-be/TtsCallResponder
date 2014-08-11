@@ -28,6 +28,12 @@
         <item name="android:imageButtonStyle">@style/CustomStyleButton</item>
     </style>
 
+    <style name="UiItem">
+        <item name="android:paddingBottom">@dimen/shadow_size</item>
+        <item name="android:paddingRight">@dimen/shadow_size</item>
+        <item name="android:background">@drawable/home_screen_item</item>
+    </style>
+
     <style name="MyActionBar"
            parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/buttonColor</item>
