@@ -58,6 +58,12 @@ public class AutoResponderCtrlFragment extends Fragment {
 		return ret;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		this.swiAutoRespond.setChecked(this.isCallReceiverRunning());
+	}
+
 	/* ----- User interactions ----- */
 
 	/* Handle service start and stop */
