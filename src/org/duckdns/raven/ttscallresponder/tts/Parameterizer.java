@@ -32,7 +32,7 @@ public class Parameterizer {
 	 *            the {@link ResponseTemplate}
 	 * @param event
 	 *            the current event from the selected calendar
-	 * @return a {@link ResponseTemplate}, where the parameters were replaced bz
+	 * @return a {@link ResponseTemplate}, where the parameters were replaced by
 	 *         the values.
 	 */
 	public static ResponseTemplate parameterizeFromCalendar(ResponseTemplate responseTemplate,

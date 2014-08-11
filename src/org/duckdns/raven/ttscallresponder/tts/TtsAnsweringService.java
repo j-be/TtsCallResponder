@@ -36,7 +36,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.i(TAG, "Enter onStartCommand");
+		Log.i(TtsAnsweringService.TAG, "Enter onStartCommand");
 		super.onStartCommand(intent, flags, startId);
 
 		TtsSettingsManager settingsManager = new TtsSettingsManager(this);
@@ -44,7 +44,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 		CalendarAccess calendarAccess = new CalendarAccess(this);
 
 		if (responseTemplate == null) {
-			Log.e(TAG, "No response template is set. Not doing anything");
+			Log.e(TtsAnsweringService.TAG, "No response template is set. Not doing anything");
 			this.stopSelf();
 			return Service.START_NOT_STICKY;
 		}
@@ -55,7 +55,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 				calendarAccess.getCurrentEventFromCalendar(responseTemplate.getCalendarId()),
 				settingsManager.getTtsLanguage()).getText();
 
-		Log.i(TAG, "Service was started");
+		Log.i(TtsAnsweringService.TAG, "Service was started");
 		return Service.START_NOT_STICKY;
 	}
 
@@ -69,21 +69,21 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 	@Override
 	public void onInit(int status) {
 		if (status == TextToSpeech.SUCCESS) {
-			SettingsManager SettingsManager = new SettingsManager(this);
+			SettingsManager settingsManager = new SettingsManager(this);
 			int preSpeechWaitDelay = 0;
 
-			Log.i(TAG, "TTS started - parameterizing");
-			this.parameterizeTtsEngine(SettingsManager);
-			Log.i(TAG, "TTS parameterized");
+			Log.i(TtsAnsweringService.TAG, "TTS started - parameterizing");
+			this.parameterizeTtsEngine(settingsManager);
+			Log.i(TtsAnsweringService.TAG, "TTS parameterized");
 
-			preSpeechWaitDelay = SettingsManager.getTtsDelay();
+			preSpeechWaitDelay = settingsManager.getTtsDelay();
 			this.ttsEngine.setOnUtteranceCompletedListener(this);
 
-			Log.i(TAG, "Answering...");
+			Log.i(TtsAnsweringService.TAG, "Answering...");
 			this.answerPhoneHeadsethook(this);
-			Log.i(TAG, "Answered");
+			Log.i(TtsAnsweringService.TAG, "Answered");
 
-			Log.i(TAG, "Waiting for " + preSpeechWaitDelay + " milliseconds");
+			Log.i(TtsAnsweringService.TAG, "Waiting for " + preSpeechWaitDelay + " milliseconds");
 			try {
 				Thread.sleep(preSpeechWaitDelay);
 			} catch (InterruptedException e) {
@@ -95,7 +95,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 			HashMap<String, String> ttsParams = new HashMap<String, String>();
 			ttsParams.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, this.getPackageName());
 
-			Log.i(TAG, "Speaking: " + this.response);
+			Log.i(TtsAnsweringService.TAG, "Speaking: " + this.response);
 			this.ttsEngine.speak(this.response, TextToSpeech.QUEUE_FLUSH, ttsParams);
 		}
 	}
@@ -105,7 +105,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 	 */
 	@Override
 	public void onUtteranceCompleted(String utteranceId) {
-		Log.i(TAG, "Speech completed, stopping");
+		Log.i(TtsAnsweringService.TAG, "Speech completed, stopping");
 		this.ttsEngine.shutdown();
 		this.stopSelf();
 	}
@@ -136,9 +136,9 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 		buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
 		try {
 			context.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
-			Log.d(TAG, "ACTION_MEDIA_BUTTON broadcasted...");
+			Log.d(TtsAnsweringService.TAG, "ACTION_MEDIA_BUTTON broadcasted...");
 		} catch (Exception e) {
-			Log.d(TAG, "Catch block of ACTION_MEDIA_BUTTON broadcast !");
+			Log.d(TtsAnsweringService.TAG, "Catch block of ACTION_MEDIA_BUTTON broadcast !");
 		}
 
 		Intent headSetUnPluggedintent = new Intent(Intent.ACTION_HEADSET_PLUG);
@@ -149,12 +149,12 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 		headSetUnPluggedintent.putExtra("name", "Headset");
 		try {
 			context.sendOrderedBroadcast(headSetUnPluggedintent, null);
-			Log.d(TAG, "ACTION_HEADSET_PLUG broadcasted ...");
+			Log.d(TtsAnsweringService.TAG, "ACTION_HEADSET_PLUG broadcasted ...");
 		} catch (Exception e) {
-			Log.d(TAG, "Catch block of ACTION_HEADSET_PLUG broadcast");
-			Log.d(TAG, "Call Answered From Catch Block !!");
+			Log.d(TtsAnsweringService.TAG, "Catch block of ACTION_HEADSET_PLUG broadcast");
+			Log.d(TtsAnsweringService.TAG, "Call Answered From Catch Block !!");
 		}
-		Log.d(TAG, "Call Answered using headsethook");
+		Log.d(TtsAnsweringService.TAG, "Call Answered using headsethook");
 	}
 
 	/**
