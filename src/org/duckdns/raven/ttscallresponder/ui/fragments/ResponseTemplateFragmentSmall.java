@@ -36,7 +36,7 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
 
-		this.responseTemplateList = new PersistentResponseTemplateList(activity);
+		this.responseTemplateList = PersistentResponseTemplateList.getSingleton();
 	}
 
 	@Override
@@ -69,7 +69,6 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 		CalendarAccess calendarAccess = new CalendarAccess(this.getActivity());
 
 		// Retrieve data
-		this.responseTemplateList.loadPersistentList();
 		ResponseTemplate currentResponseTemplate = this.responseTemplateList.getCurrentResponseTemplate();
 
 		// Initialize UI elements

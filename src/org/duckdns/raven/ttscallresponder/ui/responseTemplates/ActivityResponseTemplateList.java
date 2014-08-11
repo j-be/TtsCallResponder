@@ -165,8 +165,7 @@ public class ActivityResponseTemplateList extends Activity {
 		// orientation change
 		this.persistentList = (PersistentResponseTemplateList) this.getLastNonConfigurationInstance();
 		if (this.persistentList == null) {
-			this.persistentList = new PersistentResponseTemplateList(this);
-			this.persistentList.loadPersistentList();
+			this.persistentList = PersistentResponseTemplateList.getSingleton();
 		}
 
 		// Apply the list to the ListView

@@ -1,6 +1,7 @@
 package org.duckdns.raven.ttscallresponder;
 
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.ui.fragments.AutoResponderCtrlFragment;
 import org.duckdns.raven.ttscallresponder.ui.settings.ActivitySettings;
 
@@ -53,8 +54,9 @@ public class MainActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 
-		// FIXME: Move to application
-		PersistentCallList.initSingleton(this.getFilesDir());
+		// Initialize singletons with application context
+		PersistentCallList.initSingleton(this.getApplicationContext().getFilesDir());
+		PersistentResponseTemplateList.initSingleton(this.getApplicationContext());
 
 		// Set the layout
 		this.setContentView(R.layout.activity_main);
@@ -98,5 +100,12 @@ public class MainActivity extends Activity {
 	public void onPause() {
 		PersistentCallList.getSingleton().savePersistentList();
 		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		PersistentResponseTemplateList.getSingleton().savePersistentList();
+		PersistentCallList.getSingleton().savePersistentList();
+		super.onDestroy();
 	}
 }

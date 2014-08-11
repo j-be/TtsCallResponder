@@ -40,7 +40,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 		super.onStartCommand(intent, flags, startId);
 
 		TtsSettingsManager settingsManager = new TtsSettingsManager(this);
-		ResponseTemplate responseTemplate = new PersistentResponseTemplateList(this).getCurrentResponseTemplate();
+		ResponseTemplate responseTemplate = PersistentResponseTemplateList.getSingleton().getCurrentResponseTemplate();
 		CalendarAccess calendarAccess = new CalendarAccess(this);
 
 		if (responseTemplate == null) {

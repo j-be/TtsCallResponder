@@ -22,7 +22,20 @@ import android.util.Log;
 public class PersistentResponseTemplateList extends AbstractPersistentList<ResponseTemplate> {
 	private static final String TAG = "PersistentResponseTemplateList";
 
+	private static PersistentResponseTemplateList singleton = null;
+
 	private final SettingsManager settingsManager;
+
+	public static synchronized void initSingleton(Context context) {
+		if (PersistentResponseTemplateList.singleton == null) {
+			PersistentResponseTemplateList.singleton = new PersistentResponseTemplateList(context);
+			PersistentResponseTemplateList.singleton.loadPersistentList();
+		}
+	}
+
+	public static PersistentResponseTemplateList getSingleton() {
+		return PersistentResponseTemplateList.singleton;
+	}
 
 	/**
 	 * Default constructor
@@ -30,7 +43,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 	 * @param parent
 	 *            the {@link Context} the list is running in
 	 */
-	public PersistentResponseTemplateList(Context parent) {
+	private PersistentResponseTemplateList(Context parent) {
 		super(parent.getFilesDir());
 		this.settingsManager = new SettingsManager(parent);
 	}
@@ -85,7 +98,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 	 * known ID on {@link ResponseTemplate}.
 	 */
 	@Override
-	public void loadPersistentList() {
+	protected void loadPersistentList() {
 		super.loadPersistentList();
 		long maxId = -1;
 

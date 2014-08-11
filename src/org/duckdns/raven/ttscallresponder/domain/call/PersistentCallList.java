@@ -19,7 +19,7 @@ import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
  */
 public class PersistentCallList extends AbstractPersistentList<Call> {
 
-	public static PersistentCallList singleton = null;
+	private static PersistentCallList singleton = null;
 
 	public static synchronized void initSingleton(File directory) {
 		if (PersistentCallList.singleton == null) {
