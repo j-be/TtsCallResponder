@@ -17,7 +17,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/list_answered_calls"
-        style="@style/CustomStyleButton"
         android:text="@string/header_callers" />
 
 </RelativeLayout>

@@ -19,7 +19,6 @@
             android:layout_gravity="bottom|center_horizontal"
             android:src="@android:drawable/ic_menu_delete"
             android:contentDescription="@string/button_delete"
-            style="@style/CustomStyleButton"
             android:onClick="onDeleteClick" />
 
         <ImageButton
@@ -30,7 +29,6 @@
             android:layout_gravity="bottom|left"
             android:src="@android:drawable/ic_menu_add"
             android:contentDescription="@string/button_add"
-            style="@style/CustomStyleButton"
             android:onClick="onAddClick" />
     </LinearLayout>
 

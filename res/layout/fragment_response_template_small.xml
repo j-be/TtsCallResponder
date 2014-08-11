@@ -72,7 +72,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView_lbl_currentEventEnd"
-        style="@style/CustomStyleButton"
         android:text="@string/header_main_response_templates" />
 
 </RelativeLayout>
