@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView_currentEventTitle"
         android:layout_below="@+id/textView_lbl_currentEvent"
-        android:layout_marginBottom="@dimen/activity_main_small_spacing"
+        android:paddingBottom="@dimen/activity_main_small_spacing"
         android:layout_marginRight="@dimen/activity_main_small_spacing"
         android:text="@string/label_current_event_end"
         android:textStyle="italic"
@@ -72,7 +72,6 @@
         android:singleLine="true"
         android:text="@string/label_placeholder_text"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:paddingBottom="@dimen/activity_main_small_spacing"
         android:textStyle="bold" />
 
 </RelativeLayout>
