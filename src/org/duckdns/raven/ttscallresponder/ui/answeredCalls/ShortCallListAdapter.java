@@ -22,26 +22,30 @@ public class ShortCallListAdapter extends CallListAdapter {
 
 	@Override
 	public int getCount() {
-		return Math.max(Math.min(ShortCallListAdapter.MAX_DISPLAYED_ENTRIES + 1, super.getCount()), 1);
+		int ret = Math.max(Math.min(ShortCallListAdapter.MAX_DISPLAYED_ENTRIES + 1, super.getCount()), 1);
+		Log.i(ShortCallListAdapter.TAG, "Returning count " + ret);
+		return ret;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Log.d(ShortCallListAdapter.TAG, "Asking for position: " + position + " of max. "
 				+ ShortCallListAdapter.MAX_DISPLAYED_ENTRIES);
-		if (super.getCount() == 0) {
+
+		// Add user notification to list (either "no calls" or "and X more..."
+		if (super.getCount() == 0 || position == ShortCallListAdapter.MAX_DISPLAYED_ENTRIES) {
+			if (convertView == null || convertView.findViewById(R.id.textView_lbl_light_text) == null)
+				convertView = this.parent.getLayoutInflater().inflate(R.layout.fragment_light_text, parent, false);
+
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.fragment_light_text, parent, false);
-			TextView noCaller = (TextView) convertView.findViewById(R.id.textView_lbl_light_text);
-			noCaller.setText("No call was answered yet");
+			TextView hint = (TextView) convertView.findViewById(R.id.textView_lbl_light_text);
+			if (super.getCount() == 0)
+				hint.setText("No call was answered yet");
+			else
+				hint.setText("and " + (super.getCount() - position) + " more...");
 			return convertView;
 		}
 
-		if ((position) == ShortCallListAdapter.MAX_DISPLAYED_ENTRIES) {
-			convertView = this.parent.getLayoutInflater().inflate(R.layout.fragment_light_text, parent, false);
-			TextView andMore = (TextView) convertView.findViewById(R.id.textView_lbl_light_text);
-			andMore.setText("and " + (super.getCount() - position) + " more...");
-			return convertView;
-		} else
-			return super.getView(position, convertView, parent);
+		return super.getView(position, convertView, parent);
 	}
 }
