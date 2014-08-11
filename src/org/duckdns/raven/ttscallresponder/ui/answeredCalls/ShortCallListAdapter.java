@@ -22,7 +22,7 @@ public class ShortCallListAdapter extends CallListAdapter {
 
 	@Override
 	public int getCount() {
-		int ret = Math.max(Math.min(ShortCallListAdapter.MAX_DISPLAYED_ENTRIES + 1, super.getCount()), 1);
+		int ret = Math.min(ShortCallListAdapter.MAX_DISPLAYED_ENTRIES + 1, super.getCount());
 		Log.i(ShortCallListAdapter.TAG, "Returning count " + ret);
 		return ret;
 	}

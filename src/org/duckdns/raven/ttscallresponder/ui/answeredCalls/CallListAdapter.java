@@ -53,6 +53,11 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		this.parent = parent;
 	}
 
+	@Override
+	public int getCount() {
+		return Math.max(super.getCount(), 1);
+	}
+
 	/**
 	 * Creates a nice little view to display a missed call. The view:
 	 * <ul>
@@ -64,6 +69,13 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		if (super.getCount() == 0) {
+			convertView = this.parent.getLayoutInflater().inflate(R.layout.fragment_light_text, parent, false);
+			TextView hint = (TextView) convertView.findViewById(R.id.textView_lbl_light_text);
+			hint.setText("No call was answered yet...");
+			return convertView;
+		}
+
 		if (convertView == null || convertView.findViewById(R.id.label_caller) == null) {
 			// Inflate the layout
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_call, parent, false);
