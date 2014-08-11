@@ -53,7 +53,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 
 		this.response = Parameterizer.parameterizeFromCalendar(responseTemplate,
 				calendarAccess.getCurrentEventFromCalendar(responseTemplate.getCalendarId()),
-				settingsManager.getTtsLanguage()).getText();
+				settingsManager.getTtsLanguage(true)).getText();
 
 		Log.i(TtsAnsweringService.TAG, "Service was started");
 		return Service.START_NOT_STICKY;

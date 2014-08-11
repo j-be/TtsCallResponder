@@ -114,6 +114,10 @@ public class TtsSettingsManager {
 	 * @return the currently set language as Locale
 	 */
 	public Locale getTtsLanguage() {
+		return this.getTtsLanguage(false);
+	}
+
+	public Locale getTtsLanguage(boolean onlyLanguage) {
 		Locale ret = null;
 
 		String localeString = this.settings.getString(TtsSettingsManager.key_settings_tts_engine_voice,
@@ -121,7 +125,7 @@ public class TtsSettingsManager {
 
 		// Compose the locale
 		String[] selectedVoiceString = localeString.split("-");
-		if (selectedVoiceString.length > 1)
+		if (!onlyLanguage && selectedVoiceString.length > 1)
 			ret = new Locale(selectedVoiceString[0], selectedVoiceString[1]);
 		else
 			ret = new Locale(selectedVoiceString[0]);
