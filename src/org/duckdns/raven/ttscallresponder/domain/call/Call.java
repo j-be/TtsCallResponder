@@ -58,6 +58,7 @@ public class Call extends SerializeableListItem {
 
 	public void addCallTime(Date callTime) {
 		this.callTime.insertElementAt(Long.valueOf(callTime.getTime()), 0);
+		this.calledBack = false;
 	}
 
 	public int getCallCount() {
