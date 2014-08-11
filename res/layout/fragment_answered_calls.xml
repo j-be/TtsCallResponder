@@ -4,17 +4,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:id="@+id/button_callers_dummy"
+        style="@style/UiItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/textView_header_callers"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_callers" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/list_answered_calls"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
-
-    <Button
-        android:id="@+id/textView_header_callers"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/list_answered_calls"
-        android:text="@string/header_callers" />
+        android:layout_below="@id/button_callers_dummy" >
+    </ListView>
 
 </RelativeLayout>
