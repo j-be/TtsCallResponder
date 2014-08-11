@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_margin="@dimen/activity_main_small_spacing"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/home_screen_item" >
+        style="@style/UiItem" >
         <ImageButton
             android:id="@+id/button_deleteResponseTemplate"
             android:layout_width="0dp"
@@ -37,8 +37,5 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         style="@style/TopLeftRightBorder"
-        android:layout_above="@id/list_bottom_bar"
-        android:padding="@dimen/activity_main_small_spacing"
-        android:background="@drawable/home_screen_item" />
-
+        android:layout_above="@id/list_bottom_bar" />
 </RelativeLayout>

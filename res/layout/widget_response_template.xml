@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:onClick="onResponseTemplateClick"
+    style="@style/UiItem"
     android:weightSum="2.5" >
 
     <CheckBox
