@@ -36,7 +36,6 @@ public class AutoResponderCtrlFragment extends Fragment {
 
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		super.onAttach(activity);
 
 		this.notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);

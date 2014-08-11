@@ -4,10 +4,6 @@ import java.util.Comparator;
 
 public class CallComparator implements Comparator<Call> {
 
-	public CallComparator() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public int compare(Call first, Call second) {
 		// Check if one has already been called back
