@@ -7,10 +7,11 @@
     android:id="@+id/textView_lbl_light_text"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_main_small_spacing"
+    android:paddingLeft="@dimen/activity_main_small_spacing"
     android:textColor="@color/textLightColor"
     android:text="TEXT"
     android:textStyle="italic"
-    android:textAppearance="?android:attr/textAppearanceSmall" >
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:clickable="false" >
 </TextView>
 </LinearLayout>
