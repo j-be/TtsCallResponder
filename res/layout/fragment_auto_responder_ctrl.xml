@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/home_screen_item"
-    android:padding="@dimen/activity_main_small_spacing"
+    style="@style/UiItem"
     android:orientation="vertical" >
 
     <Switch
