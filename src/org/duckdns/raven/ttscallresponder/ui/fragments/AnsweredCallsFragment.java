@@ -1,7 +1,6 @@
 package org.duckdns.raven.ttscallresponder.ui.fragments;
 
 import org.duckdns.raven.ttscallresponder.R;
-import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ActivityAnsweredCallList;
 import org.duckdns.raven.ttscallresponder.ui.answeredCalls.ShortCallListAdapter;
@@ -58,16 +57,8 @@ public class AnsweredCallsFragment extends Fragment {
 
 	@Override
 	public void onResume() {
+		Log.i(AnsweredCallsFragment.TAG, "Enter onResume");
 		super.onResume();
-
-		this.updateNumberOfAnsweredCalls();
-	}
-
-	/* ----- Update UI helpers ----- */
-
-	private void updateNumberOfAnsweredCalls() {
-		Log.d(AnsweredCallsFragment.TAG, "Updating list...");
-
 		this.callListAdapter.notifyDataSetChanged();
 	}
 }
