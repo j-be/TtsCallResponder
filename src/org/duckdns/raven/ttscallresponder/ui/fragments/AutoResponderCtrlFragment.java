@@ -2,6 +2,7 @@ package org.duckdns.raven.ttscallresponder.ui.fragments;
 
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.tts.StartAnsweringServiceReceiver;
+import org.duckdns.raven.ttscallresponder.tts.TtsAnsweringService;
 import org.duckdns.raven.ttscallresponder.ui.notification.CallReceiverNotificationFactory;
 
 import android.app.Activity;
@@ -9,6 +10,7 @@ import android.app.Fragment;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -83,6 +85,9 @@ public class AutoResponderCtrlFragment extends Fragment {
 						PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 		this.notificationManager.notify(AutoResponderCtrlFragment.NOTIFICATION_ID_AUTORESPONDER_RUNNING,
 				this.notificationFactory.buildCallReceiverNotification(true));
+
+		Intent startTtsAnswer = new Intent(this.getActivity(), TtsAnsweringService.class);
+		this.getActivity().startService(startTtsAnswer);
 	}
 
 	public boolean isCallReceiverRunning() {
