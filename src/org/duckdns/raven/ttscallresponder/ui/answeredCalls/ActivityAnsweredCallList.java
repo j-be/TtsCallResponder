@@ -2,11 +2,13 @@ package org.duckdns.raven.ttscallresponder.ui.answeredCalls;
 
 import java.util.List;
 
+import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.ui.activities.ActivityModifyableList;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,5 +62,19 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 				ActivityAnsweredCallList.this.listChanged();
 			}
 		};
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// Set enter animation
+		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// Set exit animation
+		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 	}
 }
