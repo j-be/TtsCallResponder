@@ -1,70 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:onClick="onResponseTemplateClick"
-    style="@style/UiItem"
-    android:padding="@dimen/activity_main_small_spacing"
-    android:weightSum="2.5" >
+    android:orientation="vertical"
+    style="@style/UiItem" >
 
-    <CheckBox
-        android:id="@+id/checkBox_responseTemplateSelected"
+    <TextView
+        android:id="@+id/label_responseTemplateTitle"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="left" />
-
-    <LinearLayout
-        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_weight="2.5"
-        android:orientation="vertical" >
+        style="@style/TopLeftRightBorder"
+        android:singleLine="true"
+        android:text="@string/label_placeholder_text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/label_responseTemplateTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:singleLine="true"
-            android:text="@string/label_placeholder_text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+    <ImageButton
+        android:id="@+id/button_setResponseTemplateAsCurrent"
+        android:layout_width="48dip"
+        android:layout_height="48dip"
+        android:layout_gravity="right|center_vertical"
+        android:src="@drawable/ic_checkmark_holo_light"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/label_responseTemplateTitle"
+        android:contentDescription="@string/button_set_template_as_current" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2" >
+    <TextView
+        android:id="@+id/label_responseTemplateText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/label_responseTemplateTitle"
+        android:layout_toLeftOf="@id/button_setResponseTemplateAsCurrent"
+        android:layout_below="@+id/label_responseTemplateTitle"
+        android:lines="3"
+        android:text="@string/label_placeholder_text_long"
+        android:textColor="@color/textLightColor" />
 
-            <TextView
-                android:id="@+id/label_responseTemplateText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:lines="3"
-                android:text="@string/label_placeholder_text_long"
-                android:textColor="@color/textLightColor"
-                android:layout_weight="1.9"/>
-
-            <View
-                android:id="@+id/ViewColorPickerHelper"
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:gravity="right"
-                android:layout_marginBottom="4dip"
-                android:layout_marginTop="4dip"
-                android:background="?android:attr/dividerVertical" />
-
-            <ImageButton
-                android:id="@+id/button_setResponseTemplateAsCurrent"
-                android:layout_width="48dip"
-                android:layout_height="48dip"
-                android:layout_gravity="right|center_vertical"
-                android:src="@drawable/ic_checkmark_holo_light"
-                android:scaleType="fitXY"
-                android:background="@android:color/transparent"
-                android:layout_weight="0.1"
-                android:contentDescription="@string/button_set_template_as_current" />
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
