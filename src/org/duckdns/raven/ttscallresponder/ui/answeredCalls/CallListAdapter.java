@@ -81,13 +81,17 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_call, parent, false);
 		}
 
+		// Get the call for the current position
+		Call call = this.getItem(position);
+
+		// Add the call as Tag
+		convertView.setTag(call);
+
 		// Gain access to the UI elements
 		TextView caller = (TextView) convertView.findViewById(R.id.label_caller);
 		TextView callTime = (TextView) convertView.findViewById(R.id.label_callTime);
 		ImageButton callBack = (ImageButton) convertView.findViewById(R.id.button_callBack);
 
-		// Get the call for the current position
-		Call call = this.getItem(position);
 		// Resolve phone number to name
 		String text = this.phoneBookAccess.getNameForPhoneNumber(call.getCaller());
 		Log.d(CallListAdapter.TAG, "is caller null? " + (caller == null) + " - position: " + position);
