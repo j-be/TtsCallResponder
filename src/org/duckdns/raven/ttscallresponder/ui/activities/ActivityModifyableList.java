@@ -156,7 +156,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Serializ
 		super.onCreate(savedInstanceState);
 
 		// Inflate the layout
-		this.setContentView(R.layout.activity_response_template_list);
+		this.setContentView(R.layout.activity_modifyable_list);
 		// Set enter animation
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
