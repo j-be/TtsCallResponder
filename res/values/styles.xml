@@ -5,6 +5,7 @@
     <color name="buttonPressedColor">#aaaaaa</color>
     <color name="textLightColor">#555555</color>
     <color name="shadowColor">#15000000</color>
+    <color name="selectionColor">#56B8D8</color>
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -30,6 +31,10 @@
 
     <style name="UiItem">
         <item name="android:background">@drawable/home_screen_item</item>
+    </style>
+
+    <style name="UiItemSelected" parent="UiItem">
+        <item name="android:background">@drawable/home_screen_item_selected</item>
     </style>
 
     <style name="MyActionBar"
