@@ -49,12 +49,11 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 	protected OnClickListener getOnAddClickListener() {
 		// REMOVE-ME
 		return new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				PersistentCallList.getSingleton().getPersistentList()
 						.add(new Call("Mr. " + PersistentCallList.getSingleton().getPersistentList().size()));
+				ActivityAnsweredCallList.this.listChanged();
 			}
 		};
 	}

@@ -57,7 +57,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Serializ
 		return this.list;
 	}
 
-	private void listChanged() {
+	protected void listChanged() {
 		this.adapter.notifyDataSetChanged();
 		this.hasListChanged = true;
 	}
