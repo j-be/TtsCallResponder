@@ -29,8 +29,6 @@
     </style>
 
     <style name="UiItem">
-        <item name="android:paddingBottom">@dimen/shadow_size</item>
-        <item name="android:paddingRight">@dimen/shadow_size</item>
         <item name="android:background">@drawable/home_screen_item</item>
     </style>
 

@@ -19,6 +19,7 @@
 	          android:width="1dp"
 	          android:color="@color/buttonColor" />
 	    <solid android:color="@android:color/white"/>
+	    <padding android:bottom="@dimen/shadow_size" android:right="@dimen/shadow_size"/>
 	</shape>
 </item>
 
