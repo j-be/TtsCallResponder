@@ -25,8 +25,12 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 
 	@Override
 	protected List<Call> loadList() {
-		PersistentCallList.getSingleton().loadPersistentList();
 		return PersistentCallList.getSingleton().getPersistentList();
+	}
+
+	@Override
+	protected void discardChanges() {
+		PersistentCallList.getSingleton().loadPersistentList();
 	}
 
 	@Override

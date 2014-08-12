@@ -6,8 +6,6 @@ import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
 
 import android.content.Context;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.util.Log;
 
 /**
  * Persistent list for {@link ResponseTemplate} objects.
@@ -86,25 +84,4 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		ResponseTemplate.setHighestUsedId(maxId);
 	}
 
-	/**
-	 * Custom list save function. This is necessary to notify all
-	 * {@link OnSharedPreferenceChangeListener} if the active
-	 * {@link ResponseTemplate} changed.
-	 */
-	@Override
-	public void savePersistentList() {
-		boolean issueUpdate = false;
-
-		if (this.hasChanged(this.settingsManager.getCurrentResponseTemplateId())) {
-			issueUpdate = true;
-			Log.i(PersistentResponseTemplateList.TAG, "Current response template changed");
-		}
-
-		super.savePersistentList();
-
-		if (issueUpdate)
-			// Set dummy preference to cause a call on
-			// OnSharedPreferenceChangeListeners
-			this.settingsManager.setCurrentResponseTemplateUpdated();
-	}
 }

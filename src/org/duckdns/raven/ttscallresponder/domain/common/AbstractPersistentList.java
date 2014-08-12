@@ -7,10 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
 import android.content.Context;
@@ -36,9 +34,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	private final File directory;
 	// The serialized/serialized list
 	private final List<ListItem> list = new Vector<ListItem>();
-	// Set containing the IDs of items, which have changed since last
-	// save/load operation
-	private final Set<Long> changed = new HashSet<Long>();
 
 	/**
 	 * Default constructor
@@ -59,21 +54,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 * @return a unique String, which is a valid filename
 	 */
 	abstract protected String getFileName();
-
-	/**
-	 * Marks an item of the list as changed. A change can be:
-	 * <ul>
-	 * <li>new item was added</li>
-	 * <li>existing item was edited</li>
-	 * <li>existing item was removed</li>
-	 * </ul>
-	 * 
-	 * @param id
-	 *            the ID of the item which changed.
-	 */
-	protected void entryChanged(long id) {
-		this.changed.add(Long.valueOf(id));
-	}
 
 	/**
 	 * Adds a new item to the list or updates an existing one if an item with
@@ -107,20 +87,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 				}
 			}
 		}
-
-		if (listChanged)
-			this.entryChanged(listItem.getId());
-	}
-
-	/**
-	 * Clears the list. The list saved on the FileSystem is NOT affected.
-	 * 
-	 * @see AbstractPersistentList#savePersistentList()
-	 */
-	public void clear() {
-		for (ListItem item : this.list)
-			this.entryChanged(item.getId());
-		this.list.clear();
 	}
 
 	/**
@@ -130,64 +96,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 	 */
 	public void discardChanges() {
 		this.loadPersistentList();
-	}
-
-	/**
-	 * Getter for a listitem with a certain ID.
-	 * 
-	 * @param id
-	 *            the ID of the item which shall be fetched from the list
-	 * @return the item, if existing; null else
-	 */
-	public ListItem getItemWithId(long id) {
-		ListItem item = null;
-
-		// Load the list if not already done
-		if (this.list == null)
-			this.getPersistentList();
-
-		Iterator<ListItem> iter = this.list.iterator();
-		while (iter.hasNext()) {
-			item = iter.next();
-			Log.d(AbstractPersistentList.TAG, "Checking item with id: " + item.getId());
-			if (item.getId() == id)
-				return item;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Tells if the list has changed since the last call of either
-	 * {@link AbstractPersistentList#savePersistentList()} or
-	 * {@link AbstractPersistentList#loadPersistentList()}.
-	 * 
-	 * @return true, if the list has changed since then; false else
-	 */
-	public boolean hasChanged() {
-		return !this.changed.isEmpty();
-	}
-
-	/**
-	 * Tells if the item with given ID has changed since the last call of either
-	 * {@link AbstractPersistentList#savePersistentList()} or
-	 * {@link AbstractPersistentList#loadPersistentList()}.
-	 * 
-	 * @param id
-	 *            the ID of the item
-	 * @return true, if the item has changed,; false else
-	 */
-	public boolean hasChanged(long id) {
-		return this.changed.contains(Long.valueOf(id));
-	}
-
-	/**
-	 * Getter for the number of items in the list.
-	 * 
-	 * @return the number of items in the list
-	 */
-	public int getCount() {
-		return this.list.size();
 	}
 
 	/**
@@ -246,9 +154,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 			}
 		}
 
-		// Clear the set of changed items
-		this.changed.clear();
-
 		this.list.clear();
 		this.list.addAll(ret);
 	}
@@ -269,8 +174,6 @@ public abstract class AbstractPersistentList<ListItem extends SerializeableListI
 			oos = new ObjectOutputStream(new FileOutputStream(persistentListFile));
 			oos.writeObject(this.list);
 
-			// Only clear changed state if save was successful
-			this.changed.clear();
 		} catch (Exception e) {
 			Log.e(AbstractPersistentList.TAG, "failed to save list", e);
 		} finally {

@@ -51,6 +51,8 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Serializ
 
 	protected abstract List<ModifyableListItem> loadList();
 
+	protected abstract void discardChanges();
+
 	protected abstract boolean saveList(List<ModifyableListItem> list);
 
 	protected List<ModifyableListItem> getList() {
@@ -130,7 +132,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Serializ
 						break;
 					default:
 						// Discard changes on "Discard" or any other choice
-						ActivityModifyableList.this.loadList();
+						ActivityModifyableList.this.discardChanges();
 						ActivityModifyableList.this.adapter.notifyDataSetChanged();
 						ActivityModifyableList.this.hasListChanged = false;
 					}
