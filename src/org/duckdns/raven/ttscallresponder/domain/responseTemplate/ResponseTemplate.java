@@ -183,4 +183,10 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 		dest.writeLong(this.calendarId);
 		dest.writeLong(this.getId());
 	}
+
+	@Override
+	public String toString() {
+		return "ResponseTemplate, ID: " + this.getId();
+	}
+
 }

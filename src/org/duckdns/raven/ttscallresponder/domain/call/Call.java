@@ -104,4 +104,9 @@ public class Call extends SerializeableListItem {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "Call from: " + this.getCaller();
+	}
+
 }
