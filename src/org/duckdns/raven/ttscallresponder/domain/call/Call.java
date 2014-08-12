@@ -92,4 +92,16 @@ public class Call extends SerializeableListItem {
 		Call.highestUsedId = highestUsedId;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		Call that = null;
+
+		if (o instanceof Call) {
+			that = (Call) o;
+			return this.getCaller().equals(that.getCaller());
+		}
+
+		return false;
+	}
+
 }

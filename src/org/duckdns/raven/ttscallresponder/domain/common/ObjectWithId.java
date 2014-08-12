@@ -47,4 +47,16 @@ public abstract class ObjectWithId implements Serializable {
 	protected void setId(long id) {
 		this.id = id;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		ObjectWithId that = null;
+
+		if (o instanceof ObjectWithId) {
+			that = (ObjectWithId) o;
+			if ((that.getId() == this.getId()))
+				return true;
+		}
+		return false;
+	}
 }
