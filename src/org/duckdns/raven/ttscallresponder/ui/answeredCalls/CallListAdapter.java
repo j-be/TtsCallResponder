@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import org.duckdns.raven.ttscallresponder.MainActivity;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
@@ -87,6 +88,15 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		// Add the call as Tag
 		convertView.setTag(call);
 
+		// Set background accordingly
+		if (this.parent instanceof MainActivity) {
+			convertView.setBackgroundResource(R.drawable.home_screen_item);
+			convertView.setClickable(false);
+		} else if (((ActivityAnsweredCallList) this.parent).getSelectedItems().contains(call))
+			convertView.setBackgroundResource(R.drawable.home_screen_item_selected);
+		else
+			convertView.setBackgroundResource(R.drawable.home_screen_item);
+
 		// Gain access to the UI elements
 		TextView caller = (TextView) convertView.findViewById(R.id.label_caller);
 		TextView callTime = (TextView) convertView.findViewById(R.id.label_callTime);
@@ -109,6 +119,9 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 			callBack.setImageResource(R.drawable.call_contact);
 		// Attach the phone number to the call-back button
 		callBack.setTag(call);
+		// Workaround for ListView's OnItemClickListener and
+		// OnItemLongClickListener
+		callBack.setFocusable(false);
 		// Add listener to the call-back button
 		callBack.setOnClickListener(new OnClickListener() {
 			@Override

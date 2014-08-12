@@ -74,7 +74,7 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 	 * known ID on {@link Call}.
 	 */
 	@Override
-	protected void loadPersistentList() {
+	public void loadPersistentList() {
 		super.loadPersistentList();
 		long maxId = -1;
 
@@ -83,4 +83,5 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 			maxId = Math.max(maxId, iter.next().getId());
 		Call.setHighestUsedId(maxId);
 	}
+
 }
