@@ -7,12 +7,10 @@ import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -68,7 +66,6 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		// Gain access to UI elements
 		TextView title = (TextView) convertView.findViewById(R.id.label_responseTemplateTitle);
 		TextView text = (TextView) convertView.findViewById(R.id.label_responseTemplateText);
-		CheckBox selected = (CheckBox) convertView.findViewById(R.id.checkBox_responseTemplateSelected);
 		ImageButton setAsCurrent = (ImageButton) convertView.findViewById(R.id.button_setResponseTemplateAsCurrent);
 
 		// Get ResponseTemplate for current position
@@ -77,23 +74,12 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		// Initialize UI elements
 		title.setText(responseTemplate.getTitle());
 		text.setText(responseTemplate.getText());
-		selected.setChecked(responseTemplate.isSelected());
 
-		// Attach ResponseTemplate to "Mark for deletion" checkbox
-		selected.setTag(responseTemplate);
-		// Add listener to "Mark for deletion" checkbox
-		selected.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				CheckBox checkBox = (CheckBox) v;
-				// Fetch the response template
-				ResponseTemplate responseTemplate = (ResponseTemplate) checkBox.getTag();
-				// Mark it for deletion
-				responseTemplate.setSelected(checkBox.isChecked());
-				Log.i(ResponseTemplateListAdapter.TAG, "Item " + responseTemplate.getTitle()
-						+ " selected for removal: " + responseTemplate.isSelected());
-			}
-		});
+		// Set background accordingly
+		if (((ActivityResponseTemplateList) this.parent).getSelectedItems().contains(responseTemplate))
+			convertView.setBackgroundResource(R.drawable.home_screen_item_selected);
+		else
+			convertView.setBackgroundResource(R.drawable.home_screen_item);
 
 		// Draw the "Set as active" button depending on whether the current
 		// ResponseTemplate is the active one
@@ -102,6 +88,8 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		else
 			setAsCurrent.setImageResource(R.drawable.btn_check_off_disable);
 
+		// WORKAROUND: OnItemClickListener in Listview won't work without it
+		setAsCurrent.setFocusable(false);
 		// Add the ResponseTemplate's ID to the "Set as active" button
 		setAsCurrent.setTag(Long.valueOf(responseTemplate.getId()));
 		// Add listener to the "Set as active" button

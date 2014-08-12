@@ -5,6 +5,7 @@ import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendar;
+import org.duckdns.raven.ttscallresponder.ui.activities.ActivityModifyableList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +26,6 @@ import android.widget.Toast;
 public class ActivityResponseTemplateEditor extends Activity {
 
 	private static final String TAG = "ActivityPreparedResponseEditor";
-	public static String INTENT_KEY_RESPONSE_TEMPLATE_AVAILABLE = "preparedResponseAvailable";
 
 	org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess calendarAccess = null;
 	UserCalendarListAdapter userCalendarListAdapter = null;
@@ -59,8 +59,7 @@ public class ActivityResponseTemplateEditor extends Activity {
 			}
 		});
 
-		this.responseTemplate = this.getIntent().getParcelableExtra(
-				ActivityResponseTemplateList.INTENT_KEY_EDIT_RESPONSE_TEMPLATE);
+		this.responseTemplate = this.getIntent().getParcelableExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM);
 
 		if (this.responseTemplate == null)
 			this.responseTemplate = new ResponseTemplate("", "", -1);
@@ -127,8 +126,7 @@ public class ActivityResponseTemplateEditor extends Activity {
 			Intent goBackToPreparedResponseList = new Intent(this, ActivityResponseTemplateList.class);
 			goBackToPreparedResponseList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
-			goBackToPreparedResponseList.putExtra(
-					ActivityResponseTemplateEditor.INTENT_KEY_RESPONSE_TEMPLATE_AVAILABLE,
+			goBackToPreparedResponseList.putExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM,
 					(Parcelable) this.responseTemplate);
 			this.startActivity(goBackToPreparedResponseList);
 			return true;

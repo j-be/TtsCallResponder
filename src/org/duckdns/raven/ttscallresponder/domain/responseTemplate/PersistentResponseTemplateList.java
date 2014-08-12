@@ -66,28 +66,6 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		return null;
 	}
 
-	/**
-	 * Remove all {@link ResponseTemplate}s from list which have
-	 * {@link ResponseTemplate#isSelected()} set to true.
-	 * 
-	 * This is just temporary - to save the changes you have to further invoke
-	 * {@link PersistentResponseTemplateList#savePersistentList()}.
-	 */
-	public void removeSelected() {
-		Iterator<ResponseTemplate> iter = this.getPersistentList().iterator();
-		ResponseTemplate item = null;
-
-		while (iter.hasNext()) {
-			item = iter.next();
-			if (item.isSelected()) {
-				Log.i(PersistentResponseTemplateList.TAG, "Deleting item " + item.getId());
-				// Store changes
-				this.entryChanged(item.getId());
-				iter.remove();
-			}
-		}
-	}
-
 	@Override
 	protected String getFileName() {
 		return "responseTemplateList";
@@ -98,7 +76,7 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 	 * known ID on {@link ResponseTemplate}.
 	 */
 	@Override
-	protected void loadPersistentList() {
+	public void loadPersistentList() {
 		super.loadPersistentList();
 		long maxId = -1;
 

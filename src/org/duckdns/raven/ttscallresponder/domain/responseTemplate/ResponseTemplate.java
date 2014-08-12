@@ -25,9 +25,6 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 	private String title = "";
 	private String text = "";
 	private long calendarId = -1;
-	// FIXME: Below has to be removed! Is a feature of the list, not the
-	// template
-	private transient boolean selected = false;
 
 	/**
 	 * Extended constructor. Does NOT assign a valid ID.
@@ -143,14 +140,6 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 
 	public void setCalendarId(long calendarId) {
 		this.calendarId = calendarId;
-	}
-
-	public boolean isSelected() {
-		return this.selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
 	}
 
 	/* ----- Parcelable interface ----- */
