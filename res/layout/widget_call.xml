@@ -14,14 +14,10 @@
 
         <ImageButton
             android:id="@+id/button_callBack"
-            android:layout_width="48dip"
-            android:layout_height="48dip"
             android:scaleType="fitCenter"
             android:layout_gravity="right|center_vertical"
             android:layout_alignParentRight="true"
-            android:src="@drawable/call_contact"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="0dip"
+            style="@style/CallBackButton"
             android:contentDescription="Call back" />
 
         <TextView

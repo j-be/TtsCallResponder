@@ -96,16 +96,4 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	@Override
-	public void onPause() {
-		PersistentCallList.getSingleton().savePersistentList();
-		super.onPause();
-	}
-
-	@Override
-	protected void onDestroy() {
-		PersistentResponseTemplateList.getSingleton().savePersistentList();
-		PersistentCallList.getSingleton().savePersistentList();
-		super.onDestroy();
-	}
 }
