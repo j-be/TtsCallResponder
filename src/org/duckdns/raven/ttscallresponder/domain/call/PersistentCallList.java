@@ -28,8 +28,27 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 		}
 	}
 
-	public static PersistentCallList getSingleton() {
-		return PersistentCallList.singleton;
+	public static List<Call> getList() {
+		return PersistentCallList.singleton.getPersistentList();
+	}
+
+	public static void saveToFile() {
+		PersistentCallList.singleton.savePersistentList();
+	}
+
+	public static void loadFromFile() {
+		PersistentCallList.singleton.loadPersistentList();
+	}
+
+	public static void callReceived(Call call) {
+		if (call != null) {
+			PersistentCallList.singleton.add(call);
+			PersistentCallList.saveToFile();
+		}
+	}
+
+	public static void sort() {
+		Collections.sort(PersistentCallList.singleton.getPersistentList(), new CallComparator());
 	}
 
 	/**
@@ -63,10 +82,6 @@ public class PersistentCallList extends AbstractPersistentList<Call> {
 		// Add new entry, if caller not yet present
 		if (!found)
 			super.add(listItem);
-	}
-
-	public void sort() {
-		Collections.sort(this.getPersistentList(), new CallComparator());
 	}
 
 	/**

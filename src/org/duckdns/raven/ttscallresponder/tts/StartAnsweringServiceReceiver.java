@@ -26,9 +26,7 @@ public class StartAnsweringServiceReceiver extends BroadcastReceiver {
 			Log.i(StartAnsweringServiceReceiver.TAG,
 					"Adding to answered calls: " + intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER));
 
-			PersistentCallList callList = PersistentCallList.getSingleton();
-			callList.add(new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
-			callList.savePersistentList();
+			PersistentCallList.callReceived(new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 		}
 	}
 }

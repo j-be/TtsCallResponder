@@ -27,17 +27,17 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 
 	@Override
 	protected List<Call> loadList() {
-		return PersistentCallList.getSingleton().getPersistentList();
+		return PersistentCallList.getList();
 	}
 
 	@Override
 	protected void discardChanges() {
-		PersistentCallList.getSingleton().loadPersistentList();
+		PersistentCallList.loadFromFile();
 	}
 
 	@Override
 	protected boolean saveList(List<Call> list) {
-		PersistentCallList.getSingleton().savePersistentList();
+		PersistentCallList.saveToFile();
 		return true;
 	}
 
@@ -57,8 +57,7 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 		return new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				PersistentCallList.getSingleton().getPersistentList()
-						.add(new Call("Mr. " + PersistentCallList.getSingleton().getPersistentList().size()));
+				PersistentCallList.getList().add(new Call("Mr. " + PersistentCallList.getList().size()));
 				ActivityAnsweredCallList.this.listChanged();
 			}
 		};

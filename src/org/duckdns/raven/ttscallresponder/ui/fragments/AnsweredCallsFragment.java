@@ -34,8 +34,7 @@ public class AnsweredCallsFragment extends Fragment {
 		View ret = inflater.inflate(R.layout.fragment_answered_calls, container, false);
 
 		ListView callersList = ((ListView) ret.findViewById(R.id.list_answered_calls));
-		this.callListAdapter = new CallListAdapter(this.getActivity(), PersistentCallList.getSingleton()
-				.getPersistentList());
+		this.callListAdapter = new CallListAdapter(this.getActivity(), PersistentCallList.getList());
 		callersList.setAdapter(this.callListAdapter);
 		this.header = (TextView) ret.findViewById(R.id.textView_header_callers);
 		this.header.setOnClickListener(new OnClickListener() {

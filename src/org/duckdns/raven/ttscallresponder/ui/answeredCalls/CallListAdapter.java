@@ -152,7 +152,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 
 	@Override
 	public void notifyDataSetChanged() {
-		PersistentCallList.getSingleton().sort();
+		PersistentCallList.sort();
 		super.notifyDataSetChanged();
 	}
 }

@@ -1,6 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
@@ -31,8 +32,20 @@ public class PersistentResponseTemplateList extends AbstractPersistentList<Respo
 		}
 	}
 
-	public static PersistentResponseTemplateList getSingleton() {
-		return PersistentResponseTemplateList.singleton;
+	public static List<ResponseTemplate> getList() {
+		return PersistentResponseTemplateList.singleton.getPersistentList();
+	}
+
+	public static ResponseTemplate getCurrentTemplate() {
+		return PersistentResponseTemplateList.singleton.getCurrentResponseTemplate();
+	}
+
+	public static void saveToFile() {
+		PersistentResponseTemplateList.singleton.savePersistentList();
+	}
+
+	public static void loadFromFile() {
+		PersistentResponseTemplateList.singleton.loadPersistentList();
 	}
 
 	/**

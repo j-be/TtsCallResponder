@@ -37,17 +37,17 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 
 	@Override
 	protected List<ResponseTemplate> loadList() {
-		return PersistentResponseTemplateList.getSingleton().getPersistentList();
+		return PersistentResponseTemplateList.getList();
 	}
 
 	@Override
 	protected void discardChanges() {
-		PersistentResponseTemplateList.getSingleton().loadPersistentList();
+		PersistentResponseTemplateList.loadFromFile();
 	}
 
 	@Override
 	protected boolean saveList(List<ResponseTemplate> list) {
-		PersistentResponseTemplateList.getSingleton().savePersistentList();
+		PersistentResponseTemplateList.saveToFile();
 		return true;
 	}
 

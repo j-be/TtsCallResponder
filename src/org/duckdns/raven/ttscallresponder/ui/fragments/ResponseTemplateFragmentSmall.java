@@ -24,8 +24,6 @@ import android.widget.TextView;
 public class ResponseTemplateFragmentSmall extends Fragment {
 	private static final String TAG = "ResponseTemplateFragmentSmall";
 
-	private PersistentResponseTemplateList responseTemplateList = null;
-
 	// UI elements
 	private TextView currentResponseTemplateTitle = null;
 	private TextView currentEventTitle = null;
@@ -34,7 +32,6 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		this.responseTemplateList = PersistentResponseTemplateList.getSingleton();
 	}
 
 	@Override
@@ -67,7 +64,7 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 		CalendarAccess calendarAccess = new CalendarAccess(this.getActivity());
 
 		// Retrieve data
-		ResponseTemplate currentResponseTemplate = this.responseTemplateList.getCurrentResponseTemplate();
+		ResponseTemplate currentResponseTemplate = PersistentResponseTemplateList.getCurrentTemplate();
 
 		// Initialize UI elements
 		if (currentResponseTemplate == null)
