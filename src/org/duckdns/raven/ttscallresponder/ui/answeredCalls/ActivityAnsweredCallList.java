@@ -36,17 +36,6 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 		return PersistentCallList.getList();
 	}
 
-	@Override
-	protected void discardChanges() {
-		// TODO implement
-	}
-
-	@Override
-	protected boolean saveList(List<Call> list) {
-		// TODO implement
-		return true;
-	}
-
 	/**
 	 * Returns a {@link CallListAdapter} for the given list
 	 * 

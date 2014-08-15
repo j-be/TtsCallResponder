@@ -65,21 +65,6 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	protected abstract List<ModifyableListItem> loadList();
 
 	/**
-	 * Save the list
-	 * 
-	 * @param list
-	 *            the list to save
-	 * @return true if the list was successfully saved, or false else
-	 */
-	protected abstract boolean saveList(List<ModifyableListItem> list);
-
-	/**
-	 * Discard all changes applied since last call of
-	 * {@link ActivityModifyableList#saveList(List)}
-	 */
-	protected abstract void discardChanges();
-
-	/**
 	 * Create the adapter for list to ListView
 	 * 
 	 * @param list

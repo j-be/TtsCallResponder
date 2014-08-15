@@ -39,17 +39,6 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 		return PersistentResponseTemplateList.getList();
 	}
 
-	@Override
-	protected void discardChanges() {
-		// TODO should be implementable in ActivityModifyableList
-	}
-
-	@Override
-	protected boolean saveList(List<ResponseTemplate> list) {
-		// TODO should be implementable in ActivityModifyableList
-		return true;
-	}
-
 	/**
 	 * Returns a {@link ResponseTemplateListAdapter} for the given list
 	 * 
