@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.roscopeco.ormdroid.ORMDroidApplication;
+
 /**
  * This Activity provides the entry point of the app. It is used to start and
  * stop the responder service, access the template management, access the list
@@ -53,6 +55,8 @@ public class MainActivity extends Activity {
 		Log.i(MainActivity.TAG, "Enter on Create");
 
 		super.onCreate(savedInstanceState);
+
+		ORMDroidApplication.initialize(this.getApplicationContext());
 
 		// Initialize singletons with application context
 		PersistentCallList.initSingleton(this.getApplicationContext().getFilesDir());

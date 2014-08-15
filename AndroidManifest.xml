@@ -17,6 +17,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <meta-data
+            android:name="ormdroid.database.name"
+            android:value="ttsCallResponder_db" />
+
+        <meta-data
+            android:name="ormdroid.database.visibility"
+            android:value="PRIVATE" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
