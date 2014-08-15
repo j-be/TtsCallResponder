@@ -198,7 +198,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	/* Add the "Save" and "Back to parent" buttons to ActionBar */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		this.getMenuInflater().inflate(R.menu.activity_response_template_list, menu);
+		this.getMenuInflater().inflate(R.menu.activity_modifyable_list, menu);
 		return true;
 	}
 

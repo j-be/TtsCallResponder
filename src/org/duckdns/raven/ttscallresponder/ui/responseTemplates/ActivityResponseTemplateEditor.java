@@ -96,7 +96,7 @@ public class ActivityResponseTemplateEditor extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		this.getMenuInflater().inflate(R.menu.activity_response_template_list, menu);
+		this.getMenuInflater().inflate(R.menu.activity_modifyable_list, menu);
 		return true;
 	}
 
