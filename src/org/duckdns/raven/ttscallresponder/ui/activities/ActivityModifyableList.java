@@ -237,6 +237,8 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 			ModifyableListItem extra = (ModifyableListItem) intent
 					.getParcelableExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM);
 
+			Log.i(TAG, "Received extra: " + extra);
+
 			extra.save();
 		}
 	}

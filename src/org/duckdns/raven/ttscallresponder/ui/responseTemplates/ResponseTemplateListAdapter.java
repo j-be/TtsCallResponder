@@ -46,6 +46,17 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 	}
 
 	/**
+	 * Holder for the {@link ResponseTemplate} and its UI elements. Meant to be
+	 * used as tag for the view.
+	 */
+	static class ResponseTemplateHolder {
+		ResponseTemplate responseTemplate;
+		TextView title;
+		TextView text;
+		ImageButton setAsCurrent;
+	}
+
+	/**
 	 * Creates a view for displaying a {@link ResponseTemplate}. The view:
 	 * <ul>
 	 * <li>shows the first 3 rows of the template's text</li>
@@ -56,55 +67,56 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		ResponseTemplateHolder holder = null;
+
 		if (convertView == null) {
 			// Inflate the layout
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_response_template, parent, false);
-		}
+			holder = new ResponseTemplateHolder();
 
-		// Gain access to UI elements
-		TextView title = (TextView) convertView.findViewById(R.id.label_responseTemplateTitle);
-		TextView text = (TextView) convertView.findViewById(R.id.label_responseTemplateText);
-		ImageButton setAsCurrent = (ImageButton) convertView.findViewById(R.id.button_setResponseTemplateAsCurrent);
+			// Gain access to UI elements
+			holder.title = (TextView) convertView.findViewById(R.id.label_responseTemplateTitle);
+			holder.text = (TextView) convertView.findViewById(R.id.label_responseTemplateText);
+			holder.setAsCurrent = (ImageButton) convertView.findViewById(R.id.button_setResponseTemplateAsCurrent);
+
+			convertView.setTag(holder);
+		} else
+			holder = (ResponseTemplateHolder) convertView.getTag();
 
 		// Get ResponseTemplate for current position
-		ResponseTemplate responseTemplate = this.getItem(position);
+		holder.responseTemplate = this.getItem(position);
 
 		// Initialize UI elements
-		title.setText(responseTemplate.getTitle());
-		text.setText(responseTemplate.getText());
+		holder.title.setText(holder.responseTemplate.getTitle());
+		holder.text.setText(holder.responseTemplate.getText());
 
 		// Set background accordingly
-		if (((ActivityResponseTemplateList) this.parent).getSelectedItems().contains(responseTemplate))
+		if (((ActivityResponseTemplateList) this.parent).getSelectedItems().contains(holder.responseTemplate))
 			convertView.setBackgroundResource(R.drawable.home_screen_item_selected);
 		else
 			convertView.setBackgroundResource(R.drawable.home_screen_item);
 
 		// Draw the "Set as active" button depending on whether the current
 		// ResponseTemplate is the active one
-		if (responseTemplate._id == this.settingsManager.getCurrentResponseTemplateId())
-			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
+		if (holder.responseTemplate._id == this.settingsManager.getCurrentResponseTemplateId())
+			holder.setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
 		else
-			setAsCurrent.setImageResource(R.drawable.btn_check_off_disable);
+			holder.setAsCurrent.setImageResource(R.drawable.btn_check_off_disable);
 
 		// WORKAROUND: OnItemClickListener in Listview won't work without it
-		setAsCurrent.setFocusable(false);
+		holder.setAsCurrent.setFocusable(false);
 		// Add the ResponseTemplate's ID to the "Set as active" button
-		setAsCurrent.setTag(Integer.valueOf(responseTemplate._id));
+		holder.setAsCurrent.setTag(Integer.valueOf(holder.responseTemplate._id));
 		// Add listener to the "Set as active" button
-		setAsCurrent.setOnClickListener(new OnClickListener() {
+		holder.setAsCurrent.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// Set current ResponseTemplate as the active one
-				SettingsManager settingsManager = new SettingsManager(v.getContext());
-				settingsManager.setCurrentResponseTemplateId((Integer) v.getTag());
+				ResponseTemplateListAdapter.this.settingsManager.setCurrentResponseTemplateId((Integer) v.getTag());
 				// Issue re-rendering due to active ResponseTemplate change
 				ResponseTemplateListAdapter.this.notifyDataSetChanged();
 			}
 		});
-
-		// Attach the ResponseTemplate to the ResponseTemplate view - needed by
-		// the adapter
-		convertView.setTag(responseTemplate);
 
 		return convertView;
 	}

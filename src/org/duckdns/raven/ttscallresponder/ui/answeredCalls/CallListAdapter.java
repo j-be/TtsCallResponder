@@ -56,6 +56,17 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		this.parent = parent;
 	}
 
+	/**
+	 * Holder for the {@link Call} and its UI elements. Meant to be used as tag
+	 * for the view.
+	 */
+	static class CallHolder {
+		Call call;
+		TextView caller;
+		TextView callTime;
+		ImageButton callBack;
+	}
+
 	@Override
 	public int getCount() {
 		return Math.max(super.getCount(), 1);
@@ -72,6 +83,8 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		CallHolder holder = null;
+
 		if (super.getCount() == 0) {
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.fragment_light_text, parent, false);
 			TextView hint = (TextView) convertView.findViewById(R.id.textView_lbl_light_text);
@@ -79,56 +92,57 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 			return convertView;
 		}
 
-		if (convertView == null || convertView.findViewById(R.id.label_caller) == null) {
+		if (convertView == null || convertView.getTag() == null) {
 			// Inflate the layout
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_call, parent, false);
-		}
+			holder = new CallHolder();
+
+			// Gain access to the UI elements
+			holder.caller = (TextView) convertView.findViewById(R.id.label_caller);
+			holder.callTime = (TextView) convertView.findViewById(R.id.label_callTime);
+			holder.callBack = (ImageButton) convertView.findViewById(R.id.button_callBack);
+
+			convertView.setTag(holder);
+		} else
+			holder = (CallHolder) convertView.getTag();
 
 		// Get the call for the current position
-		Call call = this.getItem(position);
-
-		// Add the call as Tag
-		convertView.setTag(call);
+		holder.call = this.getItem(position);
 
 		// Set background accordingly
 		if (this.parent instanceof MainActivity) {
 			convertView.setBackgroundResource(R.drawable.home_screen_item);
 			convertView.setClickable(false);
-		} else if (((ActivityAnsweredCallList) this.parent).getSelectedItems().contains(call))
+		} else if (((ActivityAnsweredCallList) this.parent).getSelectedItems().contains(holder.call))
 			convertView.setBackgroundResource(R.drawable.home_screen_item_selected);
 		else
 			convertView.setBackgroundResource(R.drawable.home_screen_item);
 
-		// Gain access to the UI elements
-		TextView caller = (TextView) convertView.findViewById(R.id.label_caller);
-		TextView callTime = (TextView) convertView.findViewById(R.id.label_callTime);
-		ImageButton callBack = (ImageButton) convertView.findViewById(R.id.button_callBack);
-
 		// Resolve phone number to name
-		String text = this.phoneBookAccess.getNameForPhoneNumber(call.getNumber());
-		Log.d(CallListAdapter.TAG, "is caller null? " + (caller == null) + " - position: " + position);
-		caller.setText(text);
+		String text = this.phoneBookAccess.getNameForPhoneNumber(holder.call.getNumber());
+		Log.d(CallListAdapter.TAG, "is caller null? " + (holder.caller == null) + " - position: " + position);
+		holder.caller.setText(text);
 		// Set DateTime String
 		DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
-		String dateTimeString = dateFormat.format(call.getCallTime());
+		String dateTimeString = dateFormat.format(holder.call.getCallTime());
 		dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-		dateTimeString += " - " + dateFormat.format(call.getCallTime());
-		callTime.setText(call.getCallCount() + " x, last: " + dateTimeString);
+		dateTimeString += " - " + dateFormat.format(holder.call.getCallTime());
+		holder.callTime.setText(holder.call.getCallCount() + " x, last: " + dateTimeString);
 
-		RepliedCall repliedCall = PersistentCallList.getRepliedCallByNumber(call.getNumber());
+		RepliedCall repliedCall = PersistentCallList.getRepliedCallByNumber(holder.call.getNumber());
 		if (repliedCall != null) {
-			Log.i(TAG, "Call: " + call.getCallTime() + " - Replied: " + repliedCall.getCallTime());
-			callBack.setImageResource(R.drawable.call_contact_called);
+			Log.i(TAG, "Call: " + holder.call.getCallTime() + " - Replied: " + repliedCall.getCallTime());
+			holder.callBack.setImageResource(R.drawable.call_contact_called);
 		} else
-			callBack.setImageResource(R.drawable.call_contact);
+			holder.callBack.setImageResource(R.drawable.call_contact);
 
 		// Attach the phone number to the call-back button
-		callBack.setTag(call);
+		holder.callBack.setTag(holder.call);
 		// Workaround for ListView's OnItemClickListener and
 		// OnItemLongClickListener
-		callBack.setFocusable(false);
+		holder.callBack.setFocusable(false);
 		// Add listener to the call-back button
-		callBack.setOnClickListener(new OnClickListener() {
+		holder.callBack.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (!(v.getTag() instanceof Call))

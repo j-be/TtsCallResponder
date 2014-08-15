@@ -6,8 +6,10 @@ import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.ui.activities.ActivityModifyableList;
+import org.duckdns.raven.ttscallresponder.ui.answeredCalls.CallListAdapter.CallHolder;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,10 +93,18 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 	protected Call getAttachedItemFromView(View view) {
 		Object tag = view.getTag();
 
-		if (tag instanceof Call)
-			return (Call) tag;
+		if (tag instanceof CallHolder)
+			return ((CallHolder) tag).call;
 
 		return null;
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		// Register adapter for callback on change
+		PersistentCallList.registerAdapter(this.adapter);
 	}
 
 	@Override
@@ -103,9 +113,6 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 
 		// Set enter animation
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
-
-		// Register adapter for callback on change
-		PersistentCallList.registerAdapter(this.adapter);
 	}
 
 	@Override
@@ -114,6 +121,11 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 
 		// Set exit animation
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 
 		// Unregister adapter for callback on change
 		PersistentCallList.unregisterAdapter(this.adapter);

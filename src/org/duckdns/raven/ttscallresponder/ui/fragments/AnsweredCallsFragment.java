@@ -34,6 +34,9 @@ public class AnsweredCallsFragment extends Fragment {
 			}
 		});
 
+		// Start listening for updates
+		PersistentCallList.registerAdapter(this.callListAdapter);
+
 		return ret;
 	}
 
@@ -45,15 +48,8 @@ public class AnsweredCallsFragment extends Fragment {
 	}
 
 	@Override
-	public void onResume() {
-		// Start listening for updates
-		PersistentCallList.registerAdapter(this.callListAdapter);
-		super.onResume();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
+	public void onDestroy() {
+		super.onDestroy();
 		// Stop listening for updates
 		PersistentCallList.unregisterAdapter(this.callListAdapter);
 	}

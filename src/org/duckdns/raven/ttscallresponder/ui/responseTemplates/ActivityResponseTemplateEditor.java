@@ -3,6 +3,7 @@ package org.duckdns.raven.ttscallresponder.ui.responseTemplates;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
+import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendar;
 import org.duckdns.raven.ttscallresponder.ui.activities.ActivityModifyableList;
@@ -10,7 +11,6 @@ import org.duckdns.raven.ttscallresponder.ui.activities.ActivityModifyableList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -58,7 +58,9 @@ public class ActivityResponseTemplateEditor extends Activity {
 			}
 		});
 
-		this.responseTemplate = this.getIntent().getParcelableExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM);
+		int responseTemplateId = this.getIntent().getIntExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, -1);
+		this.responseTemplate = PersistentResponseTemplateList.getTemplateWithId(responseTemplateId);
+		Log.i(TAG, "Received extra: " + this.responseTemplate);
 
 		if (this.responseTemplate == null)
 			this.responseTemplate = new ResponseTemplate();
@@ -122,11 +124,10 @@ public class ActivityResponseTemplateEditor extends Activity {
 			this.responseTemplate.setTitle(this.title.getText().toString());
 			this.responseTemplate.setText(this.text.getText().toString());
 
-			Intent goBackToPreparedResponseList = new Intent(this, ActivityResponseTemplateList.class);
-			goBackToPreparedResponseList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
-					| Intent.FLAG_ACTIVITY_NEW_TASK);
-			goBackToPreparedResponseList.putExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM, this.responseTemplate);
-			this.startActivity(goBackToPreparedResponseList);
+			this.responseTemplate.save();
+
+			this.onBackPressed();
+
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

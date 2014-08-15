@@ -6,10 +6,11 @@ import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.ui.activities.ActivityModifyableList;
+import org.duckdns.raven.ttscallresponder.ui.responseTemplates.ResponseTemplateListAdapter.ResponseTemplateHolder;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcelable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
@@ -80,8 +81,8 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 		// Invoke the dialog
 		if (responseTemplate != null) {
 			Intent openPreparedResponseEditor = new Intent(this, ActivityResponseTemplateEditor.class);
-			openPreparedResponseEditor
-					.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, (Parcelable) view.getTag());
+			openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM,
+					this.getAttachedItemFromView(view)._id);
 			this.startActivity(openPreparedResponseEditor);
 		}
 	}
@@ -120,15 +121,15 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 	protected ResponseTemplate getAttachedItemFromView(View view) {
 		Object tag = view.getTag();
 
-		if (tag instanceof ResponseTemplate)
-			return (ResponseTemplate) tag;
+		if (tag instanceof ResponseTemplateHolder)
+			return ((ResponseTemplateHolder) tag).responseTemplate;
 
 		return null;
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
 		// Register adapter for callback on change
 		PersistentResponseTemplateList.registerAdapter(this.adapter);
@@ -140,6 +141,12 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 
 		// Set exit animation when leaving
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
+
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 
 		// Unregister adapter for callback on change
 		PersistentResponseTemplateList.unregisterAdapter(this.adapter);
