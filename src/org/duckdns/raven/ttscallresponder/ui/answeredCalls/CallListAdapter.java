@@ -8,6 +8,7 @@ import org.duckdns.raven.ttscallresponder.MainActivity;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
+import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.domain.call.RepliedCall;
 
 import android.app.Activity;
@@ -114,12 +115,11 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		dateTimeString += " - " + dateFormat.format(call.getCallTime());
 		callTime.setText(call.getCallCount() + " x, last: " + dateTimeString);
 
-		RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getNumber());
-		if (repliedCall != null)
-			Log.i(TAG, "Call: " + call.getCallTime() + " - Replied: " + repliedCall.getReplyTime());
-		if (repliedCall != null && call.getCallTime().before(repliedCall.getReplyTime()))
+		RepliedCall repliedCall = PersistentCallList.getRepliedCallByNumber(call.getNumber());
+		if (repliedCall != null) {
+			Log.i(TAG, "Call: " + call.getCallTime() + " - Replied: " + repliedCall.getCallTime());
 			callBack.setImageResource(R.drawable.call_contact_called);
-		else
+		} else
 			callBack.setImageResource(R.drawable.call_contact);
 
 		// Attach the phone number to the call-back button
@@ -137,11 +137,11 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 				Call call = (Call) v.getTag();
 				CallListAdapter.this.preDial(call.getNumber(), v.getContext());
 
-				RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getNumber());
+				RepliedCall repliedCall = PersistentCallList.getRepliedCallByNumber(call.getNumber());
 				if (repliedCall == null)
 					repliedCall = new RepliedCall(call.getNumber());
 				else
-					repliedCall.setReplyTimeToNow();
+					repliedCall.setCallTimeToNow();
 				repliedCall.save();
 			}
 		});

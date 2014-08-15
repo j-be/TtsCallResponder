@@ -18,10 +18,6 @@ import com.roscopeco.ormdroid.Table;
  */
 @Table(name = "ResponseTemplate")
 public class ResponseTemplate extends Entity implements Parcelable {
-	private final static String TAG = "ResponseTemplate";
-
-	private static long highestUsedId = -1;
-
 	public int _id;
 	public String title = "";
 	public String text = "";
@@ -67,25 +63,19 @@ public class ResponseTemplate extends Entity implements Parcelable {
 		return true;
 	}
 
-	/**
-	 * Getter for the highest used {@link ResponseTemplate} ID.
-	 * 
-	 * @return the highest used {@link ResponseTemplate} ID
-	 */
-	public static final long getHighestUsedId() {
-		return ResponseTemplate.highestUsedId;
+	/* ----- Overrides from ORMDroid.Entity ----- */
+
+	@Override
+	public int save() {
+		int ret = super.save();
+		PersistentResponseTemplateList.listChanged();
+		return ret;
 	}
 
-	/**
-	 * Setter for the highest used {@link ResponseTemplate} ID. Use with
-	 * caution!
-	 * 
-	 * @param highestUsedId
-	 *            the highest ID of any {@link ResponseTemplate} currently
-	 *            existing.
-	 */
-	public static final void setHighestUsedId(long highestUsedId) {
-		ResponseTemplate.highestUsedId = highestUsedId;
+	@Override
+	public void delete() {
+		super.delete();
+		PersistentResponseTemplateList.listChanged();
 	}
 
 	/* ----- Getters / Setters ----- */
@@ -112,19 +102,6 @@ public class ResponseTemplate extends Entity implements Parcelable {
 
 	public void setCalendarId(long calendarId) {
 		this.calendarId = calendarId;
-	}
-
-	@Override
-	public int save() {
-		int ret = super.save();
-		PersistentResponseTemplateList.listChanged();
-		return ret;
-	}
-
-	@Override
-	public void delete() {
-		super.delete();
-		PersistentResponseTemplateList.listChanged();
 	}
 
 	/* ----- Parcelable interface ----- */

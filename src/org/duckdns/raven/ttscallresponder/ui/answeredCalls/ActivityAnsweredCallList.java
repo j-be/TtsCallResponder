@@ -24,6 +24,11 @@ import android.widget.ArrayAdapter;
 public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 	private static final String TAG = "ActivityAnsweredCallList";
 
+	/**
+	 * Loads the list of {@link Call} from the database
+	 * 
+	 * @return the list of {@link Call}
+	 */
 	@Override
 	protected List<Call> loadList() {
 		return PersistentCallList.getList();
@@ -31,32 +36,65 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 
 	@Override
 	protected void discardChanges() {
+		// TODO implement
 	}
 
 	@Override
 	protected boolean saveList(List<Call> list) {
+		// TODO implement
 		return true;
 	}
 
+	/**
+	 * Returns a {@link CallListAdapter} for the given list
+	 * 
+	 * @param list
+	 *            the list for the adapter
+	 * @return a {@link CallListAdapter} linked to given list
+	 */
 	@Override
 	protected ArrayAdapter<Call> createListAdapter(List<Call> list) {
 		return new CallListAdapter(this, list);
 	}
 
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	protected void onItemClick(View view) {
 		Log.d(ActivityAnsweredCallList.TAG, "Empty");
 	}
 
+	/**
+	 * Returns <code>null</code>
+	 */
 	@Override
 	protected OnClickListener getOnAddClickListener() {
-		// REMOVE-ME
+		// REMOVE Debug
 		return new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				PersistentCallList.callReceived(new Call("Mr. " + PersistentCallList.getList().size()));
 			}
 		};
+	}
+
+	/**
+	 * Tries to fetch a {@link Call} from the tag of the given view
+	 * 
+	 * @param view
+	 *            the view with the {@link Call} in its tag
+	 * @return the {@link Call} attached to the view if there is one, or
+	 *         <code>null</code> else
+	 */
+	@Override
+	protected Call getAttachedItemFromView(View view) {
+		Object tag = view.getTag();
+
+		if (tag instanceof Call)
+			return (Call) tag;
+
+		return null;
 	}
 
 	@Override

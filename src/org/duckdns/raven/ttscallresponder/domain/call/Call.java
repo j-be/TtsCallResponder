@@ -1,8 +1,6 @@
 package org.duckdns.raven.ttscallresponder.domain.call;
 
-import java.util.Date;
-
-import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Table;
 
 /**
  * POJO representing an incoming call.
@@ -14,18 +12,17 @@ import com.roscopeco.ormdroid.Entity;
  * @author Juri Berlanda
  * 
  */
-public class Call extends Entity {
-	// Needed for ORMDroid
-	public int id;
-	// The telephone number of the call
-	public String number = null;
-	// The date of the call
-	public Date callTime = null;
+@Table(name = "Call")
+public class Call extends RepliedCall {
 	// Number of times this number called
-	public int callCount = 1;
+	public int callCount = 0;
 
+	/**
+	 * DO NOT USE! Needed for ORMDroid<br>
+	 * see {@link RepliedCall(String)}
+	 */
 	public Call() {
-		this(null);
+		super(null);
 	}
 
 	/**
@@ -35,60 +32,35 @@ public class Call extends Entity {
 	 *            the number which is calling
 	 */
 	public Call(String callingNumber) {
-		this.number = callingNumber;
-		this.callTime = new Date();
+		super(callingNumber);
+	}
+
+	/* ----- Overrides from Object ----- */
+
+	/**
+	 * 2 calls are equal, if there phone number is equal.
+	 * 
+	 * @param o
+	 *            the call to compare with
+	 * @return true, if o is a {@link Call} and carries the same phone number as
+	 *         this; false, else
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Call)
+			return super.equals(o);
+		return false;
 	}
 
 	/* ----- Getters / Setters ----- */
 
-	public String getNumber() {
-		return this.number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	public Date getCallTime() {
-		return this.callTime;
-	}
-
-	public void setCallTime(Date callTime) {
-		this.callTime = new Date();
+	@Override
+	public void setCallTimeToNow() {
+		super.setCallTimeToNow();
 		this.callCount++;
 	}
 
 	public int getCallCount() {
 		return this.callCount;
-	}
-
-	@Override
-	public int save() {
-		int ret = super.save();
-		PersistentCallList.listChanged();
-		return ret;
-	}
-
-	@Override
-	public void delete() {
-		super.delete();
-		PersistentCallList.listChanged();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		Call that = null;
-
-		if (o instanceof Call) {
-			that = (Call) o;
-			return this.getNumber().equals(that.getNumber());
-		}
-
-		return false;
-	}
-
-	@Override
-	public String toString() {
-		return "Call from: " + this.getNumber();
 	}
 }

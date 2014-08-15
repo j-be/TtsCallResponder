@@ -56,24 +56,69 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	}
 
 	/* ----- Abstract functions. Needed for instantiating list and adapter ----- */
+
+	/**
+	 * Load the list of items to display.
+	 * 
+	 * @return the list of items to display
+	 */
 	protected abstract List<ModifyableListItem> loadList();
 
+	/**
+	 * Save the list
+	 * 
+	 * @param list
+	 *            the list to save
+	 * @return true if the list was successfully saved, or false else
+	 */
 	protected abstract boolean saveList(List<ModifyableListItem> list);
 
+	/**
+	 * Discard all changes applied since last call of
+	 * {@link ActivityModifyableList#saveList(List)}
+	 */
 	protected abstract void discardChanges();
 
+	/**
+	 * Create the adapter for list to ListView
+	 * 
+	 * @param list
+	 *            the list of items
+	 * @return the adapter
+	 */
 	protected abstract BaseAdapter createListAdapter(List<ModifyableListItem> list);
 
+	/**
+	 * Create a listener for clicks on the add button.
+	 * 
+	 * @return the {@link OnClickListener} for the add button if there is on or
+	 *         null else
+	 */
 	protected abstract OnClickListener getOnAddClickListener();
 
+	/**
+	 * Event-handler for clicking on a item in the ListView
+	 * 
+	 * @param view
+	 *            the item which has been clicked
+	 */
 	protected abstract void onItemClick(View view);
+
+	/**
+	 * Fetch the {@link Entity} attached to a view
+	 * 
+	 * @param view
+	 *            the view with the attached {@link Entity}
+	 * @return the {@link Entity} attached to the view
+	 */
+	protected abstract ModifyableListItem getAttachedItemFromView(View view);
 
 	/* ----- Item selection ----- */
 
 	protected void onItemLongClick(View view) {
 		ModifyableListItem item = null;
 		// Fetch the tag
-		item = (ModifyableListItem) view.getTag();
+		item = this.getAttachedItemFromView(view);
 
 		if (ActivityModifyableList.this.selectedItems.contains(item)) {
 			Log.i(ActivityModifyableList.TAG, "Unmarked: " + item);
@@ -97,9 +142,6 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		Log.i(ActivityModifyableList.TAG, "Delete called on: " + this.selectedItems);
 		for (ModifyableListItem item : this.selectedItems)
 			item.delete();
-
-		if (!this.selectedItems.isEmpty())
-			this.adapter.notifyDataSetChanged();
 
 		this.selectedItems.clear();
 	}
@@ -185,7 +227,6 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	protected void onResume() {
 		super.onResume();
 		this.selectedItems.clear();
-		this.adapter.notifyDataSetChanged();
 	}
 
 	@Override

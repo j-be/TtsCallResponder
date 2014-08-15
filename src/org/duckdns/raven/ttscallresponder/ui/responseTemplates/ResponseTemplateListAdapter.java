@@ -25,8 +25,6 @@ import android.widget.TextView;
  * 
  */
 public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> {
-	private static final String TAG = "ResponseTemplateListAdapter";
-
 	// Provides access to settings
 	private final SettingsManager settingsManager;
 	// Provides context
@@ -99,6 +97,7 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 				// Set current ResponseTemplate as the active one
 				SettingsManager settingsManager = new SettingsManager(v.getContext());
 				settingsManager.setCurrentResponseTemplateId((Integer) v.getTag());
+				// Issue re-rendering due to active ResponseTemplate change
 				ResponseTemplateListAdapter.this.notifyDataSetChanged();
 			}
 		});

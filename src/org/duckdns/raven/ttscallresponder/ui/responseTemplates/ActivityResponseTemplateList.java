@@ -28,23 +28,11 @@ import android.widget.ListView;
  */
 public class ActivityResponseTemplateList extends ActivityModifyableList<ResponseTemplate> {
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		PersistentResponseTemplateList.registerAdapter(this.adapter);
-	}
-
-	/* Set exit animation when leaving */
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
-
-		PersistentResponseTemplateList.unregisterAdapter(this.adapter);
-	}
-
+	/**
+	 * Loads the list of {@link ResponseTemplate} from the database
+	 * 
+	 * @return the list of {@link ResponseTemplate}
+	 */
 	@Override
 	protected List<ResponseTemplate> loadList() {
 		return PersistentResponseTemplateList.getList();
@@ -52,15 +40,22 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 
 	@Override
 	protected void discardChanges() {
-		// TODO
+		// TODO should be implementable in ActivityModifyableList
 	}
 
 	@Override
 	protected boolean saveList(List<ResponseTemplate> list) {
-		// TODO
+		// TODO should be implementable in ActivityModifyableList
 		return true;
 	}
 
+	/**
+	 * Returns a {@link ResponseTemplateListAdapter} for the given list
+	 * 
+	 * @param list
+	 *            the list for the adapter
+	 * @return a {@link ResponseTemplateListAdapter} linked to given list
+	 */
 	@Override
 	protected BaseAdapter createListAdapter(List<ResponseTemplate> list) {
 		return new ResponseTemplateListAdapter(this, list);
@@ -78,9 +73,9 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 	@Override
 	protected void onItemClick(View view) {
 		ResponseTemplate responseTemplate = null;
+
 		// Fetch the tag
-		if (view.getTag() instanceof ResponseTemplate)
-			responseTemplate = (ResponseTemplate) view.getTag();
+		responseTemplate = this.getAttachedItemFromView(view);
 
 		// Invoke the dialog
 		if (responseTemplate != null) {
@@ -91,13 +86,12 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 		}
 	}
 
-	/* Open editor dialog with empty ResponseTemplate */
-	private void onAddClick(View view) {
-		Intent openPreparedResponseEditor = new Intent(this, ActivityResponseTemplateEditor.class);
-		openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, new ResponseTemplate());
-		this.startActivity(openPreparedResponseEditor);
-	}
-
+	/**
+	 * Open editor dialog with empty ResponseTemplate
+	 * 
+	 * @param view
+	 *            the view which has been clicked
+	 */
 	@Override
 	protected OnClickListener getOnAddClickListener() {
 		return new OnClickListener() {
@@ -108,4 +102,46 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 		};
 	}
 
+	private void onAddClick(View view) {
+		Intent openPreparedResponseEditor = new Intent(this, ActivityResponseTemplateEditor.class);
+		openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, new ResponseTemplate());
+		this.startActivity(openPreparedResponseEditor);
+	}
+
+	/**
+	 * Tries to fetch a {@link ResponseTemplate} from the tag of the given view
+	 * 
+	 * @param view
+	 *            the view with the {@link ResponseTemplate} in its tag
+	 * @return the {@link ResponseTemplate} attached to the view if there is
+	 *         one, or <code>null</code> else
+	 */
+	@Override
+	protected ResponseTemplate getAttachedItemFromView(View view) {
+		Object tag = view.getTag();
+
+		if (tag instanceof ResponseTemplate)
+			return (ResponseTemplate) tag;
+
+		return null;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// Register adapter for callback on change
+		PersistentResponseTemplateList.registerAdapter(this.adapter);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		// Set exit animation when leaving
+		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
+
+		// Unregister adapter for callback on change
+		PersistentResponseTemplateList.unregisterAdapter(this.adapter);
+	}
 }
