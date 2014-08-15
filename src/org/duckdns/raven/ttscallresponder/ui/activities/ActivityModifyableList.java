@@ -215,9 +215,6 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 				return true;
 			} else
 				this.onBackPressed();
-		case android.R.id.home:
-			this.onBackPressed();
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

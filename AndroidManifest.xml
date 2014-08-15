@@ -36,36 +36,20 @@
         </activity>
         <activity
             android:name=".ui.answeredCalls.ActivityAnsweredCallList"
-            android:label="@string/title_activity_answered_call_list"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
+            android:label="@string/title_activity_answered_call_list" >
         </activity>
         <activity
             android:name=".ui.responseTemplates.ActivityResponseTemplateList"
-            android:label="@string/title_activity_response_template_list"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
+            android:label="@string/title_activity_response_template_list"  >
         </activity>
         <activity
             android:name=".ui.responseTemplates.ActivityResponseTemplateEditor"
             android:label="@string/title_activity_response_template_editor"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:parentActivityName=".ui.responseTemplates.ActivityResponseTemplateList" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.responseTemplates.ActivityResponseTemplateList" />
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
             android:name=".ui.settings.ActivitySettings"
-            android:label="@string/title_activity_activity_settings"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.duckdns.raven.ttscallresponder.MainActivity" />
+            android:label="@string/title_activity_activity_settings" >
         </activity>
 
         <service android:name="org.duckdns.raven.ttscallresponder.tts.TtsAnsweringService"

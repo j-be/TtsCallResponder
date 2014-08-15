@@ -107,9 +107,6 @@ public class ActivityResponseTemplateEditor extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch (id) {
-		case android.R.id.home:
-			this.onBackPressed();
-			return true;
 		case R.id.action_done:
 			if (this.title.getText().toString().isEmpty()) {
 				Toast.makeText(this, "Please insert a Title", Toast.LENGTH_SHORT).show();
