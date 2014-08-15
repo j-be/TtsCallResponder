@@ -9,6 +9,7 @@ import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
 import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
+import org.duckdns.raven.ttscallresponder.domain.call.RepliedCall;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -114,10 +115,14 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		dateTimeString += " - " + dateFormat.format(call.getCallTime());
 		callTime.setText(call.getCallCount() + " x, last: " + dateTimeString);
 
-		if (call.isCalledBack())
+		RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getCaller());
+		if (repliedCall != null)
+			Log.i(TAG, "Call: " + call.getCallTime() + " - Replied: " + repliedCall.getReplyTime());
+		if (repliedCall != null && call.getCallTime().before(repliedCall.getReplyTime()))
 			callBack.setImageResource(R.drawable.call_contact_called);
 		else
 			callBack.setImageResource(R.drawable.call_contact);
+
 		// Attach the phone number to the call-back button
 		callBack.setTag(call);
 		// Workaround for ListView's OnItemClickListener and
@@ -129,9 +134,16 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 			public void onClick(View v) {
 				if (!(v.getTag() instanceof Call))
 					return;
+
 				Call call = (Call) v.getTag();
 				CallListAdapter.this.preDial(call.getCaller(), v.getContext());
-				call.setCalledBack(true);
+
+				RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getCaller());
+				if (repliedCall == null)
+					repliedCall = new RepliedCall(call.getCaller());
+				else
+					repliedCall.setReplyTimeToNow();
+				repliedCall.save();
 			}
 		});
 

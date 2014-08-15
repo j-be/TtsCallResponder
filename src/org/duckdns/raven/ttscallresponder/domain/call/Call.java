@@ -22,7 +22,6 @@ public class Call extends SerializeableListItem {
 
 	private String callingNumber = null;
 	private Vector<Long> callTime = null;
-	private boolean calledBack = false;
 	private static long highestUsedId = -1;
 
 	/**
@@ -58,19 +57,10 @@ public class Call extends SerializeableListItem {
 
 	public void addCallTime(Date callTime) {
 		this.callTime.insertElementAt(Long.valueOf(callTime.getTime()), 0);
-		this.calledBack = false;
 	}
 
 	public int getCallCount() {
 		return this.callTime.size();
-	}
-
-	public boolean isCalledBack() {
-		return this.calledBack;
-	}
-
-	public void setCalledBack(boolean calledBack) {
-		this.calledBack = calledBack;
 	}
 
 	@Override
