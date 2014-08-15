@@ -1,11 +1,8 @@
 package org.duckdns.raven.ttscallresponder.domain.call;
 
 import java.util.Date;
-import java.util.Vector;
 
-import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
-
-import android.text.format.Time;
+import com.roscopeco.ormdroid.Entity;
 
 /**
  * POJO representing an incoming call.
@@ -17,12 +14,19 @@ import android.text.format.Time;
  * @author Juri Berlanda
  * 
  */
-public class Call extends SerializeableListItem {
-	private static final long serialVersionUID = -724628669974903213L;
+public class Call extends Entity {
+	// Needed for ORMDroid
+	public int id;
+	// The telephone number of the call
+	public String number = null;
+	// The date of the call
+	public Date callTime = null;
+	// Number of times this number called
+	public int callCount = 1;
 
-	private String callingNumber = null;
-	private Vector<Long> callTime = null;
-	private static long highestUsedId = -1;
+	public Call() {
+		this(null);
+	}
 
 	/**
 	 * Default constructor
@@ -31,55 +35,44 @@ public class Call extends SerializeableListItem {
 	 *            the number which is calling
 	 */
 	public Call(String callingNumber) {
-		super(-1);
-		Time now = new Time();
-		this.callingNumber = callingNumber;
-
-		// Save "Now" as call time
-		now.setToNow();
-		this.callTime = new Vector<Long>();
-		this.callTime.add(Long.valueOf(now.toMillis(false)));
+		this.number = callingNumber;
+		this.callTime = new Date();
 	}
 
 	/* ----- Getters / Setters ----- */
 
-	public String getCaller() {
-		return this.callingNumber;
+	public String getNumber() {
+		return this.number;
 	}
 
-	public void setCaller(String caller) {
-		this.callingNumber = caller;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	public Date getCallTime() {
-		return new Date(this.callTime.firstElement().longValue());
+		return this.callTime;
 	}
 
-	public void addCallTime(Date callTime) {
-		this.callTime.insertElementAt(Long.valueOf(callTime.getTime()), 0);
+	public void setCallTime(Date callTime) {
+		this.callTime = new Date();
+		this.callCount++;
 	}
 
 	public int getCallCount() {
-		return this.callTime.size();
+		return this.callCount;
 	}
 
 	@Override
-	public boolean update(SerializeableListItem newItem) {
-		return false;
+	public int save() {
+		int ret = super.save();
+		PersistentCallList.listChanged();
+		return ret;
 	}
 
 	@Override
-	public void addId() {
-		Call.highestUsedId++;
-		this.setId(Call.highestUsedId);
-	}
-
-	public static final long getHighestUsedId() {
-		return Call.highestUsedId;
-	}
-
-	public static final void setHighestUsedId(long highestUsedId) {
-		Call.highestUsedId = highestUsedId;
+	public void delete() {
+		super.delete();
+		PersistentCallList.listChanged();
 	}
 
 	@Override
@@ -88,7 +81,7 @@ public class Call extends SerializeableListItem {
 
 		if (o instanceof Call) {
 			that = (Call) o;
-			return this.getCaller().equals(that.getCaller());
+			return this.getNumber().equals(that.getNumber());
 		}
 
 		return false;
@@ -96,7 +89,6 @@ public class Call extends SerializeableListItem {
 
 	@Override
 	public String toString() {
-		return "Call from: " + this.getCaller();
+		return "Call from: " + this.getNumber();
 	}
-
 }

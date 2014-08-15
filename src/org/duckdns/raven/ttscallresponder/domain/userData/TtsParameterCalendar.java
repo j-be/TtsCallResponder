@@ -1,6 +1,5 @@
 package org.duckdns.raven.ttscallresponder.domain.userData;
 
-import org.duckdns.raven.ttscallresponder.domain.common.ObjectWithId;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.content.ContentResolver;
@@ -16,9 +15,8 @@ import android.content.ContentResolver;
  * @author Juri Berlanda
  * 
  */
-public class TtsParameterCalendar extends ObjectWithId {
-	private static final long serialVersionUID = 6251650732604685857L;
-
+public class TtsParameterCalendar {
+	private final long id;
 	private final String name;
 	private final String type;
 	private final int color;
@@ -37,7 +35,7 @@ public class TtsParameterCalendar extends ObjectWithId {
 	 *            the color assigned to the calendar
 	 */
 	public TtsParameterCalendar(long id, String name, String type, int color) {
-		super(id);
+		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.color = color;
@@ -55,6 +53,10 @@ public class TtsParameterCalendar extends ObjectWithId {
 
 	public int getColor() {
 		return this.color;
+	}
+
+	public long getId() {
+		return this.id;
 	}
 
 }

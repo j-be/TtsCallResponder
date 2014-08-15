@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess;
+import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.PersistentResponseTemplateList;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendarEvent;
@@ -24,6 +25,8 @@ import android.widget.TextView;
 public class ResponseTemplateFragmentSmall extends Fragment {
 	private static final String TAG = "ResponseTemplateFragmentSmall";
 
+	private SettingsManager settingsManager;
+
 	// UI elements
 	private TextView currentResponseTemplateTitle = null;
 	private TextView currentEventTitle = null;
@@ -32,6 +35,8 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+
+		this.settingsManager = new SettingsManager(activity);
 	}
 
 	@Override
@@ -64,7 +69,8 @@ public class ResponseTemplateFragmentSmall extends Fragment {
 		CalendarAccess calendarAccess = new CalendarAccess(this.getActivity());
 
 		// Retrieve data
-		ResponseTemplate currentResponseTemplate = PersistentResponseTemplateList.getCurrentTemplate();
+		ResponseTemplate currentResponseTemplate = PersistentResponseTemplateList
+				.getTemplateWithId(this.settingsManager.getCurrentResponseTemplateId());
 
 		// Initialize UI elements
 		if (currentResponseTemplate == null)

@@ -1,10 +1,10 @@
 package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
-import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
-
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+
+import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Table;
 
 /**
  * POJO representing a response template.
@@ -16,15 +16,16 @@ import android.util.Log;
  * @author Juri Berlanda
  * 
  */
-public class ResponseTemplate extends SerializeableListItem implements Parcelable {
+@Table(name = "ResponseTemplate")
+public class ResponseTemplate extends Entity implements Parcelable {
 	private final static String TAG = "ResponseTemplate";
-	private static final long serialVersionUID = 2242526560402451991L;
 
 	private static long highestUsedId = -1;
 
-	private String title = "";
-	private String text = "";
-	private long calendarId = -1;
+	public int _id;
+	public String title = "";
+	public String text = "";
+	public long calendarId = -1;
 
 	/**
 	 * Extended constructor. Does NOT assign a valid ID.
@@ -36,8 +37,8 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 	 * @param calendarId
 	 *            the ID of the calendar to parameterize the template with
 	 */
-	public ResponseTemplate(String title, String text, long calendarId) {
-		super(-1);
+	public ResponseTemplate(int _id, String title, String text, long calendarId) {
+		this._id = _id;
 		this.title = title;
 		this.text = text;
 		this.calendarId = calendarId;
@@ -47,7 +48,7 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 	 * Default constructor. Initializes an empty template.
 	 */
 	public ResponseTemplate() {
-		this("", "", -1);
+		this(-1, "", "", -1);
 	}
 
 	/**
@@ -87,35 +88,6 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 		ResponseTemplate.highestUsedId = highestUsedId;
 	}
 
-	/* ----- Inherited from SerializeableListItem ----- */
-
-	@Override
-	public boolean update(SerializeableListItem newListable) {
-		Log.i(ResponseTemplate.TAG, "Updating " + this.getId());
-		ResponseTemplate newValue = null;
-
-		if (newListable instanceof ResponseTemplate)
-			newValue = (ResponseTemplate) newListable;
-
-		if (!newValue.isValid())
-			return false;
-		if (this.getId() != newValue.getId())
-			return false;
-
-		this.text = newValue.text;
-		this.title = newValue.title;
-		this.calendarId = newValue.calendarId;
-
-		Log.i(ResponseTemplate.TAG, "Updated");
-		return true;
-	}
-
-	@Override
-	public void addId() {
-		ResponseTemplate.highestUsedId++;
-		this.setId(ResponseTemplate.highestUsedId);
-	}
-
 	/* ----- Getters / Setters ----- */
 
 	public String getText() {
@@ -142,14 +114,27 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 		this.calendarId = calendarId;
 	}
 
+	@Override
+	public int save() {
+		int ret = super.save();
+		PersistentResponseTemplateList.listChanged();
+		return ret;
+	}
+
+	@Override
+	public void delete() {
+		super.delete();
+		PersistentResponseTemplateList.listChanged();
+	}
+
 	/* ----- Parcelable interface ----- */
 
 	public static Parcelable.Creator<ResponseTemplate> CREATOR = new Parcelable.Creator<ResponseTemplate>() {
 
 		@Override
 		public ResponseTemplate createFromParcel(Parcel source) {
-			ResponseTemplate ret = new ResponseTemplate(source.readString(), source.readString(), source.readLong());
-			ret.setId(source.readLong());
+			ResponseTemplate ret = new ResponseTemplate(source.readInt(), source.readString(), source.readString(),
+					source.readInt());
 			return ret;
 		}
 
@@ -162,20 +147,20 @@ public class ResponseTemplate extends SerializeableListItem implements Parcelabl
 
 	@Override
 	public int describeContents() {
-		return (int) this.getId();
+		return this._id;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(this._id);
 		dest.writeString(this.title);
 		dest.writeString(this.text);
 		dest.writeLong(this.calendarId);
-		dest.writeLong(this.getId());
 	}
 
 	@Override
 	public String toString() {
-		return "ResponseTemplate, ID: " + this.getId();
+		return "ResponseTemplate, ID: " + this._id;
 	}
 
 }

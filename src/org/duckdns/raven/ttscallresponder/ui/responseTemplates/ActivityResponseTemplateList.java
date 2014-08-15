@@ -12,7 +12,7 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 /**
@@ -28,11 +28,21 @@ import android.widget.ListView;
  */
 public class ActivityResponseTemplateList extends ActivityModifyableList<ResponseTemplate> {
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		PersistentResponseTemplateList.registerAdapter(this.adapter);
+	}
+
 	/* Set exit animation when leaving */
 	@Override
 	protected void onPause() {
 		super.onPause();
+
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
+
+		PersistentResponseTemplateList.unregisterAdapter(this.adapter);
 	}
 
 	@Override
@@ -42,17 +52,17 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 
 	@Override
 	protected void discardChanges() {
-		PersistentResponseTemplateList.loadFromFile();
+		// TODO
 	}
 
 	@Override
 	protected boolean saveList(List<ResponseTemplate> list) {
-		PersistentResponseTemplateList.saveToFile();
+		// TODO
 		return true;
 	}
 
 	@Override
-	protected ArrayAdapter<ResponseTemplate> createListAdapter(List<ResponseTemplate> list) {
+	protected BaseAdapter createListAdapter(List<ResponseTemplate> list) {
 		return new ResponseTemplateListAdapter(this, list);
 	}
 
@@ -84,8 +94,7 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 	/* Open editor dialog with empty ResponseTemplate */
 	private void onAddClick(View view) {
 		Intent openPreparedResponseEditor = new Intent(this, ActivityResponseTemplateEditor.class);
-		openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM,
-				(Parcelable) new ResponseTemplate());
+		openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, new ResponseTemplate());
 		this.startActivity(openPreparedResponseEditor);
 	}
 

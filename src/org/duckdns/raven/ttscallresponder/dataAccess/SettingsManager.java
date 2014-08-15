@@ -64,8 +64,8 @@ public class SettingsManager extends TtsSettingsManager {
 	 * 
 	 * @return the ID of the current {@link ResponseTemplate}. Default ID is -1.
 	 */
-	public long getCurrentResponseTemplateId() {
-		return this.settings.getLong(SettingsManager.key_settings_current_response_template,
+	public int getCurrentResponseTemplateId() {
+		return this.settings.getInt(SettingsManager.key_settings_current_response_template,
 				SettingsManager.default_settings_current_response_template);
 	}
 
@@ -76,9 +76,9 @@ public class SettingsManager extends TtsSettingsManager {
 	 *            the ID of the {@link ResponseTemplate} which shall be used
 	 *            from now on. For "None" set -1.
 	 */
-	public void setCurrentResponseTemplateId(long id) {
+	public void setCurrentResponseTemplateId(int id) {
 		SharedPreferences.Editor editor = this.settings.edit();
-		editor.putLong(SettingsManager.key_settings_current_response_template, id);
+		editor.putInt(SettingsManager.key_settings_current_response_template, id);
 		editor.commit();
 		Log.i(SettingsManager.TAG, "Current Response Template set to " + id);
 	}

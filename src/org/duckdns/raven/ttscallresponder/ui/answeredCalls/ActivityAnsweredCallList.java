@@ -8,7 +8,6 @@ import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.ui.activities.ActivityModifyableList;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,12 +31,10 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 
 	@Override
 	protected void discardChanges() {
-		PersistentCallList.loadFromFile();
 	}
 
 	@Override
 	protected boolean saveList(List<Call> list) {
-		PersistentCallList.saveToFile();
 		return true;
 	}
 
@@ -57,23 +54,30 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 		return new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				PersistentCallList.getList().add(new Call("Mr. " + PersistentCallList.getList().size()));
-				ActivityAnsweredCallList.this.listChanged();
+				PersistentCallList.callReceived(new Call("Mr. " + PersistentCallList.getList().size()));
 			}
 		};
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onResume() {
+		super.onResume();
+
 		// Set enter animation
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
+
+		// Register adapter for callback on change
+		PersistentCallList.registerAdapter(this.adapter);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+
 		// Set exit animation
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
+
+		// Unregister adapter for callback on change
+		PersistentCallList.unregisterAdapter(this.adapter);
 	}
 }

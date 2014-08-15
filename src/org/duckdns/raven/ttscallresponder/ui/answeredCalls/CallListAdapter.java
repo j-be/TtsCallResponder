@@ -8,7 +8,6 @@ import org.duckdns.raven.ttscallresponder.MainActivity;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
-import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.domain.call.RepliedCall;
 
 import android.app.Activity;
@@ -105,7 +104,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		ImageButton callBack = (ImageButton) convertView.findViewById(R.id.button_callBack);
 
 		// Resolve phone number to name
-		String text = this.phoneBookAccess.getNameForPhoneNumber(call.getCaller());
+		String text = this.phoneBookAccess.getNameForPhoneNumber(call.getNumber());
 		Log.d(CallListAdapter.TAG, "is caller null? " + (caller == null) + " - position: " + position);
 		caller.setText(text);
 		// Set DateTime String
@@ -115,7 +114,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		dateTimeString += " - " + dateFormat.format(call.getCallTime());
 		callTime.setText(call.getCallCount() + " x, last: " + dateTimeString);
 
-		RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getCaller());
+		RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getNumber());
 		if (repliedCall != null)
 			Log.i(TAG, "Call: " + call.getCallTime() + " - Replied: " + repliedCall.getReplyTime());
 		if (repliedCall != null && call.getCallTime().before(repliedCall.getReplyTime()))
@@ -136,11 +135,11 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 					return;
 
 				Call call = (Call) v.getTag();
-				CallListAdapter.this.preDial(call.getCaller(), v.getContext());
+				CallListAdapter.this.preDial(call.getNumber(), v.getContext());
 
-				RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getCaller());
+				RepliedCall repliedCall = RepliedCall.getRepliedCallByNumber(call.getNumber());
 				if (repliedCall == null)
-					repliedCall = new RepliedCall(call.getCaller());
+					repliedCall = new RepliedCall(call.getNumber());
 				else
 					repliedCall.setReplyTimeToNow();
 				repliedCall.save();
@@ -160,11 +159,5 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		} catch (ActivityNotFoundException activityException) {
 			Log.e(CallListAdapter.TAG, "Dial failed", activityException);
 		}
-	}
-
-	@Override
-	public void notifyDataSetChanged() {
-		PersistentCallList.sort();
-		super.notifyDataSetChanged();
 	}
 }

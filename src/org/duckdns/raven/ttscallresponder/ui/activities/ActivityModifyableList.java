@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.duckdns.raven.ttscallresponder.R;
-import org.duckdns.raven.ttscallresponder.domain.common.SerializeableListItem;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +18,10 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+
+import com.roscopeco.ormdroid.Entity;
 
 /**
  * This {@link Activity} is the entry point for the {@link ResponseTemplate}
@@ -35,36 +34,35 @@ import android.widget.ListView;
  * @author Juri Berlanda
  * 
  */
-public abstract class ActivityModifyableList<ModifyableListItem extends SerializeableListItem> extends Activity {
+public abstract class ActivityModifyableList<ModifyableListItem extends Entity> extends Activity {
 	private final static String TAG = "ActivityResponseTemplateList";
 	public final static String INTENT_KEY_EDIT_ITEM = "ActivityModifyableList_ITEM_TO_EDIT";
 	public final static String INTENT_KEY_NEW_ITEM = "ActivityModifyableList_ITEM_TO_ADD";
 
-	// Adapts the ResponseTemplate list to the ListView
-	private ArrayAdapter<ModifyableListItem> adapter = null;
-	// TODO Record state
-	private boolean hasListChanged = false;
-
+	// The list of items to be displayed
 	private List<ModifyableListItem> list = null;
-
+	// Adapts the list to the ListView
+	protected BaseAdapter adapter = null;
+	// Contains all currently selected items
 	private final Set<ModifyableListItem> selectedItems = new HashSet<ModifyableListItem>();
 
-	protected abstract List<ModifyableListItem> loadList();
-
-	protected abstract void discardChanges();
-
-	protected abstract boolean saveList(List<ModifyableListItem> list);
-
+	/**
+	 * Getter for the displayed list
+	 * 
+	 * @return the currently displayed list
+	 */
 	protected List<ModifyableListItem> getList() {
 		return this.list;
 	}
 
-	protected void listChanged() {
-		this.adapter.notifyDataSetChanged();
-		this.hasListChanged = true;
-	}
+	/* ----- Abstract functions. Needed for instantiating list and adapter ----- */
+	protected abstract List<ModifyableListItem> loadList();
 
-	protected abstract ArrayAdapter<ModifyableListItem> createListAdapter(List<ModifyableListItem> list);
+	protected abstract boolean saveList(List<ModifyableListItem> list);
+
+	protected abstract void discardChanges();
+
+	protected abstract BaseAdapter createListAdapter(List<ModifyableListItem> list);
 
 	protected abstract OnClickListener getOnAddClickListener();
 
@@ -98,56 +96,12 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Serializ
 	public void onDeleteClick(View view) {
 		Log.i(ActivityModifyableList.TAG, "Delete called on: " + this.selectedItems);
 		for (ModifyableListItem item : this.selectedItems)
-			this.adapter.remove(item);
+			item.delete();
 
 		if (!this.selectedItems.isEmpty())
-			this.hasListChanged = true;
+			this.adapter.notifyDataSetChanged();
 
 		this.selectedItems.clear();
-	}
-
-	/*
-	 * ----- Save / Cancel / Discard dialog on unsaved changes -----
-	 */
-	@Override
-	public void onBackPressed() {
-		if (this.hasListChanged) {
-			AlertDialog.Builder alert = new AlertDialog.Builder(this);
-			// Set title and messgae
-			alert.setTitle("Unsaved changes");
-			alert.setMessage("You made changes to the list, which are not yet saved. \n\n What would you like to do?");
-
-			// Listener for the Dialog's Save / Cancel / Discard buttons
-			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					switch (which) {
-					case DialogInterface.BUTTON_NEUTRAL:
-						// Don't do anything on "Cancel"
-						return;
-					case DialogInterface.BUTTON_POSITIVE:
-						// Save list on "OK"
-						ActivityModifyableList.this.saveList(ActivityModifyableList.this.list);
-						ActivityModifyableList.this.hasListChanged = false;
-						break;
-					default:
-						// Discard changes on "Discard" or any other choice
-						ActivityModifyableList.this.discardChanges();
-						ActivityModifyableList.this.adapter.notifyDataSetChanged();
-						ActivityModifyableList.this.hasListChanged = false;
-					}
-					ActivityModifyableList.this.onBackPressed();
-				}
-			};
-
-			// Set button labels
-			alert.setPositiveButton("Save", listener);
-			alert.setNeutralButton("Cancel", listener);
-			alert.setNegativeButton("Discard", listener);
-			alert.show();
-		} else
-			// If no unsaved changes, directly return to previous window
-			super.onBackPressed();
 	}
 
 	/* ----- Lifecycle ----- */
@@ -217,10 +171,8 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Serializ
 				this.selectedItems.clear();
 				this.adapter.notifyDataSetChanged();
 				return true;
-			} else {
-				this.saveList(this.list);
-				this.hasListChanged = false;
-			}
+			} else
+				this.onBackPressed();
 		case android.R.id.home:
 			this.onBackPressed();
 			return true;
@@ -244,18 +196,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Serializ
 			ModifyableListItem extra = (ModifyableListItem) intent
 					.getParcelableExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM);
 
-			if (extra.getId() < 0) {
-				Log.d(ActivityModifyableList.TAG, "Adding item");
-				this.list.add(extra);
-			} else {
-				for (ModifyableListItem item : this.list)
-					if (item.equals(extra)) {
-						Log.d(ActivityModifyableList.TAG, "Updating item " + extra.getId());
-						item.update(extra);
-					}
-			}
-
-			this.listChanged();
+			extra.save();
 		}
 	}
 

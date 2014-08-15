@@ -39,8 +39,9 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 		Log.i(TtsAnsweringService.TAG, "Enter onStartCommand");
 		super.onStartCommand(intent, flags, startId);
 
-		TtsSettingsManager settingsManager = new TtsSettingsManager(this);
-		ResponseTemplate responseTemplate = PersistentResponseTemplateList.getCurrentTemplate();
+		SettingsManager settingsManager = new SettingsManager(this);
+		ResponseTemplate responseTemplate = PersistentResponseTemplateList.getTemplateWithId(settingsManager
+				.getCurrentResponseTemplateId());
 		CalendarAccess calendarAccess = new CalendarAccess(this);
 
 		if (responseTemplate == null) {

@@ -1,12 +1,13 @@
 package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
-import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
-import org.duckdns.raven.ttscallresponder.domain.common.AbstractPersistentList;
+import android.widget.BaseAdapter;
 
-import android.content.Context;
+import com.roscopeco.ormdroid.Entity;
 
 /**
  * Persistent list for {@link ResponseTemplate} objects.
@@ -18,83 +19,35 @@ import android.content.Context;
  * @author Juri Berlanda
  * 
  */
-public class PersistentResponseTemplateList extends AbstractPersistentList<ResponseTemplate> {
-	private static final String TAG = "PersistentResponseTemplateList";
+public class PersistentResponseTemplateList {
+	private static final List<ResponseTemplate> responseTemplates = new Vector<ResponseTemplate>();
+	private static Set<BaseAdapter> adapters = new HashSet<BaseAdapter>();
 
-	private static PersistentResponseTemplateList singleton = null;
+	public static void registerAdapter(BaseAdapter adapter) {
+		adapters.add(adapter);
+	}
 
-	private final SettingsManager settingsManager;
+	public static void unregisterAdapter(BaseAdapter adapter) {
+		adapters.remove(adapter);
+	}
 
-	public static synchronized void initSingleton(Context context) {
-		if (PersistentResponseTemplateList.singleton == null) {
-			PersistentResponseTemplateList.singleton = new PersistentResponseTemplateList(context);
-			PersistentResponseTemplateList.singleton.loadPersistentList();
+	public static void listChanged() {
+		synchronized (responseTemplates) {
+			responseTemplates.clear();
+			responseTemplates.addAll(Entity.query(ResponseTemplate.class).executeMulti());
 		}
+
+		for (BaseAdapter adapter : adapters)
+			adapter.notifyDataSetChanged();
 	}
 
 	public static List<ResponseTemplate> getList() {
-		return PersistentResponseTemplateList.singleton.getPersistentList();
+		if (responseTemplates.isEmpty())
+			listChanged();
+		return responseTemplates;
 	}
 
-	public static ResponseTemplate getCurrentTemplate() {
-		return PersistentResponseTemplateList.singleton.getCurrentResponseTemplate();
+	public static ResponseTemplate getTemplateWithId(int id) {
+		return Entity.query(ResponseTemplate.class).where("_id=" + id).execute();
 	}
-
-	public static void saveToFile() {
-		PersistentResponseTemplateList.singleton.savePersistentList();
-	}
-
-	public static void loadFromFile() {
-		PersistentResponseTemplateList.singleton.loadPersistentList();
-	}
-
-	/**
-	 * Default constructor
-	 * 
-	 * @param parent
-	 *            the {@link Context} the list is running in
-	 */
-	private PersistentResponseTemplateList(Context parent) {
-		super(parent.getFilesDir());
-		this.settingsManager = new SettingsManager(parent);
-	}
-
-	/**
-	 * Getter for the currently active {@link ResponseTemplate}
-	 * 
-	 * @return the currently active {@link ResponseTemplate}
-	 */
-	public ResponseTemplate getCurrentResponseTemplate() {
-		Iterator<ResponseTemplate> iter = this.getPersistentList().iterator();
-		ResponseTemplate item = null;
-
-		while (iter.hasNext()) {
-			item = iter.next();
-			if (item.getId() == this.settingsManager.getCurrentResponseTemplateId())
-				return item;
-		}
-
-		return null;
-	}
-
-	@Override
-	protected String getFileName() {
-		return "responseTemplateList";
-	}
-
-	/**
-	 * Custom list load function. This is necessary for setting the highest
-	 * known ID on {@link ResponseTemplate}.
-	 */
-	@Override
-	public void loadPersistentList() {
-		super.loadPersistentList();
-		long maxId = -1;
-
-		Iterator<ResponseTemplate> iter = this.getPersistentList().iterator();
-		while (iter.hasNext())
-			maxId = Math.max(maxId, iter.next().getId());
-		ResponseTemplate.setHighestUsedId(maxId);
-	}
-
 }

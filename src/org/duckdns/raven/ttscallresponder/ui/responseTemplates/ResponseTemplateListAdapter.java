@@ -83,7 +83,7 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 
 		// Draw the "Set as active" button depending on whether the current
 		// ResponseTemplate is the active one
-		if (responseTemplate.getId() == this.settingsManager.getCurrentResponseTemplateId())
+		if (responseTemplate._id == this.settingsManager.getCurrentResponseTemplateId())
 			setAsCurrent.setImageResource(R.drawable.ic_checkmark_holo_light_green);
 		else
 			setAsCurrent.setImageResource(R.drawable.btn_check_off_disable);
@@ -91,14 +91,14 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		// WORKAROUND: OnItemClickListener in Listview won't work without it
 		setAsCurrent.setFocusable(false);
 		// Add the ResponseTemplate's ID to the "Set as active" button
-		setAsCurrent.setTag(Long.valueOf(responseTemplate.getId()));
+		setAsCurrent.setTag(Integer.valueOf(responseTemplate._id));
 		// Add listener to the "Set as active" button
 		setAsCurrent.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// Set current ResponseTemplate as the active one
 				SettingsManager settingsManager = new SettingsManager(v.getContext());
-				settingsManager.setCurrentResponseTemplateId((Long) v.getTag());
+				settingsManager.setCurrentResponseTemplateId((Integer) v.getTag());
 				ResponseTemplateListAdapter.this.notifyDataSetChanged();
 			}
 		});

@@ -12,7 +12,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,7 +61,7 @@ public class ActivityResponseTemplateEditor extends Activity {
 		this.responseTemplate = this.getIntent().getParcelableExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM);
 
 		if (this.responseTemplate == null)
-			this.responseTemplate = new ResponseTemplate("", "", -1);
+			this.responseTemplate = new ResponseTemplate();
 
 		this.title.setText(this.responseTemplate.getTitle());
 		this.text.setText(this.responseTemplate.getText());
@@ -126,8 +125,7 @@ public class ActivityResponseTemplateEditor extends Activity {
 			Intent goBackToPreparedResponseList = new Intent(this, ActivityResponseTemplateList.class);
 			goBackToPreparedResponseList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
-			goBackToPreparedResponseList.putExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM,
-					(Parcelable) this.responseTemplate);
+			goBackToPreparedResponseList.putExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM, this.responseTemplate);
 			this.startActivity(goBackToPreparedResponseList);
 			return true;
 		default:
