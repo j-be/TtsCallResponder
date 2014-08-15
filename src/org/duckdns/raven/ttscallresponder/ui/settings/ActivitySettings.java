@@ -12,6 +12,8 @@ import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * This activity is the Settings screen of the app. Most of the logic is handled
@@ -148,6 +150,24 @@ public class ActivitySettings extends Activity {
 		Log.i(ActivitySettings.TAG, "Enter onPause()");
 		this.playAnimation();
 		super.onPause();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		this.getMenuInflater().inflate(R.menu.activity_modifyable_list, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		switch (id) {
+		case R.id.action_done:
+			this.onBackPressed();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 }
