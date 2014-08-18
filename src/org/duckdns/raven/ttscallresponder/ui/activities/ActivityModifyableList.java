@@ -8,7 +8,6 @@ import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -37,7 +36,6 @@ import com.roscopeco.ormdroid.Entity;
 public abstract class ActivityModifyableList<ModifyableListItem extends Entity> extends Activity {
 	private final static String TAG = "ActivityResponseTemplateList";
 	public final static String INTENT_KEY_EDIT_ITEM = "ActivityModifyableList_ITEM_TO_EDIT";
-	public final static String INTENT_KEY_NEW_ITEM = "ActivityModifyableList_ITEM_TO_ADD";
 
 	// The list of items to be displayed
 	private List<ModifyableListItem> list = null;
@@ -123,7 +121,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	/* ----- Delete button ----- */
 
 	/* Delete selected items from the list */
-	public void onDeleteClick(View view) {
+	private void onDeleteClick(View view) {
 		Log.i(ActivityModifyableList.TAG, "Delete called on: " + this.selectedItems);
 		for (ModifyableListItem item : this.selectedItems)
 			item.delete();
@@ -140,8 +138,6 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 
 		// Inflate the layout
 		this.setContentView(R.layout.activity_modifyable_list);
-		// Set enter animation
-		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
 		this.list = this.loadList();
 
@@ -218,24 +214,14 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		// Set enter animation
+		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
+
+		// Make sure no item is selected whenever the activity is (re)opened
 		this.selectedItems.clear();
 	}
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		Log.d(ActivityModifyableList.TAG, "New Intent.");
-		if (intent.hasExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM)) {
-			ModifyableListItem extra = (ModifyableListItem) intent
-					.getParcelableExtra(ActivityModifyableList.INTENT_KEY_NEW_ITEM);
-
-			Log.i(TAG, "Received extra: " + extra);
-
-			extra.save();
-		}
-	}
-
-	/* Set exit animation when leaving */
 	@Override
 	protected void onPause() {
 		super.onPause();

@@ -2,8 +2,6 @@ package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
 import lombok.Getter;
 import lombok.Setter;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
@@ -19,7 +17,7 @@ import com.roscopeco.ormdroid.Table;
  * 
  */
 @Table(name = "ResponseTemplate")
-public class ResponseTemplate extends Entity implements Parcelable {
+public class ResponseTemplate extends Entity {
 	// Needed for ORMDroid
 	public int _id;
 	// The template's title
@@ -89,41 +87,4 @@ public class ResponseTemplate extends Entity implements Parcelable {
 		super.delete();
 		PersistentResponseTemplateList.listChanged();
 	}
-
-	/* ----- Parcelable interface ----- */
-
-	public static Parcelable.Creator<ResponseTemplate> CREATOR = new Parcelable.Creator<ResponseTemplate>() {
-
-		@Override
-		public ResponseTemplate createFromParcel(Parcel source) {
-			ResponseTemplate ret = new ResponseTemplate(source.readInt(), source.readString(), source.readString(),
-					source.readInt());
-			return ret;
-		}
-
-		@Override
-		public ResponseTemplate[] newArray(int size) {
-			return new ResponseTemplate[size];
-		}
-
-	};
-
-	@Override
-	public int describeContents() {
-		return this._id;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(this._id);
-		dest.writeString(this.title);
-		dest.writeString(this.text);
-		dest.writeLong(this.calendarId);
-	}
-
-	@Override
-	public String toString() {
-		return "ResponseTemplate, ID: " + this._id;
-	}
-
 }
