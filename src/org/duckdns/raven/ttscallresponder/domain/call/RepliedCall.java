@@ -23,7 +23,7 @@ import com.roscopeco.ormdroid.Table;
 public class RepliedCall extends Entity {
 	// Needed for ORMDroid, styled so it may be used with CursorAdapter
 	@Getter
-	@Column(name = "_id", forceMap = true, primaryKey = true)
+	@Column(name = "_id", forceMap = true)
 	private int id;
 	// The phone number
 	@Getter
@@ -115,5 +115,4 @@ public class RepliedCall extends Entity {
 	public void setCallTimeToNow() {
 		this.callTime = new Date();
 	}
-
 }
