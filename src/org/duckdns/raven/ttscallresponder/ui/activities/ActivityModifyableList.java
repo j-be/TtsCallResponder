@@ -174,12 +174,13 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		});
 
 		// Set the listener for the Add button
+		View addButton = this.findViewById(R.id.button_addResponseTemplate);
 		OnClickListener onAddClickListener = this.getOnAddClickListener();
 		if (onAddClickListener != null)
-			this.findViewById(R.id.button_addResponseTemplate).setOnClickListener(onAddClickListener);
+			addButton.setOnClickListener(onAddClickListener);
 		else
-			// TODO hide Add button if no listener for it is provided.
-			;
+			// Hide Add button there is no listener for it.
+			addButton.setVisibility(View.GONE);
 
 		listView.setAdapter(this.adapter);
 	}
