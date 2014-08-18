@@ -21,9 +21,10 @@ import com.roscopeco.ormdroid.Table;
  */
 @Table(name = "RepliedCall")
 public class RepliedCall extends Entity {
-
-	// Needed for ORMDroid
-	public int _id;
+	// Needed for ORMDroid, styled so it may be used with CursorAdapter
+	@Getter
+	@Column(name = "_id", forceMap = true, primaryKey = true)
+	private int id;
 	// The phone number
 	@Getter
 	@Setter

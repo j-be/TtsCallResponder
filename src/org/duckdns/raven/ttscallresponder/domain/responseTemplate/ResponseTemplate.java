@@ -19,8 +19,10 @@ import com.roscopeco.ormdroid.Table;
  */
 @Table(name = "ResponseTemplate")
 public class ResponseTemplate extends Entity {
-	// Needed for ORMDroid
-	public int _id;
+	// Needed for ORMDroid, styled so it may be used with CursorAdapter
+	@Getter
+	@Column(name = "_id", forceMap = true, primaryKey = true)
+	private int id;
 	// The template's title
 	@Getter
 	@Setter

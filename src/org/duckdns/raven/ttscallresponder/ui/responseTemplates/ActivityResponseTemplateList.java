@@ -70,8 +70,8 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 		// Invoke the dialog
 		if (responseTemplate != null) {
 			Intent openPreparedResponseEditor = new Intent(this, ActivityResponseTemplateEditor.class);
-			openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM,
-					this.getAttachedItemFromView(view)._id);
+			openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, this
+					.getAttachedItemFromView(view).getId());
 			this.startActivity(openPreparedResponseEditor);
 		}
 	}
@@ -93,8 +93,8 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 	}
 
 	/**
-	 * Opens a {@link ActivityResponseTemplateEditor} without any extra set. Its
-	 * {@link ActivityResponseTemplateEditor}'s job ot create the new
+	 * Opens a {@link ActivityResponseTemplateEditor} without any extra set.
+	 * It's {@link ActivityResponseTemplateEditor}'s job to create the new
 	 * {@link ResponseTemplate}.
 	 * 
 	 * @param view
