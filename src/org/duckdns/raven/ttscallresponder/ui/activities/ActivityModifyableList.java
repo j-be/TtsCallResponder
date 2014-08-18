@@ -112,6 +112,9 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		// Fetch the tag
 		item = this.getAttachedItemFromView(view);
 
+		if (item == null)
+			return;
+
 		if (ActivityModifyableList.this.selectedItems.contains(item)) {
 			Log.i(ActivityModifyableList.TAG, "Unmarked: " + item);
 			ActivityModifyableList.this.selectedItems.remove(item);
