@@ -1,5 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.call;
 
+import lombok.Getter;
+
 import com.roscopeco.ormdroid.Table;
 
 /**
@@ -15,11 +17,12 @@ import com.roscopeco.ormdroid.Table;
 @Table(name = "Call")
 public class Call extends RepliedCall {
 	// Number of times this number called
+	@Getter
 	public int callCount = 0;
 
 	/**
 	 * DO NOT USE! Needed for ORMDroid<br>
-	 * see {@link RepliedCall(String)}
+	 * use {@link RepliedCall(String)} instead
 	 */
 	public Call() {
 		super(null);
@@ -58,9 +61,5 @@ public class Call extends RepliedCall {
 	public void setCallTimeToNow() {
 		super.setCallTimeToNow();
 		this.callCount++;
-	}
-
-	public int getCallCount() {
-		return this.callCount;
 	}
 }

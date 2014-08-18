@@ -1,5 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
+import lombok.Getter;
+import lombok.Setter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,8 +21,14 @@ import com.roscopeco.ormdroid.Table;
 @Table(name = "ResponseTemplate")
 public class ResponseTemplate extends Entity implements Parcelable {
 	public int _id;
+	@Getter
+	@Setter
 	public String title = "";
+	@Getter
+	@Setter
 	public String text = "";
+	@Getter
+	@Setter
 	public long calendarId = -1;
 
 	/**
@@ -76,32 +84,6 @@ public class ResponseTemplate extends Entity implements Parcelable {
 	public void delete() {
 		super.delete();
 		PersistentResponseTemplateList.listChanged();
-	}
-
-	/* ----- Getters / Setters ----- */
-
-	public String getText() {
-		return this.text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public String getTitle() {
-		return this.title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public long getCalendarId() {
-		return this.calendarId;
-	}
-
-	public void setCalendarId(long calendarId) {
-		this.calendarId = calendarId;
 	}
 
 	/* ----- Parcelable interface ----- */

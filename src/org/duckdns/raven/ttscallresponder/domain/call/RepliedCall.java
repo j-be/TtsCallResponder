@@ -2,6 +2,9 @@ package org.duckdns.raven.ttscallresponder.domain.call;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
 
@@ -21,8 +24,11 @@ public class RepliedCall extends Entity {
 	// Needed for ORMDroid
 	public int _id;
 	// The phone number
+	@Getter
+	@Setter
 	public String number = "";
 	// Time the call was started
+	@Getter
 	public Date callTime = null;
 
 	/**
@@ -97,18 +103,6 @@ public class RepliedCall extends Entity {
 	}
 
 	/* ----- Getters / Setters ----- */
-
-	public String getNumber() {
-		return this.number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	public Date getCallTime() {
-		return this.callTime;
-	}
 
 	public void setCallTimeToNow() {
 		this.callTime = new Date();

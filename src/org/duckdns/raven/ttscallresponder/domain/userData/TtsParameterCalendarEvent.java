@@ -1,5 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.userData;
 
+import lombok.Getter;
+
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.content.ContentResolver;
@@ -16,8 +18,9 @@ import android.content.ContentResolver;
  * 
  */
 public class TtsParameterCalendarEvent {
-
+	@Getter
 	private final String title;
+	@Getter
 	private final long endTime;
 
 	/**
@@ -32,15 +35,5 @@ public class TtsParameterCalendarEvent {
 	public TtsParameterCalendarEvent(String title, long endTime) {
 		this.title = title;
 		this.endTime = endTime;
-	}
-
-	/* ----- Getters ----- */
-
-	public String getTitle() {
-		return this.title;
-	}
-
-	public long getEndTime() {
-		return this.endTime;
 	}
 }

@@ -1,5 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.userData;
 
+import lombok.Getter;
+
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
 
 import android.content.ContentResolver;
@@ -16,9 +18,13 @@ import android.content.ContentResolver;
  * 
  */
 public class TtsParameterCalendar {
+	@Getter
 	private final long id;
+	@Getter
 	private final String name;
+	@Getter
 	private final String type;
+	@Getter
 	private final int color;
 
 	/**
@@ -40,23 +46,4 @@ public class TtsParameterCalendar {
 		this.type = type;
 		this.color = color;
 	}
-
-	/* ----- Getters ----- */
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getType() {
-		return this.type;
-	}
-
-	public int getColor() {
-		return this.color;
-	}
-
-	public long getId() {
-		return this.id;
-	}
-
 }
