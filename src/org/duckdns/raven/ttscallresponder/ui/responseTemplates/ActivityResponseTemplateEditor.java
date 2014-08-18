@@ -42,17 +42,59 @@ import android.widget.Toast;
  * 
  */
 public class ActivityResponseTemplateEditor extends Activity {
-
 	private static final String TAG = "ActivityPreparedResponseEditor";
 
-	org.duckdns.raven.ttscallresponder.dataAccess.CalendarAccess calendarAccess = null;
-	UserCalendarListAdapter userCalendarListAdapter = null;
+	private CalendarAccess calendarAccess = null;
+	private UserCalendarListAdapter userCalendarListAdapter = null;
 
 	private EditText title = null;
 	private EditText text = null;
 	private LinearLayout calendarChooser = null;
+	private TextView labelCalendarName = null;
+	private View viewCalendarColor = null;
 
 	private ResponseTemplate responseTemplate = null;
+
+	/* Helper for labeling the "Choose calendar" button */
+
+	private void labelSelectCalendarButton() {
+		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(this.responseTemplate.getCalendarId());
+
+		if (calendar == null) {
+			this.labelCalendarName.setText("No calendar");
+			this.viewCalendarColor.setBackgroundColor(SettingsManager.COLOR_NO_ITEM_CHOSEN);
+		} else {
+			this.labelCalendarName.setText(calendar.getName());
+			this.viewCalendarColor.setBackgroundColor(calendar.getColor());
+		}
+	}
+
+	/* Helper for building the calendar list dialog */
+
+	private void showCalendarSelector() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setSingleChoiceItems(this.userCalendarListAdapter, 0, new DialogInterface.OnClickListener() {
+			// Retrieve the id when the calendar is selected
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				long calendarId = ActivityResponseTemplateEditor.this.userCalendarListAdapter.getItemId(which);
+				ActivityResponseTemplateEditor.this.responseTemplate.setCalendarId(calendarId);
+				Log.d(ActivityResponseTemplateEditor.TAG, "Setting calendarId to: " + calendarId);
+				ActivityResponseTemplateEditor.this.labelSelectCalendarButton();
+				dialog.dismiss();
+			}
+		})
+
+		// Dismiss dialog on "Cancel" button
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int whichButton) {
+						dialog.dismiss();
+					}
+				});
+		builder.show();
+	}
 
 	/* ----- Lifecycle ----- */
 
@@ -63,23 +105,25 @@ public class ActivityResponseTemplateEditor extends Activity {
 		super.onCreate(savedInstanceState);
 
 		this.setContentView(R.layout.activity_response_template_editor);
-		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
 		// Instanciate objects which persist onPause/onResume
 		this.calendarAccess = new CalendarAccess(this);
+		this.userCalendarListAdapter = new UserCalendarListAdapter(this);
 
 		// Gain access to the UI elements
 		this.title = (EditText) this.findViewById(R.id.editText_responseTemplateTitle);
 		this.text = (EditText) this.findViewById(R.id.editText_responseTemplateText);
 		this.calendarChooser = (LinearLayout) this.findViewById(R.id.button_chooseCalendar);
-		this.calendarChooser.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ActivityResponseTemplateEditor.this.showCalendarSelector(
-						ActivityResponseTemplateEditor.this.calendarChooser,
-						ActivityResponseTemplateEditor.this.responseTemplate);
-			}
-		});
+		this.labelCalendarName = (TextView) this.calendarChooser.findViewById(R.id.label_chooseCalendar);
+		this.viewCalendarColor = this.calendarChooser.findViewById(R.id.view_calendarColor);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// Set enter animation
+		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
 		// Fetch the ResponseTemplate, which ID is passed as extra
 		int responseTemplateId = this.getIntent().getIntExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, -1);
@@ -93,24 +137,15 @@ public class ActivityResponseTemplateEditor extends Activity {
 		// Apply ResponseTemplate to UI elements
 		this.title.setText(this.responseTemplate.getTitle());
 		this.text.setText(this.responseTemplate.getText());
-		this.labelSelectCalendarButton(this.calendarChooser, this.responseTemplate);
+		this.labelSelectCalendarButton();
 
-		this.userCalendarListAdapter = new UserCalendarListAdapter(this);
-	}
-
-	/* Helper for labeling the "Choose calendar" button */
-	private void labelSelectCalendarButton(LinearLayout calendarChooser, ResponseTemplate responseTemplate) {
-		TtsParameterCalendar calendar = this.calendarAccess.getCalendarById(responseTemplate.getCalendarId());
-
-		TextView calendarName = (TextView) calendarChooser.findViewById(R.id.label_chooseCalendar);
-		View calendartColor = calendarChooser.findViewById(R.id.view_calendarColor);
-		if (calendar == null) {
-			calendarName.setText("No calendar");
-			calendartColor.setBackgroundColor(SettingsManager.COLOR_NO_ITEM_CHOSEN);
-		} else {
-			calendarName.setText(calendar.getName());
-			calendartColor.setBackgroundColor(calendar.getColor());
-		}
+		// Listener for the "Choose calendar" button
+		this.calendarChooser.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ActivityResponseTemplateEditor.this.showCalendarSelector();
+			}
+		});
 	}
 
 	@Override
@@ -142,10 +177,10 @@ public class ActivityResponseTemplateEditor extends Activity {
 				this.text.requestFocus();
 				return false;
 			}
+
 			// Save the ResponseTemplate
 			this.responseTemplate.setTitle(this.title.getText().toString());
 			this.responseTemplate.setText(this.text.getText().toString());
-
 			this.responseTemplate.save();
 
 			// Leave the activity
@@ -155,29 +190,5 @@ public class ActivityResponseTemplateEditor extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	private void showCalendarSelector(final LinearLayout calendarChooser, final ResponseTemplate responseTemplate) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setSingleChoiceItems(this.userCalendarListAdapter, 0, new DialogInterface.OnClickListener() {
-			// Retrieve the id when the calendar is selected
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				long calendarId = ActivityResponseTemplateEditor.this.userCalendarListAdapter.getItemId(which);
-				responseTemplate.setCalendarId(calendarId);
-				Log.d(ActivityResponseTemplateEditor.TAG, "Setting calendarId to: " + calendarId);
-				ActivityResponseTemplateEditor.this.labelSelectCalendarButton(calendarChooser, responseTemplate);
-				dialog.dismiss();
-			}
-		})
-		// Dismiss dialog on "Cancel" button
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int whichButton) {
-						dialog.dismiss();
-					}
-				});
-		builder.show();
 	}
 }
