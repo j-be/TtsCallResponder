@@ -43,13 +43,18 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	protected BaseAdapter adapter = null;
 	// Contains all currently selected items
 	private final Set<ModifyableListItem> selectedItems = new HashSet<ModifyableListItem>();
+	// Contains deleted items for undo
+	private final Set<ModifyableListItem> deletedItems = new HashSet<ModifyableListItem>();
 
-	// True, if activity is in selection mode
-	private boolean selectionMode = false;
 	// The delete button
 	private View deleteButton = null;
 	// The add button
 	private View addButton = null;
+	// Undo bar
+	private View undoBar = null;
+
+	// True, if activity is in selection mode
+	private boolean selectionMode = false;
 	// Add button visibility
 	private int addButtonVisibility = View.VISIBLE;
 
@@ -154,8 +159,57 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		for (ModifyableListItem item : this.selectedItems)
 			item.delete();
 
+		this.deletedItems.clear();
+		this.deletedItems.addAll(this.selectedItems);
 		this.selectedItems.clear();
 		this.setSelectionMode(false);
+
+		this.showUndo(this.undoBar, this.deletedItems);
+	}
+
+	/* ------ Undo overlay ----- */
+
+	/**
+	 * Event handler for undo button's onClick
+	 * 
+	 * @param view
+	 *            the undo button
+	 */
+	public void onUndoClick(View view) {
+		this.undoBar.setVisibility(View.GONE);
+
+		for (ModifyableListItem restoreItem : this.deletedItems)
+			restoreItem.save();
+	}
+
+	/* Helper for showing and animating the undo-bar */
+	private void showUndo(final View viewContainer, final Set<ModifyableListItem> deletedItems) {
+		// Time which the undo-bar is fully opaque
+		final int durationPhase1 = 4000;
+		// Fade-out time of undo-bar
+		final int durationPhase2 = 500;
+		// Full duration of the animation
+		final int duration = durationPhase1 + durationPhase2;
+
+		// Show the bar
+		viewContainer.setVisibility(View.VISIBLE);
+		viewContainer.setAlpha(1f);
+
+		// Add fade-out animation
+		viewContainer.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				viewContainer.animate().alpha(0f).setDuration(durationPhase2);
+			}
+		}, durationPhase1);
+		// Hide completely after fade-out
+		viewContainer.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				viewContainer.setVisibility(View.GONE);
+			}
+		}, duration);
+
 	}
 
 	/* ----- Lifecycle ----- */
@@ -215,6 +269,8 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		}
 
 		listView.setAdapter(this.adapter);
+
+		this.undoBar = this.findViewById(R.id.undobar);
 	}
 
 	/* Add the "Ok" button to ActionBar */
