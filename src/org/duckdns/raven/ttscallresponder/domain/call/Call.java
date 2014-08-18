@@ -21,7 +21,7 @@ public class Call extends RepliedCall {
 	// Number of times this number called
 	@Getter
 	@Column(forceMap = true)
-	private int callCount = 0;
+	private int callCount = 1;
 	@Getter
 	@Setter
 	@Column(forceMap = true)
