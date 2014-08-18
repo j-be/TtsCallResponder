@@ -9,8 +9,6 @@ import com.roscopeco.ormdroid.Table;
 /**
  * POJO representing an incoming call.
  * 
- * TODO comment getters/setters
- * 
  * FIXME: License
  * 
  * @author Juri Berlanda
@@ -64,13 +62,22 @@ public class Call extends RepliedCall {
 
 	/* ----- Getters / Setters ----- */
 
+	/**
+	 * Sets the call-time to "now". This indicates a new call from this.number
+	 * was receiver. It therefore also means, that any saved call reply is
+	 * deprecated.
+	 */
 	@Override
 	public void setCallTimeToNow() {
 		super.setCallTimeToNow();
+
+		// Clear any call reply associated with this call
 		if (this.repliedCall != null) {
 			this.repliedCall.delete();
 			this.repliedCall = null;
 		}
+
+		// Keep count
 		this.callCount++;
 	}
 }

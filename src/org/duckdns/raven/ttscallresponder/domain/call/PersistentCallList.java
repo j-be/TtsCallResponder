@@ -19,7 +19,7 @@ import com.roscopeco.ormdroid.Query;
  * 
  */
 public class PersistentCallList {
-	// The call lisyt singleton
+	// The call list singleton
 	private static final List<Call> callList = new Vector<Call>();
 	// Set of adapters to notify in case something changes
 	private static Set<BaseAdapter> adapters = new HashSet<BaseAdapter>();

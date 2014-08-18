@@ -82,7 +82,7 @@ public class RepliedCall extends Entity {
 	/* ----- Overrides form Object ----- */
 
 	/**
-	 * 2 calls are equal, if there phone number is equal.
+	 * 2 replied calls are equal, if there phone number is equal.
 	 * 
 	 * @param o
 	 *            the call to compare with
@@ -112,6 +112,9 @@ public class RepliedCall extends Entity {
 
 	/* ----- Getters / Setters ----- */
 
+	/**
+	 * Sets the call-time to "now".
+	 */
 	public void setCallTimeToNow() {
 		this.callTime = new Date();
 	}
