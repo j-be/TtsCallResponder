@@ -8,7 +8,6 @@ import org.duckdns.raven.ttscallresponder.MainActivity;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
-import org.duckdns.raven.ttscallresponder.domain.call.PersistentCallList;
 import org.duckdns.raven.ttscallresponder.domain.call.RepliedCall;
 
 import android.app.Activity;
@@ -129,7 +128,8 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		dateTimeString += " - " + dateFormat.format(holder.call.getCallTime());
 		holder.callTime.setText(holder.call.getCallCount() + " x, last: " + dateTimeString);
 
-		RepliedCall repliedCall = PersistentCallList.getRepliedCallByNumber(holder.call.getNumber());
+		// Check whether this call has already been replied
+		RepliedCall repliedCall = holder.call.getRepliedCall();
 		if (repliedCall != null) {
 			Log.i(TAG, "Call: " + holder.call.getCallTime() + " - Replied: " + repliedCall.getCallTime());
 			holder.callBack.setImageResource(R.drawable.call_contact_called);
@@ -151,12 +151,13 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 				Call call = (Call) v.getTag();
 				CallListAdapter.this.preDial(call.getNumber(), v.getContext());
 
-				RepliedCall repliedCall = PersistentCallList.getRepliedCallByNumber(call.getNumber());
-				if (repliedCall == null)
+				RepliedCall repliedCall = call.getRepliedCall();
+				if (repliedCall == null) {
 					repliedCall = new RepliedCall(call.getNumber());
-				else
+					call.setRepliedCall(repliedCall);
+				} else
 					repliedCall.setCallTimeToNow();
-				repliedCall.save();
+				call.save();
 			}
 		});
 

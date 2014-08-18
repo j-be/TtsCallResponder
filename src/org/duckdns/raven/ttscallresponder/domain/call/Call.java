@@ -1,6 +1,7 @@
 package org.duckdns.raven.ttscallresponder.domain.call;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Table;
@@ -21,6 +22,10 @@ public class Call extends RepliedCall {
 	@Getter
 	@Column(forceMap = true)
 	private int callCount = 0;
+	@Getter
+	@Setter
+	@Column(forceMap = true)
+	private RepliedCall repliedCall = null;
 
 	/**
 	 * DO NOT USE! Needed for ORMDroid<br>
@@ -62,6 +67,10 @@ public class Call extends RepliedCall {
 	@Override
 	public void setCallTimeToNow() {
 		super.setCallTimeToNow();
+		if (this.repliedCall != null) {
+			this.repliedCall.delete();
+			this.repliedCall = null;
+		}
 		this.callCount++;
 	}
 }

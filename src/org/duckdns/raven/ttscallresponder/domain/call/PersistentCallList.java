@@ -51,7 +51,6 @@ public class PersistentCallList {
 	public static int callReceived(Call call) {
 		int ret = -2;
 		Call existingCall = null;
-		RepliedCall previousRepliedCall = null;
 
 		// Assert that call is not null
 		if (call == null)
@@ -67,24 +66,7 @@ public class PersistentCallList {
 			ret = existingCall.save();
 		}
 
-		// Delete if caller was previously called back
-		previousRepliedCall = Entity.query(RepliedCall.class).where(Query.eql("number", call.getNumber())).execute();
-		if (previousRepliedCall != null)
-			previousRepliedCall.delete();
-
 		return ret;
-	}
-
-	/**
-	 * Getter for a replyed call
-	 * 
-	 * @param number
-	 *            the phone number
-	 * @return the {@link RepliedCall} if there is one with the given phone
-	 *         number, or null else
-	 */
-	public static RepliedCall getRepliedCallByNumber(String number) {
-		return Entity.query(RepliedCall.class).where(Query.eql("number", number)).execute();
 	}
 
 	public static void registerAdapter(BaseAdapter adapter) {

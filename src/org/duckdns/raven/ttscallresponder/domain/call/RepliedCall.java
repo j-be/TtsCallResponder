@@ -93,6 +93,10 @@ public class RepliedCall extends Entity {
 	public boolean equals(Object o) {
 		Call that = null;
 
+		// Workaround for ORMDroid's nested Object.
+		if (this.getNumber() == null)
+			return false;
+
 		if (o instanceof RepliedCall) {
 			that = (Call) o;
 			return this.getNumber().equals(that.getNumber());
