@@ -37,7 +37,7 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 	}
 
 	/**
-	 * Returns a {@link CallListAdapter} for the given list
+	 * Returns a {@link CallListAdapter} for the given list.
 	 * 
 	 * @param list
 	 *            the list for the adapter
@@ -57,7 +57,9 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 	}
 
 	/**
-	 * Returns <code>null</code>
+	 * Answered call list does not have an add button.
+	 * 
+	 * @return <code>null</code>
 	 */
 	@Override
 	protected OnClickListener getOnAddClickListener() {

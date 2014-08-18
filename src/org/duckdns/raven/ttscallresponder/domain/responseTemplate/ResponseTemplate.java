@@ -20,13 +20,17 @@ import com.roscopeco.ormdroid.Table;
  */
 @Table(name = "ResponseTemplate")
 public class ResponseTemplate extends Entity implements Parcelable {
+	// Needed for ORMDroid
 	public int _id;
+	// The template's title
 	@Getter
 	@Setter
 	public String title = "";
+	// The template's text
 	@Getter
 	@Setter
 	public String text = "";
+	// ID of the calendar linked to the template
 	@Getter
 	@Setter
 	public long calendarId = -1;

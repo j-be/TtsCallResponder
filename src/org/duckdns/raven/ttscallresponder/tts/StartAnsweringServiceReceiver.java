@@ -9,6 +9,16 @@ import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+/**
+ * BroadcastReceiver which (if enabled) starts a {@link TtsAnsweringService}
+ * whenever the phonestate changes to
+ * {@link TelephonyManager#EXTRA_STATE_RINGING}.
+ * 
+ * FIXME: License
+ * 
+ * @author Juri Berlanda
+ * 
+ */
 public class StartAnsweringServiceReceiver extends BroadcastReceiver {
 	private static final String TAG = "StartAnsweringServiceReceiver";
 
@@ -18,15 +28,17 @@ public class StartAnsweringServiceReceiver extends BroadcastReceiver {
 		Log.i(StartAnsweringServiceReceiver.TAG, "Phone state changed: " + state);
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+			// Start the service
 			Log.i(StartAnsweringServiceReceiver.TAG, "Ringing - preparing service");
 			Intent startResponderService = new Intent(context, TtsAnsweringService.class);
 			context.startService(startResponderService);
 			Log.i(StartAnsweringServiceReceiver.TAG, "Service started");
 
-			Log.i(StartAnsweringServiceReceiver.TAG,
-					"Adding to answered calls: " + intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER));
+			// Save the call to list of answered calls
+			String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+			Log.i(StartAnsweringServiceReceiver.TAG, "Adding to answered calls: " + phoneNumber);
+			PersistentCallList.callReceived(new Call(phoneNumber));
 
-			PersistentCallList.callReceived(new Call(intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)));
 		}
 	}
 }

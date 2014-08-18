@@ -19,7 +19,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 /**
- * TODO: comment
+ * This Service fetches the ResponseTemplate and reads it using a TTS engine.
+ * After finishing reading the service will stop itself. Do NOT bind to this
+ * service! Do NOT try to stop the service manually!
  * 
  * FIXME: License
  * 
@@ -39,6 +41,7 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 		Log.i(TtsAnsweringService.TAG, "Enter onStartCommand");
 		super.onStartCommand(intent, flags, startId);
 
+		// Fetch the ResponseTemplate
 		SettingsManager settingsManager = new SettingsManager(this);
 		ResponseTemplate responseTemplate = PersistentResponseTemplateList.getTemplateWithId(settingsManager
 				.getCurrentResponseTemplateId());
@@ -50,8 +53,10 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 			return Service.START_NOT_STICKY;
 		}
 
+		// Instantiate TTS engine
 		this.ttsEngine = new TextToSpeech(this, this);
 
+		// Parameterize ResponseTemplate
 		this.response = Parameterizer.parameterizeFromCalendar(responseTemplate,
 				calendarAccess.getCurrentEventFromCalendar(responseTemplate.getCalendarId()),
 				settingsManager.getTtsLanguage(true)).getText();

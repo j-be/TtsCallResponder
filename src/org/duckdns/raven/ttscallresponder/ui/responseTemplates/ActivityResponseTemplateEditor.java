@@ -22,6 +22,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This {@link Activity} provides an editor window for adding a new
+ * {@link ResponseTemplate} or modifying an existing one. This activity accesses
+ * the {@link ResponseTemplate}s directly via the DAO (being
+ * {@link PersistentResponseTemplateList}).<br>
+ * <br>
+ * Extras:
+ * <ul>
+ * <li>Name: {@link ActivityModifyableList#INTENT_KEY_EDIT_ITEM}</li>
+ * <li>Type: Integer</li>
+ * <li>Meaning: The ID of the {@link ResponseTemplate} to edit</li>
+ * <li>Default: -1, means "create a new template"</li>
+ * </ul>
+ * 
+ * FIXME: License
+ * 
+ * @author Juri Berlanda
+ * 
+ */
 public class ActivityResponseTemplateEditor extends Activity {
 
 	private static final String TAG = "ActivityPreparedResponseEditor";
@@ -35,6 +54,8 @@ public class ActivityResponseTemplateEditor extends Activity {
 
 	private ResponseTemplate responseTemplate = null;
 
+	/* ----- Lifecycle ----- */
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.i(ActivityResponseTemplateEditor.TAG, "Enter on Create");
@@ -44,8 +65,10 @@ public class ActivityResponseTemplateEditor extends Activity {
 		this.setContentView(R.layout.activity_response_template_editor);
 		this.overridePendingTransition(R.animator.anim_slide_in_from_right, R.animator.anim_slide_out_to_left);
 
+		// Instanciate objects which persist onPause/onResume
 		this.calendarAccess = new CalendarAccess(this);
 
+		// Gain access to the UI elements
 		this.title = (EditText) this.findViewById(R.id.editText_responseTemplateTitle);
 		this.text = (EditText) this.findViewById(R.id.editText_responseTemplateText);
 		this.calendarChooser = (LinearLayout) this.findViewById(R.id.button_chooseCalendar);
@@ -58,13 +81,16 @@ public class ActivityResponseTemplateEditor extends Activity {
 			}
 		});
 
+		// Fetch the ResponseTemplate, which ID is passed as extra
 		int responseTemplateId = this.getIntent().getIntExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, -1);
 		this.responseTemplate = PersistentResponseTemplateList.getTemplateWithId(responseTemplateId);
 		Log.i(TAG, "Received extra: " + this.responseTemplate);
 
+		// Instanciate a new ResponseTemaplate on no or invalid ID
 		if (this.responseTemplate == null)
 			this.responseTemplate = new ResponseTemplate();
 
+		// Apply ResponseTemplate to UI elements
 		this.title.setText(this.responseTemplate.getTitle());
 		this.text.setText(this.responseTemplate.getText());
 		this.labelSelectCalendarButton(this.calendarChooser, this.responseTemplate);
@@ -102,12 +128,10 @@ public class ActivityResponseTemplateEditor extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.action_done:
+			// Check if all needed values were entered
 			if (this.title.getText().toString().isEmpty()) {
 				Toast.makeText(this, "Please insert a Title", Toast.LENGTH_SHORT).show();
 				this.title.requestFocus();
@@ -118,11 +142,13 @@ public class ActivityResponseTemplateEditor extends Activity {
 				this.text.requestFocus();
 				return false;
 			}
+			// Save the ResponseTemplate
 			this.responseTemplate.setTitle(this.title.getText().toString());
 			this.responseTemplate.setText(this.text.getText().toString());
 
 			this.responseTemplate.save();
 
+			// Leave the activity
 			this.onBackPressed();
 
 			return true;

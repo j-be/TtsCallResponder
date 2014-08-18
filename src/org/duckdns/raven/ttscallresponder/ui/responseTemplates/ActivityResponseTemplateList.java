@@ -92,6 +92,14 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 		};
 	}
 
+	/**
+	 * Opens a {@link ActivityResponseTemplateEditor} without any extra set. Its
+	 * {@link ActivityResponseTemplateEditor}'s job ot create the new
+	 * {@link ResponseTemplate}.
+	 * 
+	 * @param view
+	 *            the view which was clicked (i.e. the "Add" button
+	 */
 	private void onAddClick(View view) {
 		Intent openPreparedResponseEditor = new Intent(this, ActivityResponseTemplateEditor.class);
 		openPreparedResponseEditor.putExtra(ActivityModifyableList.INTENT_KEY_EDIT_ITEM, new ResponseTemplate());
@@ -115,6 +123,8 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 
 		return null;
 	}
+
+	/* ----- Lifecycle ----- */
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

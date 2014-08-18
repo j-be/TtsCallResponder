@@ -120,7 +120,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		return this.selectedItems;
 	}
 
-	/* ----- Bottom bar buttons ----- */
+	/* ----- Delete button ----- */
 
 	/* Delete selected items from the list */
 	public void onDeleteClick(View view) {
@@ -149,6 +149,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		this.adapter = this.createListAdapter(this.list);
 		ListView listView = (ListView) this.findViewById(R.id.list_responseTemplates);
 
+		// Set the listener for short clicks on items
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
@@ -158,6 +159,8 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 					ActivityModifyableList.this.onItemLongClick(view);
 			}
 		});
+
+		// Set the listener for long click on the item (item selection)
 		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long itemId) {
@@ -166,6 +169,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 			}
 		});
 
+		// Set listener for the delete button
 		this.findViewById(R.id.button_deleteResponseTemplate).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -173,21 +177,25 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 			}
 		});
 
+		// Set the listener for the Add button
 		OnClickListener onAddClickListener = this.getOnAddClickListener();
 		if (onAddClickListener != null)
 			this.findViewById(R.id.button_addResponseTemplate).setOnClickListener(onAddClickListener);
+		else
+			// TODO hide Add button if no listener for it is provided.
+			;
 
 		listView.setAdapter(this.adapter);
 	}
 
-	/* Add the "Save" and "Back to parent" buttons to ActionBar */
+	/* Add the "Ok" button to ActionBar */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.getMenuInflater().inflate(R.menu.activity_modifyable_list, menu);
 		return true;
 	}
 
-	/* Handle "Save" and "Back to parent" buttons in ActionBar */
+	/* Handle "Ok" button in ActionBar */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
@@ -195,10 +203,12 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		switch (id) {
 		case R.id.action_done:
 			if (!this.selectedItems.isEmpty()) {
+				// Deselect all items if at least one is selected, ...
 				this.selectedItems.clear();
 				this.adapter.notifyDataSetChanged();
 				return true;
 			} else
+				// ... or else leave the activity
 				this.onBackPressed();
 		default:
 			return super.onOptionsItemSelected(item);
@@ -229,6 +239,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		// Set exit animation
 		this.overridePendingTransition(R.animator.anim_slide_in_from_left, R.animator.anim_slide_out_to_right);
 	}
 
