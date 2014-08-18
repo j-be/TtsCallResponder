@@ -85,7 +85,7 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 		Object tag = view.getTag();
 
 		if (tag instanceof CallHolder)
-			return ((CallHolder) tag).call;
+			return ((CallHolder) tag).getCall();
 
 		return null;
 	}

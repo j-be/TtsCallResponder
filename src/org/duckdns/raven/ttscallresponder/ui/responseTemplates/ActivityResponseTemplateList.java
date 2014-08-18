@@ -118,7 +118,7 @@ public class ActivityResponseTemplateList extends ActivityModifyableList<Respons
 		Object tag = view.getTag();
 
 		if (tag instanceof ResponseTemplateHolder)
-			return ((ResponseTemplateHolder) tag).responseTemplate;
+			return ((ResponseTemplateHolder) tag).getResponseTemplate();
 
 		return null;
 	}

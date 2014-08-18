@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import lombok.Getter;
+
 import org.duckdns.raven.ttscallresponder.MainActivity;
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.PhoneBookAccess;
@@ -60,12 +62,20 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 	 * for the view.
 	 */
 	static class CallHolder {
-		Call call;
-		TextView caller;
-		TextView callTime;
-		ImageButton callBack;
+		@Getter
+		private Call call;
+		private TextView caller;
+		private TextView callTime;
+		private ImageButton callBack;
 	}
 
+	/**
+	 * Getter for the number of items.<br>
+	 * <b>NOTICE:</b> If the list is empty, 1 is returned because of empty list
+	 * message!
+	 * 
+	 * @return 1 if there are no items, or the number of items else.
+	 */
 	@Override
 	public int getCount() {
 		return Math.max(super.getCount(), 1);
@@ -84,6 +94,7 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		CallHolder holder = null;
 
+		// Create "No call yet" message
 		if (super.getCount() == 0) {
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.fragment_light_text, parent, false);
 			TextView hint = (TextView) convertView.findViewById(R.id.textView_lbl_light_text);
@@ -95,13 +106,18 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 			// Inflate the layout
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_call, parent, false);
 			holder = new CallHolder();
+			convertView.setTag(holder);
 
 			// Gain access to the UI elements
 			holder.caller = (TextView) convertView.findViewById(R.id.label_caller);
 			holder.callTime = (TextView) convertView.findViewById(R.id.label_callTime);
 			holder.callBack = (ImageButton) convertView.findViewById(R.id.button_callBack);
 
-			convertView.setTag(holder);
+			// Add listener to the call-back button
+			holder.callBack.setOnClickListener(new CallBackClickListener(holder));
+
+			// WORKAROUND: OnItemClickListener in Listview won't work without it
+			holder.callBack.setFocusable(false);
 		} else
 			holder = (CallHolder) convertView.getTag();
 
@@ -119,8 +135,8 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 
 		// Resolve phone number to name
 		String text = this.phoneBookAccess.getNameForPhoneNumber(holder.call.getNumber());
-		Log.d(CallListAdapter.TAG, "is caller null? " + (holder.caller == null) + " - position: " + position);
 		holder.caller.setText(text);
+
 		// Set DateTime String
 		DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
 		String dateTimeString = dateFormat.format(holder.call.getCallTime());
@@ -136,43 +152,44 @@ public class CallListAdapter extends ArrayAdapter<Call> {
 		} else
 			holder.callBack.setImageResource(R.drawable.call_contact);
 
-		// Attach the phone number to the call-back button
-		holder.callBack.setTag(holder.call);
-		// Workaround for ListView's OnItemClickListener and
-		// OnItemLongClickListener
-		holder.callBack.setFocusable(false);
-		// Add listener to the call-back button
-		holder.callBack.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (!(v.getTag() instanceof Call))
-					return;
-
-				Call call = (Call) v.getTag();
-				CallListAdapter.this.preDial(call.getNumber(), v.getContext());
-
-				RepliedCall repliedCall = call.getRepliedCall();
-				if (repliedCall == null) {
-					repliedCall = new RepliedCall(call.getNumber());
-					call.setRepliedCall(repliedCall);
-				} else
-					repliedCall.setCallTimeToNow();
-				call.save();
-			}
-		});
-
 		return convertView;
 	}
 
-	private void preDial(String number, Context context) {
-		try {
-			// Open the dialer and pre-dial the number
-			Intent callIntent = new Intent(Intent.ACTION_DIAL);
-			callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			callIntent.setData(Uri.parse("tel:" + number));
-			context.startActivity(callIntent);
-		} catch (ActivityNotFoundException activityException) {
-			Log.e(CallListAdapter.TAG, "Dial failed", activityException);
+	/**
+	 * TODO comment
+	 */
+	private static class CallBackClickListener implements OnClickListener {
+		private final CallHolder holder;
+
+		public CallBackClickListener(CallHolder holder) {
+			this.holder = holder;
+		}
+
+		@Override
+		public void onClick(View v) {
+			// Dial the number
+			this.preDial(this.holder.call.getNumber(), v.getContext());
+
+			// Change state of call to called-back
+			RepliedCall repliedCall = this.holder.call.getRepliedCall();
+			if (repliedCall == null) {
+				repliedCall = new RepliedCall(this.holder.call.getNumber());
+				this.holder.call.setRepliedCall(repliedCall);
+			} else
+				repliedCall.setCallTimeToNow();
+			this.holder.call.save();
+		}
+
+		private void preDial(String number, Context context) {
+			try {
+				// Open the dialer and pre-dial the number
+				Intent callIntent = new Intent(Intent.ACTION_DIAL);
+				callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				callIntent.setData(Uri.parse("tel:" + number));
+				context.startActivity(callIntent);
+			} catch (ActivityNotFoundException activityException) {
+				Log.e(CallListAdapter.TAG, "Dial failed", activityException);
+			}
 		}
 	}
 }

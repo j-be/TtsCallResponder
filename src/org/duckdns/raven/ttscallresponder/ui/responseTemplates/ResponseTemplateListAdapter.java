@@ -2,6 +2,8 @@ package org.duckdns.raven.ttscallresponder.ui.responseTemplates;
 
 import java.util.List;
 
+import lombok.Getter;
+
 import org.duckdns.raven.ttscallresponder.R;
 import org.duckdns.raven.ttscallresponder.dataAccess.SettingsManager;
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
@@ -50,10 +52,11 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 	 * used as tag for the view.
 	 */
 	static class ResponseTemplateHolder {
-		ResponseTemplate responseTemplate;
-		TextView title;
-		TextView text;
-		ImageButton setAsCurrent;
+		@Getter
+		private ResponseTemplate responseTemplate;
+		private TextView title;
+		private TextView text;
+		private ImageButton setAsCurrent;
 	}
 
 	/**
@@ -73,13 +76,18 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 			// Inflate the layout
 			convertView = this.parent.getLayoutInflater().inflate(R.layout.widget_response_template, parent, false);
 			holder = new ResponseTemplateHolder();
+			convertView.setTag(holder);
 
 			// Gain access to UI elements
 			holder.title = (TextView) convertView.findViewById(R.id.label_responseTemplateTitle);
 			holder.text = (TextView) convertView.findViewById(R.id.label_responseTemplateText);
 			holder.setAsCurrent = (ImageButton) convertView.findViewById(R.id.button_setResponseTemplateAsCurrent);
 
-			convertView.setTag(holder);
+			// Add listener to the "Set as active" button
+			holder.setAsCurrent.setOnClickListener(new SetAsCurrentListener(holder, this.settingsManager, this));
+
+			// WORKAROUND: OnItemClickListener in Listview won't work without it
+			holder.setAsCurrent.setFocusable(false);
 		} else
 			holder = (ResponseTemplateHolder) convertView.getTag();
 
@@ -103,21 +111,28 @@ public class ResponseTemplateListAdapter extends ArrayAdapter<ResponseTemplate> 
 		else
 			holder.setAsCurrent.setImageResource(R.drawable.btn_check_off_disable);
 
-		// WORKAROUND: OnItemClickListener in Listview won't work without it
-		holder.setAsCurrent.setFocusable(false);
-		// Add the ResponseTemplate's ID to the "Set as active" button
-		holder.setAsCurrent.setTag(Integer.valueOf(holder.responseTemplate.getId()));
-		// Add listener to the "Set as active" button
-		holder.setAsCurrent.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Set current ResponseTemplate as the active one
-				ResponseTemplateListAdapter.this.settingsManager.setCurrentResponseTemplateId((Integer) v.getTag());
-				// Issue re-rendering due to active ResponseTemplate change
-				ResponseTemplateListAdapter.this.notifyDataSetChanged();
-			}
-		});
-
 		return convertView;
+	}
+
+	private static class SetAsCurrentListener implements OnClickListener {
+		private final ResponseTemplateHolder holder;
+		private final SettingsManager settingsManager;
+		private final ResponseTemplateListAdapter adapter;
+
+		public SetAsCurrentListener(ResponseTemplateHolder holder, SettingsManager settingsManager,
+				ResponseTemplateListAdapter adapter) {
+			this.holder = holder;
+			this.settingsManager = settingsManager;
+			this.adapter = adapter;
+		}
+
+		@Override
+		public void onClick(View v) {
+			// Set current ResponseTemplate as the active one
+			this.settingsManager.setCurrentResponseTemplateId(this.holder.responseTemplate.getId());
+			// Issue re-rendering due to active ResponseTemplate change
+			this.adapter.notifyDataSetChanged();
+		}
+
 	}
 }
