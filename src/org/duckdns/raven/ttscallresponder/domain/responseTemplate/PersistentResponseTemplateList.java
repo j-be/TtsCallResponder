@@ -8,6 +8,7 @@ import java.util.Vector;
 import android.widget.BaseAdapter;
 
 import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Query;
 
 /**
  * Persistent list for {@link ResponseTemplate} objects.
@@ -48,6 +49,6 @@ public class PersistentResponseTemplateList {
 	}
 
 	public static ResponseTemplate getTemplateWithId(int id) {
-		return Entity.query(ResponseTemplate.class).where("_id=" + id).execute();
+		return Entity.query(ResponseTemplate.class).where(Query.eql("_id", id)).execute();
 	}
 }

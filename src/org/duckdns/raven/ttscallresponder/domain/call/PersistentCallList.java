@@ -8,6 +8,7 @@ import java.util.Vector;
 import android.widget.BaseAdapter;
 
 import com.roscopeco.ormdroid.Entity;
+import com.roscopeco.ormdroid.Query;
 
 /**
  * Persistent list for {@link Call} objects.
@@ -49,7 +50,6 @@ public class PersistentCallList {
 	 */
 	public static int callReceived(Call call) {
 		int ret = -2;
-		String whereClause = null;
 		Call existingCall = null;
 		RepliedCall previousRepliedCall = null;
 
@@ -57,10 +57,8 @@ public class PersistentCallList {
 		if (call == null)
 			return ret;
 
-		whereClause = "number='" + call.getNumber() + "'";
-
 		// Check if caller already called before and if so just update the time
-		existingCall = Entity.query(Call.class).where(whereClause).execute();
+		existingCall = Entity.query(Call.class).where(Query.eql("number", call.getNumber())).execute();
 		if (existingCall == null)
 			ret = call.save();
 		// Else add a new call
@@ -70,7 +68,7 @@ public class PersistentCallList {
 		}
 
 		// Delete if caller was previously called back
-		previousRepliedCall = Entity.query(RepliedCall.class).where(whereClause).execute();
+		previousRepliedCall = Entity.query(RepliedCall.class).where(Query.eql("number", call.getNumber())).execute();
 		if (previousRepliedCall != null)
 			previousRepliedCall.delete();
 
@@ -86,7 +84,7 @@ public class PersistentCallList {
 	 *         number, or null else
 	 */
 	public static RepliedCall getRepliedCallByNumber(String number) {
-		return Entity.query(RepliedCall.class).where("number=\'" + number + "\'").execute();
+		return Entity.query(RepliedCall.class).where(Query.eql("number", number)).execute();
 	}
 
 	public static void registerAdapter(BaseAdapter adapter) {
