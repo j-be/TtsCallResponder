@@ -2,6 +2,7 @@ package org.duckdns.raven.ttscallresponder.domain.call;
 
 import lombok.Getter;
 
+import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Table;
 
 /**
@@ -18,7 +19,8 @@ import com.roscopeco.ormdroid.Table;
 public class Call extends RepliedCall {
 	// Number of times this number called
 	@Getter
-	public int callCount = 0;
+	@Column(forceMap = true)
+	private int callCount = 0;
 
 	/**
 	 * DO NOT USE! Needed for ORMDroid<br>

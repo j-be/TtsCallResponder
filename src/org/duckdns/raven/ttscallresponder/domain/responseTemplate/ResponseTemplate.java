@@ -3,6 +3,7 @@ package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
 
@@ -23,15 +24,18 @@ public class ResponseTemplate extends Entity {
 	// The template's title
 	@Getter
 	@Setter
-	public String title = "";
+	@Column(forceMap = true)
+	private String title = "";
 	// The template's text
 	@Getter
 	@Setter
-	public String text = "";
+	@Column(forceMap = true)
+	private String text = "";
 	// ID of the calendar linked to the template
 	@Getter
 	@Setter
-	public long calendarId = -1;
+	@Column(forceMap = true)
+	private long calendarId = -1;
 
 	/**
 	 * Extended constructor. Does NOT assign a valid ID.

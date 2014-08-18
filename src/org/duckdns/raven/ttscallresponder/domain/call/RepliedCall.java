@@ -5,6 +5,7 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.roscopeco.ormdroid.Column;
 import com.roscopeco.ormdroid.Entity;
 import com.roscopeco.ormdroid.Table;
 
@@ -26,10 +27,12 @@ public class RepliedCall extends Entity {
 	// The phone number
 	@Getter
 	@Setter
-	public String number = "";
+	@Column(forceMap = true)
+	private String number = "";
 	// Time the call was started
 	@Getter
-	public Date callTime = null;
+	@Column(forceMap = true)
+	private Date callTime = null;
 
 	/**
 	 * DO NOT USE! Needed for ORMDroid<br>
