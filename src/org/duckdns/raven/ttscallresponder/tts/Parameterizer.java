@@ -45,6 +45,6 @@ public class Parameterizer {
 		DateFormat dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT, locale);
 		newText = newText.replaceAll("#event_end#", dateFormat.format(new Date(event.getEndTime())));
 
-		return new ResponseTemplate(-1, responseTemplate.getTitle(), newText, responseTemplate.getCalendarId());
+		return new ResponseTemplate(responseTemplate.getTitle(), newText, responseTemplate.getCalendarId());
 	}
 }

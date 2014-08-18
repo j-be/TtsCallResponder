@@ -47,8 +47,7 @@ public class ResponseTemplate extends Entity {
 	 * @param calendarId
 	 *            the ID of the calendar to parameterize the template with
 	 */
-	public ResponseTemplate(int _id, String title, String text, long calendarId) {
-		this._id = _id;
+	public ResponseTemplate(String title, String text, long calendarId) {
 		this.title = title;
 		this.text = text;
 		this.calendarId = calendarId;
@@ -58,7 +57,7 @@ public class ResponseTemplate extends Entity {
 	 * Default constructor. Initializes an empty template.
 	 */
 	public ResponseTemplate() {
-		this(-1, "", "", -1);
+		this("", "", -1);
 	}
 
 	/**
