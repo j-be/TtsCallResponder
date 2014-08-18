@@ -44,6 +44,15 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 	// Contains all currently selected items
 	private final Set<ModifyableListItem> selectedItems = new HashSet<ModifyableListItem>();
 
+	// True, if activity is in selection mode
+	private boolean selectionMode = false;
+	// The delete button
+	private View deleteButton = null;
+	// The add button
+	private View addButton = null;
+	// Add button visibility
+	private int addButtonVisibility = View.VISIBLE;
+
 	/**
 	 * Getter for the displayed list
 	 * 
@@ -111,7 +120,23 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 			ActivityModifyableList.this.selectedItems.add(item);
 		}
 
+		this.setSelectionMode(!this.selectedItems.isEmpty());
 		this.adapter.notifyDataSetChanged();
+	}
+
+	private void setSelectionMode(boolean newMode) {
+		if (newMode == this.selectionMode)
+			return;
+
+		if (newMode) {
+			this.deleteButton.setVisibility(View.VISIBLE);
+			this.addButton.setVisibility(View.GONE);
+		} else {
+			this.deleteButton.setVisibility(View.GONE);
+			this.addButton.setVisibility(this.addButtonVisibility);
+		}
+		this.selectionMode = newMode;
+
 	}
 
 	public Set<ModifyableListItem> getSelectedItems() {
@@ -127,6 +152,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 			item.delete();
 
 		this.selectedItems.clear();
+		this.setSelectionMode(false);
 	}
 
 	/* ----- Lifecycle ----- */
@@ -149,10 +175,10 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
-				if (ActivityModifyableList.this.selectedItems.isEmpty())
-					ActivityModifyableList.this.onItemClick(view);
-				else
+				if (ActivityModifyableList.this.selectionMode)
 					ActivityModifyableList.this.onItemLongClick(view);
+				else
+					ActivityModifyableList.this.onItemClick(view);
 			}
 		});
 
@@ -166,7 +192,8 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		});
 
 		// Set listener for the delete button
-		this.findViewById(R.id.button_deleteResponseTemplate).setOnClickListener(new OnClickListener() {
+		this.deleteButton = this.findViewById(R.id.button_deleteResponseTemplate);
+		this.deleteButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ActivityModifyableList.this.onDeleteClick(v);
@@ -174,13 +201,15 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 		});
 
 		// Set the listener for the Add button
-		View addButton = this.findViewById(R.id.button_addResponseTemplate);
+		this.addButton = this.findViewById(R.id.button_addResponseTemplate);
 		OnClickListener onAddClickListener = this.getOnAddClickListener();
 		if (onAddClickListener != null)
-			addButton.setOnClickListener(onAddClickListener);
-		else
+			this.addButton.setOnClickListener(onAddClickListener);
+		else {
+			this.addButtonVisibility = View.GONE;
 			// Hide Add button there is no listener for it.
-			addButton.setVisibility(View.GONE);
+			this.addButton.setVisibility(this.addButtonVisibility);
+		}
 
 		listView.setAdapter(this.adapter);
 	}
@@ -199,9 +228,10 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 
 		switch (id) {
 		case R.id.action_done:
-			if (!this.selectedItems.isEmpty()) {
+			if (this.selectionMode) {
 				// Deselect all items if at least one is selected, ...
 				this.selectedItems.clear();
+				this.setSelectionMode(false);
 				this.adapter.notifyDataSetChanged();
 				return true;
 			} else
@@ -221,6 +251,7 @@ public abstract class ActivityModifyableList<ModifyableListItem extends Entity> 
 
 		// Make sure no item is selected whenever the activity is (re)opened
 		this.selectedItems.clear();
+		this.setSelectionMode(false);
 	}
 
 	@Override
