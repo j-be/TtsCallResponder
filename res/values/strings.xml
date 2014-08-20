@@ -6,7 +6,6 @@
     <string name="title_activity_response_template_list">Response templates</string>
     <string name="title_activity_response_template_editor">Response template editor</string>
     <string name="title_activity_activity_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_done">Done</string>
@@ -24,14 +23,10 @@
     <string name="label_placeholder_text_long">&quot;Short version of a long bla blad blas blag blah blaj blak blal blaq blaw blae&quot;</string>
 
     <string name="description_call_back">Call back</string>
-    <string name="label_placeholder_number">X</string>
 
     <string name="button_add">Add</string>
     <string name="button_delete">Delete</string>
     <string name="button_set_template_as_current">Set template as current</string>
-
-    <string name="menu_item_test_settings">Test settings</string>
-    <string name="menu_item_clear_list">Clear list</string>
 
     <string name="switch_auto_respond">Take calls:</string>
 
@@ -39,7 +34,6 @@
     <string name="hint_text">Type your response text here</string>
 
     <string name="header_main_response_templates">Response template list</string>
-    <string name="header_main_autoresponder">Auto Responder</string>
     <string name="header_callers">Call list</string>
 
     <string-array name="slider_speech_rate_summaries">

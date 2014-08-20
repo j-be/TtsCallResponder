@@ -8,14 +8,8 @@
     <!-- TTS Settings defaults -->
     <item type="fraction" format="float" name="default_settings_tts_engine_speech_rate">0.5</item>
     <item type="fraction" format="float" name="default_settings_tts_engine_pitch">0.5</item>
-    <string name="default_settings_tts_engine_voice">eng</string>
 
     <!-- Other Settings Keys -->
     <string name="key_settings_tts_delay">receiver_preTtsSpeakDelay</string>
-    <string name="key_settings_current_response_template">receiver_currentResponseTemplate</string>
-
-    <!-- Other Settings defaults -->
-    <item type="integer" format="integer" name="default_settings_tts_delay">1000</item>
-    <item type="integer" format="integer" name="default_settings_current_response_template">-1</item>
 
 </resources>
