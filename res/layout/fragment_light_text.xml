@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textColor="@color/textLightColor"
-    android:text="TEXT"
+    android:text="@string/label_placeholder_text"
     android:textStyle="italic"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:clickable="false" >

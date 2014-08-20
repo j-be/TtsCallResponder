@@ -17,9 +17,13 @@
     <string name="label_current_response_template">Active:</string>
     <string name="label_current_event">Event:</string>
     <string name="label_current_event_end">ends at </string>
+    <string name="label_undo">Undo</string>
+    <string name="label_deleted">Items deleted.</string>
 
     <string name="label_placeholder_text">&quot;TODO&quot;</string>
     <string name="label_placeholder_text_long">&quot;Short version of a long bla blad blas blag blah blaj blak blal blaq blaw blae&quot;</string>
+
+    <string name="description_call_back">Call back</string>
     <string name="label_placeholder_number">X</string>
 
     <string name="button_add">Add</string>

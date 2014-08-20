@@ -59,7 +59,7 @@
             android:layout_alignParentRight="true"
             android:onClick="onUndoClick"
             android:drawableLeft="@android:drawable/ic_menu_revert"
-            android:text="Undo"
+            android:text="@string/label_undo"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_alignBaseline="@id/undobar_button"
             android:layout_marginLeft="@dimen/activity_main_small_spacing"
             android:gravity="center_vertical"
-            android:text="Items deleted."
+            android:text="@string/label_deleted"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 

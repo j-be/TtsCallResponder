@@ -10,7 +10,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="NAME_HERE" />
+            android:text="@string/label_placeholder_text" />
 
         <ImageButton
             android:id="@+id/button_callBack"
@@ -18,14 +18,14 @@
             android:layout_gravity="right|center_vertical"
             android:layout_alignParentRight="true"
             style="@style/CallBackButton"
-            android:contentDescription="Call back" />
+            android:contentDescription="@string/description_call_back" />
 
         <TextView
             android:id="@+id/label_callTime" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
             android:layout_below="@id/label_caller"
-            android:text="TIME_HERE" 
+            android:text="@string/label_placeholder_text"
             android:textColor="@color/textLightColor"
             android:layout_marginLeft="@dimen/activity_main_big_spacing" />
 </RelativeLayout>

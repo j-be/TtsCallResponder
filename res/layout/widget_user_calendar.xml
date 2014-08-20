@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/activity_small_margin"
         android:layout_marginRight="@dimen/activity_small_margin"
-        android:text="NAME_HERE"
+        android:text="@string/label_placeholder_text"
         android:textAppearance="?android:attr/textAppearanceMedium" >
     </TextView>
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_small_margin"
         android:layout_marginRight="@dimen/activity_small_margin"
-        android:text="TYPE HERE"
+        android:text="@string/label_placeholder_text"
         android:textColor="#555" />
 
     <View
