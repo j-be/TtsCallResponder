@@ -79,7 +79,7 @@ public class SettingsManager extends TtsSettingsManager {
 	public void setCurrentResponseTemplateId(int id) {
 		SharedPreferences.Editor editor = this.settings.edit();
 		editor.putInt(SettingsManager.key_settings_current_response_template, id);
-		editor.commit();
+		editor.apply();
 		Log.i(SettingsManager.TAG, "Current Response Template set to " + id);
 	}
 
@@ -110,7 +110,7 @@ public class SettingsManager extends TtsSettingsManager {
 		Time now = new Time();
 		now.setToNow();
 		editor.putLong(SettingsManager.key_settings_current_response_template_last_changed, now.toMillis(false));
-		editor.commit();
+		editor.apply();
 	}
 
 	/* ----- DEBUG ----- */
