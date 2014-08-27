@@ -73,8 +73,9 @@ public class ActivityResponseTemplateEditor extends Activity {
 
 	private void showCalendarSelector() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		// Retrieve the id when the calendar is selected
 		builder.setSingleChoiceItems(this.userCalendarListAdapter, 0, new DialogInterface.OnClickListener() {
-			// Retrieve the id when the calendar is selected
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				long calendarId = ActivityResponseTemplateEditor.this.userCalendarListAdapter.getItemId(which);
@@ -83,16 +84,17 @@ public class ActivityResponseTemplateEditor extends Activity {
 				ActivityResponseTemplateEditor.this.labelSelectCalendarButton();
 				dialog.dismiss();
 			}
-		})
+		});
 
 		// Dismiss dialog on "Cancel" button
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int whichButton) {
 						dialog.dismiss();
 					}
 				});
+
+		// Show the dialog
 		builder.show();
 	}
 
