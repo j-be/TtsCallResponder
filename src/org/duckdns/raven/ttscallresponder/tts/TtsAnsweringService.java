@@ -18,6 +18,8 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.roscopeco.ormdroid.ORMDroidApplication;
+
 /**
  * This Service fetches the ResponseTemplate and reads it using a TTS engine.
  * After finishing reading the service will stop itself. Do NOT bind to this
@@ -40,6 +42,9 @@ public class TtsAnsweringService extends Service implements OnInitListener, OnUt
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i(TtsAnsweringService.TAG, "Enter onStartCommand");
 		super.onStartCommand(intent, flags, startId);
+
+		// Initialize ORMDroid - just in case
+		ORMDroidApplication.initialize(this.getApplicationContext());
 
 		// Fetch the ResponseTemplate
 		SettingsManager settingsManager = new SettingsManager(this);
