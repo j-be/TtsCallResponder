@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
 import java.util.ArrayList;
@@ -22,8 +27,6 @@ import android.util.Log;
  * fetch the list of calendars, as well as single events from any calendar.
  * 
  * Requires: android.permission.READ_CALENDAR
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

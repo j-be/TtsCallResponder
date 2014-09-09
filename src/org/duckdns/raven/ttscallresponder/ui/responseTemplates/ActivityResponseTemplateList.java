@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.responseTemplates;
 
 import java.util.List;
@@ -21,8 +26,6 @@ import android.widget.ListView;
  * management. It provides a {@link ListView} containing all
  * {@link ResponseTemplate}s, as well as methods for adding, deleting and
  * editing them.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

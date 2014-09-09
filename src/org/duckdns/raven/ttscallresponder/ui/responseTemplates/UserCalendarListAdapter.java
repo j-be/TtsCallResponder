@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.responseTemplates;
 
 import java.util.List;
@@ -20,8 +25,6 @@ import android.widget.TextView;
  * {@link ActivityResponseTemplateList}. This only creates the the {@link View}
  * for the {@link TtsParameterCalendar} - the logic is handled by Android
  * internally.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

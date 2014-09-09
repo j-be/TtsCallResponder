@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.fragments;
 
 import java.util.Date;

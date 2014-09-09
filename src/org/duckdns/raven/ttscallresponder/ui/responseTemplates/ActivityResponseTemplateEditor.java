@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.responseTemplates;
 
 import org.duckdns.raven.ttscallresponder.R;
@@ -35,8 +40,6 @@ import android.widget.Toast;
  * <li>Meaning: The ID of the {@link ResponseTemplate} to edit</li>
  * <li>Default: -1, means "create a new template"</li>
  * </ul>
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

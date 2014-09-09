@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.tts;
 
 import org.duckdns.raven.ttscallresponder.domain.call.Call;
@@ -13,8 +18,6 @@ import android.util.Log;
  * BroadcastReceiver which (if enabled) starts a {@link TtsAnsweringService}
  * whenever the phonestate changes to
  * {@link TelephonyManager#EXTRA_STATE_RINGING}.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

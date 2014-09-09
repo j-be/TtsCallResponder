@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.settings;
 
 import java.util.ArrayList;
@@ -19,8 +24,6 @@ import android.view.MenuItem;
  * This activity is the Settings screen of the app. Most of the logic is handled
  * by Android's {@link PreferenceFragment}. To add/remove settings edit
  * res/xml/preferences.xml.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

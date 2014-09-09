@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.answeredCalls;
 
 import java.util.List;
@@ -17,8 +22,6 @@ import android.widget.ArrayAdapter;
 
 /**
  * This {@link Activity} provides a list of answered calls to the user.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

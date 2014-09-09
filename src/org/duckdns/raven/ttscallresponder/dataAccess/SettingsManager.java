@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
 import org.duckdns.raven.ttscallresponder.domain.responseTemplate.ResponseTemplate;
@@ -10,8 +15,6 @@ import android.util.Log;
 
 /**
  * Helper class for accessing all settings relevant to the TtsCallResponder app.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

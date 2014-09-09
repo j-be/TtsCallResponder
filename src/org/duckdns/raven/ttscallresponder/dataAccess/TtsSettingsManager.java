@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
 import java.util.Locale;
@@ -9,8 +14,6 @@ import android.preference.PreferenceManager;
 
 /**
  * Helper class for accessing the settings relevant to the TTS engine only
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

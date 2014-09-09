@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.dataAccess;
 
 import android.content.ContentResolver;
@@ -11,8 +16,6 @@ import android.provider.ContactsContract.PhoneLookup;
  * contacts database.
  * 
  * Requires: android.permission.READ_CONTACTS
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

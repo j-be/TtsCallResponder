@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.domain.call;
 
 import java.util.Date;
@@ -13,8 +18,6 @@ import com.roscopeco.ormdroid.Table;
  * POJO representing a call reply.
  * 
  * TODO comment getters/setters
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

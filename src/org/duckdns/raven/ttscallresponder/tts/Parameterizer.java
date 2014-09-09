@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.tts;
 
 import java.text.DateFormat;
@@ -10,8 +15,6 @@ import org.duckdns.raven.ttscallresponder.domain.userData.TtsParameterCalendarEv
 /**
  * This class is able to parameterize {@link ResponseTemplate}s according to
  * current events from calendar. Use it statically!
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

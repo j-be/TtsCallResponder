@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.activities;
 
 import java.util.HashSet;
@@ -27,8 +32,6 @@ import com.roscopeco.ormdroid.Entity;
  * management. It provides a {@link ListView} containing all
  * {@link ResponseTemplate}s, as well as methods for adding, deleting and
  * editing them.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.tts;
 
 import java.util.HashMap;
@@ -24,8 +29,6 @@ import com.roscopeco.ormdroid.ORMDroidApplication;
  * This Service fetches the ResponseTemplate and reads it using a TTS engine.
  * After finishing reading the service will stop itself. Do NOT bind to this
  * service! Do NOT try to stop the service manually!
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

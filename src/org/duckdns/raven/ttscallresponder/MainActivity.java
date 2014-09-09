@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder;
 
 import org.duckdns.raven.ttscallresponder.ui.fragments.AutoResponderCtrlFragment;
@@ -18,8 +23,6 @@ import com.roscopeco.ormdroid.ORMDroidApplication;
  * This Activity provides the entry point of the app. It is used to start and
  * stop the responder service, access the template management, access the list
  * of answered calls and access the settings.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  */

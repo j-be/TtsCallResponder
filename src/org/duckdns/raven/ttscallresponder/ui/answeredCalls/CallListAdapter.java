@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.ui.answeredCalls;
 
 import java.text.DateFormat;
@@ -29,8 +34,6 @@ import android.widget.TextView;
 /**
  * {@link ArrayAdapter} for adapting a {@link List} of {@link Call}s to a
  * {@link ListView}. This is used in {@link ActivityAnsweredCallList}.
- * 
- * FIXME: License
  * 
  * @author Juri Berlanda
  * 

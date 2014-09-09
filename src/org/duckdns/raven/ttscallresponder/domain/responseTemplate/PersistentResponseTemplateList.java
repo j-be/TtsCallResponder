@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2014 Juri Berlanda
+ * 
+ * Licensed under the MIT License (see LICENSE.txt)
+*/
 package org.duckdns.raven.ttscallresponder.domain.responseTemplate;
 
 import java.util.HashSet;
@@ -12,8 +17,6 @@ import com.roscopeco.ormdroid.Query;
 
 /**
  * Persistent list for {@link ResponseTemplate} objects.
- * 
- * FIXME: License
  * 
  * @see AbstractPersistentList
  * 
