@@ -15,8 +15,6 @@ import com.roscopeco.ormdroid.Table;
 /**
  * POJO representing a response template.
  * 
- * TODO comment getters/setters
- * 
  * @author Juri Berlanda
  * 
  */

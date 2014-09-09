@@ -17,8 +17,6 @@ import com.roscopeco.ormdroid.Table;
 /**
  * POJO representing a call reply.
  * 
- * TODO comment getters/setters
- * 
  * @author Juri Berlanda
  * 
  */
@@ -112,8 +110,6 @@ public class RepliedCall extends Entity {
 	public String toString() {
 		return "Call from: " + this.getNumber();
 	}
-
-	/* ----- Getters / Setters ----- */
 
 	/**
 	 * Sets the call-time to "now".

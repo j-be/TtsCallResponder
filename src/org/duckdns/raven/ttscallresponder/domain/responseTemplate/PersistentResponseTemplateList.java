@@ -18,8 +18,6 @@ import com.roscopeco.ormdroid.Query;
 /**
  * Persistent list for {@link ResponseTemplate} objects.
  * 
- * @see AbstractPersistentList
- * 
  * @author Juri Berlanda
  * 
  */

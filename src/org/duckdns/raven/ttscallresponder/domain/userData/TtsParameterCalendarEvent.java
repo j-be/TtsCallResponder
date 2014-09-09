@@ -15,8 +15,6 @@ import android.content.ContentResolver;
  * POJO representing a event from a calendar for parameterization of a
  * {@link ResponseTemplate}
  * 
- * TODO comment getters/setters
- * 
  * @author Juri Berlanda
  * 
  */
