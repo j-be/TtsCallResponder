@@ -66,13 +66,7 @@ public class ActivityAnsweredCallList extends ActivityModifyableList<Call> {
 	 */
 	@Override
 	protected OnClickListener getOnAddClickListener() {
-		// REMOVE Debug
-		return new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PersistentCallList.callReceived(new Call("Mr. " + PersistentCallList.getList().size()));
-			}
-		};
+		return null;
 	}
 
 	/**

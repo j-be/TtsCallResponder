@@ -7,8 +7,8 @@ Licensed under the MIT License (see LICENSE.txt)
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.duckdns.raven.ttscallresponder"
-    android:versionCode="95"
-    android:versionName="0.9.5-rc1" >
+    android:versionCode="100"
+    android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
