@@ -1,0 +1,197 @@
+# Overview #
+
+The TTS call responder provides an Android app which is able to take calls for you and speak a previously entered text using Android's built-in TTS engine.
+
+The app is designed to support Android 4.0 and above is licensed under the [http://opensource.org/licenses/MIT MIT License].
+
+Fork me on [https://github.com/j-be/TtsCallResponder Github]!
+
+# Features #
+
+[[Datei:TtsCallResponder_kickoff-requirements.png|200px|thumb|right|Requirements to the app]]
+
+This is [https://www.ims.tuwien.ac.at/topics/348 bachelor thesis *348 from Interactive Media Systems, Vienna University of Technology].
+
+## Working ##
+1. Call
+1.1. Answer call
+1.1. Read the text using the TTS engine
+1.1. List answered calls (persistent)
+1.1. Resolve number to name from contacts in list of answered calls
+1.1. Dial number to reply call
+1. Response template
+1.1. CRUD (Create/Read/Update/Delete) operations on a list of response templates
+1.1. Select a particular response template as currently used
+1.1. Parameterize the templates with calendar data (currently title and endtime)
+1.1. Choose a particular calendar to parameterize with
+1. TTS engine parameterization
+1.1. Speed
+1.1. Pitch
+1.1. Language
+1. Other stuff
+1.1. Notification in taskbar for quick access
+
+## Missing / Not yet working ##
+1. Softwre In-Call audio injection - external Hardware loopback from Speaker to Microphone is needed!
+1. Documentation
+
+## Nice to have ##
+1. Homescreen Widget
+
+# Current challenges #
+
+## Incall audio injection ##
+
+1. **Working prototype exists**: Hardware loopback using a Headset plug which has headphone-out shortened to microphone-in
+1.1. Pro: No root required
+1.1. Pro: Works on all hardware platforms which have headset plug (so virtually ALL platforms)
+1.1. Pro: May also be used to automatically enable the agent since a loopback is quite easily detectable in software
+1.1. Con: Special hardware needed (the plug itself)
+1.1. Con: The caller hears him-/herself through the loopback
+
+I didn't find any way yet to inject audio into the call using any Software method. What I tried so far:
+
+1. API does not allow audio injection during calls<br/> <strike> Android API's [http://developer.android.com/reference/android/media/MediaRouter.html MediaRouter]
+1.1. Pro: standard approach
+1.1. Con: may restrict compatibility to API level 18 (Android 4.3) and above
+1.1. Con: not sure yet if this provides the needed functionality</strike>
+
+1. Leveraging ALSA (which is not even running on all Android phones) requires changes to Android's Kernel and/or AudioFlinger and therefore custom ROM - see [http://stackoverflow.com/questions/10544992/call-audio-stream-modification-in-android-4-0-ics here] <br/> <strike>ALSA on Qualcomm MSM series (they have kind of a special loopback implemented in the ALSA kernel driver which allows to loopback media playback to the in-call audio stream)
+1.1. Pro: Could provide support for at least Qualcomm which is anyway one of the (if not the) most used platform for Smartphones
+1.1. Con: Restricts compatibility to Qualcomm based devices
+1.1. Con: Requires root </strike>
+
+# Where to get it #
+
+You can download a precompiled APK package [https://raven.duckdns.org/TtsCallResponder-v1.0.apk here]
+
+| Date | Version | MD5 |
+| ---- | ------- | --- |
+| 11th September 2014 | 1.0 - Certificate Release | cd995543323b9b08f8221af16d81832b |
+
+# Usage #
+
+I think the usage is pretty straight forward. But the following functionallity might be unintuitive:
+
+## Parameters ##
+
+You can parameterize your response templates with the following parameters:
+1. ***event_end*** is the time when the current event in the selected calendar ends
+1. ***event_title*** is the title of the current event in the selected calendar
+
+## Closing the app ##
+
+You can close the app completely by pressing "Back" button on your Android device twice within 3 seconds while being in the app's main screen. This will both disable the automatic call responding and free all resources used by the app.
+
+## Delete items from list (i.e. call- or template-list) ##
+
+* Long-press on the item you want to delete - the list will switch to _selection mode_
+* (Optional) Select more items if you want to delete them with short- and/or long-press
+* Hit "Delete" button in bottom bar - the list will switch away from _selection mode_
+
+**Hint:** To leave _selection mode_ without deleting any item you can either unselect all items, or use the "Checkmark icon" in top bar.
+
+# Build from source #
+
+## Dependencies ##
+
+## 3<sup>rd</sup> party libraries ##
+
+The app currently depends on the following third party libraries:
+
+{| class#"wikitable" border#"1"
+|-
+! Name
+! License
+! Link
+|-
+| AndroidSliderPreference
+| MIT
+| [https://github.com/jayschwa/AndroidSliderPreference AndroidSliderPreference @GitHub]
+|-
+| ORMDroid
+| Apache 2.0
+| [https://github.com/roscopeco/ormdroid ORMDroid @GitHub]
+|-
+| Lombok
+| MIT
+| [http://projectlombok.org/ Project Lombok hompage]
+|}
+
+## Android SDK ##
+
+What is needed to compile:
+
+1. Android SDK with API 20 (or higher)
+1. Android's "Support Library" (for downwards compatibility)
+
+## Build instructions ##
+
+At Google I/O 2013 a new IDE for Android development was announced - [http://developer.android.com/sdk/installing/studio.html _Android Studio_]. While still being Beta (as of August 28, 2014) it proved for me to work very well. The main advantage over Eclipse is the buildsystem - [http://www.gradle.org/ _Gradle_] - which offers a binding to Maven repositories. This avoids the usage of (virtually) any library binary inside the project folder - they are fetched on demand.
+
+Android Studio will become the "be the official Android IDE once it's ready"<sup>[http://developer.android.com/sdk/installing/studio.html]</sup>.
+
+## Get the sourcecode ##
+
+* Change into whatever your workspace is <pre>cd /PATH/TO/YOUR/WORKSPACE</pre>
+* Clone the sources of TTS call responder, including dependencies<br /><pre>git clone --recursive git@github.com:j-be/TtsCallResponder-Gradle.git</pre>
+* Change into TtsCallResponder-Gradle <pre>cd TtsCallResponder-Gradle</pre>
+
+## Android Studio ##
+
+* Download [http://developer.android.com/sdk/installing/studio.html Android Studio]
+* Start it <pre>PATH/TO/android-studio/bin/studio.sh</pre>
+* Open **TtsCallResponder-Gradle/build.gradle**
+* Build
+
+## Gradle (Console) ##
+
+* Download [https://services.gradle.org/distributions/gradle-1.12-bin.zip Gradle 1.12] - **Do NOT use Gradle 2.0! Only 1.1x versions are compatible with the Android plugin (as of August 28, 2014)**
+* Add Gradle binary to your path <pre>export PATH#$PATH:~/PATH/TO/gradle/bin</pre>
+* Tell gradle where to find the Android SDK <br /> **Either** set **ANDROID_HOME** environment variable... <pre>export ANDROID_HOME#/PATH/TO/ANDROID/sdk/</pre><br /> **... or** add the following line to Gradle's **local.properties** file in TtsCallResponder-Gradle directory (create the file if it is not existing) <pre>sdk.dir#/PATH/TO/ANDROID/sdk</pre>
+* Build <pre>gradle build</pre>
+
+You can find the .apk file in **TtsCallResponder/build/outputs/apk/** folder.
+
+## Android Developer Tools Eclipse bundle (Deprecated) ##
+
+Even though Google focuses on Android Studio (at leats that's what it sounds like<sup>[http://developer.android.com/sdk/installing/studio.html]</sup>), there are still Android developers which use Eclipse. I recommend everyone to switch over to Android Studio. I still provide Eclipse support via project files, but it will be removed some time in the future.
+
+* Download the Android Android Developer Tools Eclipse bundle (a.k.a ADT bundle) [http://developer.android.com/sdk here].
+* Download and install [http://projectlombok.org/setup/android.html Project Lombok]. Don't forget to **install** it to your Android ADT Eclipse!
+* Start Eclipse <pre>PATH/TO/ADT-BUNDLE/eclipse/eclipse</pre>
+* Import  the following projects from TtsCallResponder-Gradle into Eclise:
+** TtsCallResponder
+** ormdroid
+** AndroidSliderPreference
+* Right click on the TtsCallResponder project and from **Android Tools** select **Add Support Library...**
+* Build
+
+# Troubleshoot #
+
+**Q: The app crashes when I try to open the settings. What's wrong?**
+
+A: Most probably the app was built without [https://github.com/jayschwa/AndroidSliderPreference AndroidSliderPreference]. Find a tutorial about how to add an external library to your Android Eclipse project either in the [https://github.com/jayschwa/AndroidSliderPreference/blob/master/README.md README.md of AndroidSliderPreference] or [http://www.vogella.com/tutorials/AndroidLibraryProjects/article.html*tutorial_library_flag here].
+
+# External references #
+
+To write this app I used the following external resources:
+
+1.Libraries:
+1.1. [https://github.com/jayschwa/AndroidSliderPreference Github - Jay Weisskopf's AndroidSliderPreference]: the slider preference used in the settings screen for setting the pitch and the speed of the TTS engine
+1.1. [http://projectlombok.org/ Project Lombok]: a very nice Java annotation pre-processor for POJO objects, which can generate Getters, Setters and a lot of other stuff at compile time using only annotations.
+1.1. [https://github.com/roscopeco/ormdroid ORMDroid]: a ORM (Object-Relational Mapping) library used as persistence framwork. Slim, easy to use, yet powerful enough for such small apps as this one.
+
+1. Code snippets:
+1.1. [http://stackoverflow.com/questions/15481524/how-to-programatically-answer-end-a-call-in-android-4-1 Stackoverflow - question 15481524]: a codesnippet on how to answer a call in Android 4.x without needing root access.
+
+1. Artwork:
+1.1. Some icons from Android SDK were extracted since the SDK does not provide direct access to them. These icons are:
+1.1.1. The "settings" icon in Main activity's menu (top bar)
+1.1.1. The "checkmark" icons used in Respsonse template activity (each template, top bar)
+1.1.1. The "call" icon used in the list of answered calls (each answered call)
+1.1.1. The "clear list" icon used in the list of answered calls (top bar)
+
+1. Tutorials:
+1.1. [http://www.vogella.com/ Vogella]: Great site for (not only) Android tutorials. Easy, understandable, step-by-step instructions for all kind of stuff you can do with the Android SDK. Found it, used it, love it.
+
